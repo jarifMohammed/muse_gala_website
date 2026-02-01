@@ -117,22 +117,26 @@ const Navbar = ({ isLoggedin, session }: Props) => {
 
   const getTextColor = () => {
     return scrolling ||
-      pathname === '/become-lender' ||
+      pathname.startsWith('/become-lender') ||
       pathname.startsWith('/product/') ||
       pathname.startsWith('/shop/') || // ✅ add this
       pathname === '/shop' ||
       pathname === '/account' ||
       pathname === '/about' ||
       pathname === '/how-it-works' ||
-      pathname === '/find-near-you' ||
-      pathname === '/login'
+      pathname.startsWith('/find-near-you') ||
+      pathname === '/login' ||
+      pathname === '/sign-up' ||
+      pathname === '/forgot-password' ||
+      pathname === '/reset-password' ||
+      pathname === '/otp'
       ? 'text-black'
       : 'text-white'
   }
 
   const getBorderColor = () => {
     return scrolling ||
-      pathname === '/become-lender' ||
+      pathname.startsWith('/become-lender') ||
       pathname.startsWith('/product/') ||
       pathname.startsWith('/shop/') ||
       pathname === '/checkout' ||
@@ -140,8 +144,12 @@ const Navbar = ({ isLoggedin, session }: Props) => {
       pathname === '/account' ||
       pathname === '/about' ||
       pathname === '/how-it-works' ||
-      pathname === '/find-near-you' ||
-      pathname === '/login'
+      pathname.startsWith('/find-near-you') ||
+      pathname === '/login' ||
+      pathname === '/sign-up' ||
+      pathname === '/forgot-password' ||
+      pathname === '/reset-password' ||
+      pathname === '/otp'
       ? 'border-black'
       : 'border-white'
   }
@@ -153,39 +161,86 @@ const Navbar = ({ isLoggedin, session }: Props) => {
           }`}
       >
         <div className="container mx-auto">
-          <div className="flex justify-between items-center">
-            {/* Desktop Menu */}
-            <div className="hidden md:flex items-center md:gap-x-2 lg:gap-x-0">
-              {menus.filter(m => m.id !== 5).map((menu) => (
-                <Button
-                  key={menu.id}
-                  variant="link"
-                  effect="hoverUnderline"
-                  asChild
-                  className={`text-[12px] font-inter font-light ${getTextColor()}`}
-                >
-                  <Link
-                    href={menu.href}
-                    className={`${pathname === menu.href ? 'font-normal' : 'font-light'
-                      } leading-[20px] tracking-[0.1em]`}
-                  >
-                    {menu.linkText}
-                  </Link>
-                </Button>
-              ))}
+          <div className="grid grid-cols-3 items-center w-full">
+            {/* Left: Mobile Hamburger and Desktop Links */}
+            <div className="flex items-center">
+              {/* Mobile Menu (Hamburger) */}
+              <div className="md:hidden">
+                <Sheet>
+                  <SheetTrigger asChild>
+                    <Button variant="ghost" className="p-1" size="icon">
+                      <Menu className={getTextColor()} />
+                    </Button>
+                  </SheetTrigger>
+                  <SheetContent side="top" className="bg-white text-black">
+                    <div className="flex flex-col items-center gap-y-8 mt-6">
+                      <div className="flex flex-col items-center gap-y-5">
+                        {menus.map((menu) => (
+                          <Link
+                            key={menu.id}
+                            href={menu.href}
+                            className={`${pathname === menu.href
+                              ? 'font-semibold'
+                              : 'font-light'
+                              } text-lg hover:text-gray-600 transition-colors`}
+                          >
+                            <SheetClose>{menu.linkText}</SheetClose>
+                          </Link>
+                        ))}
+                        {!isLoggedin && (
+                          <Link
+                            href="/login"
+                            className="text-lg font-medium hover:text-gray-600 transition-colors"
+                          >
+                            <SheetClose>Login</SheetClose>
+                          </Link>
+                        )}
+                      </div>
+                    </div>
+                  </SheetContent>
+                </Sheet>
+              </div>
 
-              <div className="flex-shrink-0">
+              {/* Desktop Menu Links */}
+              <div className="hidden md:flex items-center gap-x-2 lg:gap-x-0">
+                {menus.filter(m => m.id !== 5).map((menu) => (
+                  <Button
+                    key={menu.id}
+                    variant="link"
+                    effect="hoverUnderline"
+                    asChild
+                    className={`text-[12px] font-inter font-light ${getTextColor()}`}
+                  >
+                    <Link
+                      href={menu.href}
+                      className={`${pathname === menu.href ? 'font-normal' : 'font-light'
+                        } leading-[20px] tracking-[0.1em]`}
+                    >
+                      {menu.linkText}
+                    </Link>
+                  </Button>
+                ))}
+              </div>
+            </div>
+
+            {/* Center: Logo */}
+            <div className="flex justify-center">
+              <Link href="/" className="flex-shrink-0">
                 {scrolling ||
                   pathname === '/account' ||
                   pathname.startsWith('/product/') ||
-                  pathname.startsWith('/shop/') || // ✅ add this
+                  pathname.startsWith('/shop/') ||
                   pathname === '/login' ||
+                  pathname === '/sign-up' ||
+                  pathname === '/forgot-password' ||
+                  pathname === '/reset-password' ||
+                  pathname === '/otp' ||
                   pathname === '/checkout' ||
-                  pathname === '/become-lender' ||
+                  pathname.startsWith('/become-lender') ||
                   pathname === '/shop' ||
                   pathname === '/about' ||
                   pathname === '/how-it-works' ||
-                  pathname === '/find-near-you' ? (
+                  pathname.startsWith('/find-near-you') ? (
                   <Image
                     src="/logo-black.svg"
                     height={60}
@@ -195,29 +250,11 @@ const Navbar = ({ isLoggedin, session }: Props) => {
                 ) : (
                   <Image src="/logo.svg" height={60} width={60} alt="Logo" />
                 )}
-              </div>
+              </Link>
             </div>
 
-            {/* Logo */}
-            {/* <div className="flex-shrink-0">
-              {scrolling ||
-              pathname === "/account" ||
-              pathname.startsWith("/product/") ||
-              pathname === "/login" ||
-              pathname === "/checkout" ||
-              pathname === "/become-lender" ||
-              pathname === "/shop" ||
-              pathname === "/about" ||
-              pathname === "/how-it-works" ||
-              pathname === "/find-near-you" ? (
-                <Image src="/logos/Logo_black.png" height={60} width={60} alt="Logo" />
-              ) : (
-                <Image src="/logos/logo.png" height={60} width={60} alt="Logo" />
-              )}
-            </div> */}
-
-            {/* Desktop Actions */}
-            <div className={`${getTextColor()} flex gap-[30px] items-center`}>
+            {/* Right: Actions (Search, Account, Become a Lender) */}
+            <div className={`${getTextColor()} flex gap-[15px] md:gap-[30px] items-center justify-end`}>
               <Link
                 href="/become-lender"
                 className="brand-button text-[14px] !tracking-[2px] hover:opacity-70 transition-opacity whitespace-nowrap hidden lg:block"
@@ -238,30 +275,15 @@ const Navbar = ({ isLoggedin, session }: Props) => {
               {/* User Menu */}
               <div className="relative cursor-pointer" ref={accountRef}>
                 {!isLoggedin ? (
-                  <>
-                    <Link
-                      href="/login"
-                      onClick={() => setIsAccountOpen(!isAccountOpen)}
-                      className="flex items-center"
-                    >
-                      <User
-                        size={20}
-                        className="hover:opacity-70 transition-opacity"
-                      />
-                    </Link>
-                    {/* {isAccountOpen && (
-                      <div className="absolute top-8 right-0 mt-1 z-50 bg-white p-6 shadow-md min-w-[180px]">
-                        <div className="flex flex-col items-center">
-                          <Link href="/login" className="block text-center">
-                            <span className="text-black text-sm tracking-[0.2em] uppercase">
-                              LOGIN
-                            </span>
-                            <div className="h-[1px] bg-black w-full mt-1"></div>
-                          </Link>
-                        </div>
-                      </div>
-                    )} */}
-                  </>
+                  <Link
+                    href="/login"
+                    className="flex items-center"
+                  >
+                    <User
+                      size={20}
+                      className="hover:opacity-70 transition-opacity"
+                    />
+                  </Link>
                 ) : (
                   <>
                     <div
@@ -271,7 +293,7 @@ const Navbar = ({ isLoggedin, session }: Props) => {
                       {session?.user?.firstName?.slice(0, 1) || 'U'}
                     </div>
                     {isAccountOpen && (
-                      <div className="absolute top-8 -left-8 mt-1 z-50 bg-white p-4 md:p-6 shadow-md min-w-[180px]">
+                      <div className="absolute top-8 right-0 mt-1 z-50 bg-white p-4 md:p-6 shadow-md min-w-[180px]">
                         <div className="flex flex-col items-center space-y-3 md:space-y-6">
                           <Link
                             href="/account"
@@ -299,64 +321,6 @@ const Navbar = ({ isLoggedin, session }: Props) => {
                 )}
               </div>
             </div>
-
-            {/* Mobile Menu */}
-            <div className="md:hidden flex items-center justify-between gap-x-4 w-full">
-              <Sheet>
-                <SheetTrigger asChild>
-                  <Button variant="ghost" className="p-1" size="icon">
-                    <Menu className={getTextColor()} />
-                  </Button>
-                </SheetTrigger>
-                <SheetContent side="top" className="bg-white text-black">
-                  <div className="flex flex-col items-center gap-y-8 mt-6">
-                    <div className="flex flex-col items-center gap-y-5">
-                      {menus.map((menu) => (
-                        <Link
-                          key={menu.id}
-                          href={menu.href}
-                          className={`${pathname === menu.href
-                            ? 'font-semibold'
-                            : 'font-light'
-                            } text-lg hover:text-gray-600 transition-colors`}
-                        >
-                          <SheetClose>{menu.linkText}</SheetClose>
-                        </Link>
-                      ))}
-                      {!session?.user && (
-                        <Link
-                          href="/login"
-                          className="text-lg font-medium hover:text-gray-600 transition-colors"
-                        >
-                          <SheetClose>Login</SheetClose>
-                        </Link>
-                      )}
-                    </div>
-                  </div>
-                </SheetContent>
-              </Sheet>
-
-              <div className="flex items-center gap-4">
-                <Search
-                  className={`${getTextColor()} cursor-pointer`}
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    setIsSearchOpen(!isSearchOpen)
-                  }}
-                  size={20}
-                />
-                {!session?.user && (
-                  <Button
-                    variant="link"
-                    effect="hoverUnderline"
-                    asChild
-                    className={getTextColor()}
-                  >
-                    <Link href="/login">Login</Link>
-                  </Button>
-                )}
-              </div>
-            </div>
           </div>
         </div>
       </div>
@@ -365,7 +329,7 @@ const Navbar = ({ isLoggedin, session }: Props) => {
       {isSearchOpen && (
         <div
           ref={searchModalRef}
-          className="fixed top-[70px] left-[14%] w-full bg-white border-b border-gray-200 shadow-lg z-[60] animate-in slide-in-from-top-2 duration-200 container"
+          className="fixed top-[70px] left-0 md:left-[14%] w-full md:w-[72%] bg-white border-b border-gray-200 shadow-lg z-[60] animate-in slide-in-from-top-2 duration-200"
           onClick={(e) => e.stopPropagation()} // Prevent clicks inside from bubbling up
         >
           <div className="container mx-auto py-8 px-4">

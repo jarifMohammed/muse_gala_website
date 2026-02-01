@@ -47,7 +47,7 @@ export default function DynamicBanner() {
   const finalBanner = imgError || !bannerUrl ? FALLBACK_BANNER : bannerUrl
 
   return (
-    <div className="relative w-full h-screen">
+    <div className="relative w-full h-[60vh] md:h-[75vh]">
       {/* Loader until image fully loaded */}
       {!loaded && (
         <Skeleton className="absolute inset-0.5 w-full h-full rounded-none" />
@@ -61,15 +61,14 @@ export default function DynamicBanner() {
         quality={100}
         onLoad={() => setLoaded(true)}
         onError={() => setImgError(true)}
-        className={`object-cover transition-opacity duration-700 ${
-          loaded ? 'opacity-100' : 'opacity-0'
-        }`}
+        className={`object-cover transition-opacity duration-700 ${loaded ? 'opacity-100' : 'opacity-0'
+          }`}
       />
 
       {/* Content */}
       <div className="absolute inset-0 flex flex-col items-center justify-center gap-y-5">
         <Link href="/login">
-          <p className="sub-header text-slate-200 mt-[180px] md:text-[24px] text-sm text-center capitalize lg:text-[36px] font-light leading-[64px] tracking-[.5em]">
+          <p className="sub-header text-slate-200 mt-[100px] md:mt-[120px] md:text-[24px] text-sm text-center capitalize lg:text-[36px] font-light leading-[64px] tracking-[.5em]">
             EFFORTLESS FASHION HIRE
           </p>
         </Link>

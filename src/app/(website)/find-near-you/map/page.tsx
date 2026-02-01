@@ -20,7 +20,7 @@ export default function MapPage() {
   const hasProducts = allProducts && allProducts.length > 0
 
   return (
-    <main className="min-h-screen bg-white">
+    <main className="min-h-screen bg-white pt-[100px]">
       {/* Location Search + Filters */}
       <FindNearYou />
 
@@ -52,7 +52,7 @@ export default function MapPage() {
                 // ✅ image fallback
                 const image =
                   Array.isArray((p as any)?.media) &&
-                  (p as any).media.length > 0
+                    (p as any).media.length > 0
                     ? (p as any).media[0]
                     : '/placeholder.svg'
 

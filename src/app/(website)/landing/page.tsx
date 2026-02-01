@@ -11,11 +11,11 @@ import StyledByYou from "@/components/section/style-by-you";
 
 export default function Home() {
   return (
-    <div className="space-y-16">
+    <div className="space-y-8 md:space-y-12">
       <DynamicBanner />
 
       <div className=" bg-white space-y-16">
-        <div className="mb-24">
+        <div className="mb-8 md:mb-12">
           <TrendingNow />
         </div>
 
@@ -37,9 +37,9 @@ export default function Home() {
         <div className="container mx-auto  py-8 md:py-12 lg:py-16 space-y-12 md:space-y-24">
           {/* Header */}
           <header className="text-center mb-12 md:mb-16">
-            <h1 className="headerClass">MUSE GALS SAY</h1>
+            <h1 className="headerClass">MUSE GALAS SAY</h1>
             <div className="flex justify-center">
-              <Link href="#" className="sub-header">
+              <Link href="#" className="sub-header hover:bg-black hover:text-white inline-block  border-b border-black">
                 BROWSE THE EDIT
               </Link>
             </div>
@@ -91,7 +91,7 @@ export default function Home() {
             <div className="flex justify-center">
               <Link
                 href="/become-lender"
-                className="inline-block border-b border-black px-6 py-2 text-[14px] uppercase tracking-widest hover:bg-black hover:text-white"
+                className="inline-block border-b border-black  py-2 text-[14px] uppercase tracking-widest hover:bg-black hover:text-white"
               >
                 BECOME A LENDER
               </Link>

@@ -214,7 +214,7 @@ const Footer = () => {
             </div>
           </div>
 
-          <div className="flex flex-col items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 my-5">
+          <div className="flex flex-col items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 my-5 w-max">
             <div>
               <Image
                 src={'/logo-black.svg'}
@@ -225,7 +225,7 @@ const Footer = () => {
               />
             </div>
             <div className="flex items-center space-x-2">
-              <span className="brand-subheader">MUSE GALA</span>
+              <span className="brand-subheader whitespace-nowrap">MUSE GALA</span>
             </div>
           </div>
           <div></div>

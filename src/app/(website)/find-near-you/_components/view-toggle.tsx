@@ -2,26 +2,31 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Map, List } from "lucide-react";
 
 export default function ViewToggle() {
   const pathname = usePathname();
   const isMapView = pathname === "/find-near-you/map";
 
   return (
-    <div className="flex justify-center mb-4 brand-body text-black uppercase">
-      <Link
-        href="/find-near-you"
-        className={`mr-4 ${!isMapView ? "border-b border-black pb-1" : ""
-          }`}
-      >
-        List
-      </Link>
-      <Link
-        href="/find-near-you/map"
-        className={isMapView ? " border-b border-black pb-1" : ""}
-      >
-        Map
-      </Link>
+    <div className="flex justify-center brand-body text-black uppercase">
+      {isMapView ? (
+        <Link
+          href="/find-near-you"
+          className="flex items-center gap-1 border border-black px-3 md:px-4 py-1.5 md:py-2 brand-button text-xs md:text-sm tracking-tighter md:tracking-normal whitespace-nowrap h-8 md:h-10"
+        >
+          <List size={14} className="md:size-4" />
+          List View
+        </Link>
+      ) : (
+        <Link
+          href="/find-near-you/map"
+          className="flex items-center gap-1 border border-black px-3 md:px-4 py-1.5 md:py-2 brand-button text-xs md:text-sm tracking-tighter md:tracking-normal whitespace-nowrap h-8 md:h-10"
+        >
+          <Map size={14} className="md:size-4" />
+          Map View
+        </Link>
+      )}
     </div>
   );
 }

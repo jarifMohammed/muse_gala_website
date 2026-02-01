@@ -34,6 +34,7 @@ interface AustraliaLocationSelectorProps {
   className?: string
   mapHeight?: string
   showCurrentLocation?: boolean
+  onSearch?: () => void
 }
 
 export default function AustraliaLocationSelector({
@@ -44,6 +45,7 @@ export default function AustraliaLocationSelector({
   className = '',
   // mapHeight = '500px',
   showCurrentLocation = true,
+  onSearch,
 }: AustraliaLocationSelectorProps) {
   const mapContainer = useRef<HTMLDivElement>(null)
   const map = useRef<mapboxgl.Map | null>(null)
@@ -343,15 +345,30 @@ export default function AustraliaLocationSelector({
     <div className={`w-full relative space-y-4 ${className}`}>
       <div className="flex flex-col sm:flex-row gap-2 relative">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
           <Input
             type="text"
             placeholder={placeholder}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             onFocus={() => searchResults.length > 0 && setShowResults(true)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                e.preventDefault()
+                onSearch?.()
+              }
+            }}
             className="pl-10 pr-10 text-sm sm:text-base"
           />
+          <button
+            type="button"
+            onClick={(e) => {
+              e.preventDefault()
+              onSearch?.()
+            }}
+            className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-black transition-colors"
+          >
+            <Search className="h-4 w-4" />
+          </button>
           {searchQuery && (
             <Button
               variant="ghost"
@@ -438,11 +455,6 @@ export default function AustraliaLocationSelector({
                     {selectedLocation.address}
                   </p>
 
-                  {/* Precise Coordinates */}
-                  <div className="bg-muted p-2 rounded text-xs font-mono mb-2">
-                    <div>Lat: {selectedLocation.latitude.toFixed(8)}</div>
-                    <div>Lng: {selectedLocation.longitude.toFixed(8)}</div>
-                  </div>
 
                   <div className="flex flex-wrap gap-1">
                     {selectedLocation.suburb && (

@@ -20,7 +20,7 @@ export const LocalPickup = () => {
             checked={shipping}
             onChange={selectShipping}
           />
-          <span>Shipping</span>
+          <span>SHIPPING</span>
         </label>
 
         <label className="flex items-center gap-2 cursor-pointer">
@@ -30,7 +30,7 @@ export const LocalPickup = () => {
             checked={localPickup}
             onChange={selectLocalPickup}
           />
-          <span>Local Pickup</span>
+          <span>LOCAL PICKUP</span>
         </label>
       </div>
     </div>

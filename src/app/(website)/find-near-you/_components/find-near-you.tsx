@@ -92,7 +92,6 @@ export default function FindNearYou() {
     staleTime: 1000 * 60 * 5,
   })
 
-  console.log('my required data: ', data)
 
   // Merge fetched products into Zustand
   useEffect(() => {
@@ -128,25 +127,26 @@ export default function FindNearYou() {
   // console.log('map route all products: ', allProducts)
 
   return (
-    <section className="container mx-auto py-12">
-      <h1 className="brand-header mb-5">
+    <section className="container mx-auto pt-4 pb-12">
+      <h1 className="brand-header mb-4">
         Find Near You
       </h1>
-      <p className="brand-subheader text-center mb-10">
+      <p className="brand-subheader text-center mb-10 hidden md:block">
         FIND YOUR DRESS NEAR YOU FOR LOCAL PICK UP
       </p>
 
-      {/* Toggle Buttons */}
+      {/* Row 1: Filters & View Toggle */}
       <div className="flex items-center justify-center gap-4 mb-6">
         <Button
           variant="outline"
           onClick={() => setShowFilters(!showFilters)}
-          className="flex items-center gap-2 brand-button"
+          className="flex items-center gap-1 brand-button px-3 md:px-4 text-xs md:text-sm tracking-tighter md:tracking-normal h-8 md:h-10"
         >
-          <Filter size={16} />
+          <Filter size={14} className="md:size-4" />
           Filters{' '}
-          {showFilters ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+          {showFilters ? <ChevronUp size={14} className="md:size-4" /> : <ChevronDown size={14} className="md:size-4" />}
         </Button>
+        <ViewToggle />
       </div>
 
       {/* Location Selector */}
@@ -174,17 +174,10 @@ export default function FindNearYou() {
               },
             })
           }}
+          onSearch={handleSearchNearYou}
           placeholder="Search for your location..."
           mapHeight="300px"
         />
-        <div className="mt-6 text-center w-full">
-          <button
-            className="inline-block border-b border-black brand-button py-2 hover:bg-black hover:text-white cursor-pointer"
-            onClick={handleSearchNearYou}
-          >
-            Search Near You
-          </button>
-        </div>
       </div>
       {/* Radius Slider */}
       <div className="mb-6">
@@ -289,10 +282,6 @@ export default function FindNearYou() {
         </div>
       )}
 
-      {/* view map and list button */}
-      <div className="mx-auto mb-12">
-        <ViewToggle />
-      </div>
 
       {/* Products */}
       {!isMapPage && allProducts.length > 0 && (
