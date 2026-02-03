@@ -10,7 +10,7 @@ const page = () => {
   return (
     <div className="max-w-[1600px] mx-auto px-4 md:px-8 lg:px-12 pb-8 pt-[100px]">
       <div className="text-center">
-        <h1 className=" uppercase headerClass font-light">Shop</h1>
+        <h1 className=" uppercase headerClass font-light">RENT</h1>
         <p className="font-avenir text-sm font-light uppercase sub-title text-black/70 !tracking-[.2rem]">
           Curated designer rentals for every moment.
         </p>

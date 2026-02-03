@@ -37,7 +37,7 @@ export default function Home() {
         <div className="container mx-auto  py-8 md:py-12 lg:py-16 space-y-12 md:space-y-24">
           {/* Header */}
           <header className="text-center mb-12 md:mb-16">
-            <h1 className="headerClass">MUSE GALAS SAY</h1>
+            <h1 className="headerClass">MUSE GALS SAY</h1>
             <div className="flex justify-center">
               <Link href="#" className="sub-header hover:bg-black hover:text-white inline-block  border-b border-black">
                 BROWSE THE EDIT

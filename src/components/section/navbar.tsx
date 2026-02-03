@@ -38,7 +38,7 @@ const Navbar = ({ isLoggedin, session }: Props) => {
 
   const menus = [
     { id: 1, href: '/', linkText: 'HOME' },
-    { id: 2, href: '/shop', linkText: 'SHOP' },
+    { id: 2, href: '/shop', linkText: 'RENT' },
     // { id: 3, href: "/about", linkText: "ABOUT" },
     { id: 4, href: '/how-it-works', linkText: 'HOW IT WORKS' },
     { id: 5, href: '/become-lender', linkText: 'BECOME A LENDER' },
