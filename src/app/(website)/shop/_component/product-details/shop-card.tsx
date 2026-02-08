@@ -1,8 +1,10 @@
 /* eslint-disable */
 'use client'
 
-import { Heart, ShoppingCart } from 'lucide-react'
+import { Heart } from 'lucide-react'
+import { useSession } from 'next-auth/react'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import React, { useState, useEffect } from 'react'
 
 interface ShopCardProps {
@@ -15,6 +17,8 @@ interface ShopCardProps {
 const ShopCard = ({ thumbnailImage, allImages, isLoading, productdata }: ShopCardProps) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [isWishlisted, setIsWishlisted] = useState(false)
+  const { data: session } = useSession()
+  const router = useRouter()
 
   const images = [thumbnailImage, ...allImages].filter(Boolean)
 
@@ -32,6 +36,12 @@ const ShopCard = ({ thumbnailImage, allImages, isLoading, productdata }: ShopCar
 
   // -------------- TOGGLE WISHLIST---------------------------
   const handleToggleWishlist = () => {
+    if (!session) {
+      alert("Please login to add items to your wishlist.")
+      router.push('/login')
+      return
+    }
+
     const stored = localStorage.getItem("wishlist")
     let wishlist = stored ? JSON.parse(stored) : []
 
@@ -67,7 +77,6 @@ const ShopCard = ({ thumbnailImage, allImages, isLoading, productdata }: ShopCar
           <div className="w-full h-full bg-gray-300 rounded-lg" />
           <div className="flex items-center gap-5 absolute right-4 top-4">
             <div className="w-8 h-8 bg-gray-300 rounded-full" />
-            <div className="w-8 h-8 bg-gray-300 rounded-full" />
           </div>
         </div>
       </div>
@@ -83,9 +92,8 @@ const ShopCard = ({ thumbnailImage, allImages, isLoading, productdata }: ShopCar
           <div
             key={index}
             onClick={() => setCurrentImageIndex(index)}
-            className={`min-w-[150px] lg:h-[150px] h-[100px] cursor-pointer rounded overflow-hidden border-[2px] ${
-              currentImageIndex === index ? 'border-gray-500' : 'border-transparent'
-            }`}
+            className={`min-w-[150px] lg:h-[150px] h-[100px] cursor-pointer rounded overflow-hidden border-[2px] ${currentImageIndex === index ? 'border-gray-500' : 'border-transparent'
+              }`}
           >
             <Image
               src={src || '/placeholder.jpg'}
@@ -109,8 +117,6 @@ const ShopCard = ({ thumbnailImage, allImages, isLoading, productdata }: ShopCar
 
         {/* ACTION BUTTONS */}
         <div className="flex items-center gap-5 absolute right-4 top-4 text-white">
-
-          <ShoppingCart className="bg-black/60 p-2 rounded-full w-9 h-9 cursor-pointer" />
 
           {/* ❤️ WISHLIST TOGGLE */}
           <Heart

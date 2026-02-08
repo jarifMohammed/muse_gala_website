@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { useFilterStore } from "@/zustand/filterStore";
 
 const Price = () => {
-  const { setMinPrice, setMaxPrice } = useFilterStore();
+  const { minPrice, maxPrice, setMinPrice, setMaxPrice } = useFilterStore();
 
   return (
     <Accordion
@@ -26,12 +26,14 @@ const Price = () => {
           <Input
             className="focus-visible:ring-0 placeholder:font-avenir placeholder:uppercase placeholder:tracking-widest placeholder:text-xs"
             placeholder="min"
+            value={minPrice}
             onChange={(e) => setMinPrice(e.target.value)}
           />
           <div className="w-10 border-b border-gray-300"></div>
           <Input
             className="focus-visible:ring-0 placeholder:font-avenir placeholder:uppercase placeholder:tracking-widest placeholder:text-xs"
             placeholder="max"
+            value={maxPrice}
             onChange={(e) => setMaxPrice(e.target.value)}
           />
         </AccordionContent>

@@ -8,7 +8,7 @@ import {
 import { useFilterStore } from '@/zustand/filterStore'
 
 const Size = () => {
-  const { setSize } = useFilterStore()
+  const { size, setSize } = useFilterStore()
 
   const labels = [
     {
@@ -61,15 +61,19 @@ const Size = () => {
             {labels.map((item) => (
               <div key={item.id} className="flex items-center gap-3">
                 <input
-                  onClick={(e) => setSize((e.target as HTMLInputElement).value)}
-                  className="h-4 w-4"
                   type="checkbox"
-                  id="XXS"
+                  id={`size-${item.label}`}
                   value={item.label}
+                  checked={size === item.label}
+                  onChange={(e) => {
+                    const isChecked = e.target.checked
+                    setSize(isChecked ? item.label : '')
+                  }}
+                  className="h-4 w-4 accent-black"
                 />
                 <label
-                  htmlFor="XXS"
-                  className="font-avenir tracking-[0.2rem] opacity-75 uppercase"
+                  htmlFor={`size-${item.label}`}
+                  className="font-avenir tracking-[0.2rem] opacity-75 uppercase cursor-pointer"
                 >
                   {item.label}
                 </label>

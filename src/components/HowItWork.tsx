@@ -2,13 +2,13 @@
 const HowItWork = () => {
   return (
     <div>
-      <div className="max-w-6xl mx-auto px-4 pt-[50px] text-center">
+      <div className="max-w-[1800px] mx-auto px-2 md:px-4 lg:px-6 pt-[50px] text-center">
         <h2 className="headerClass ">HOW IT WORKS</h2>
         <p className="sub-title mb-16">
           WE MADE IT SIMPLE. YOU MAKE IT STYLISH.
         </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center md:text-left">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
           <div className="space-y-4">
             <h3 className="text-[22px] tracking-widest  font-inter uppercase">BOOK</h3>
             <p className="text-[14px] font-inter">

@@ -12,7 +12,11 @@ import { LocalPickup } from './filter/LocalPickup'
 import Price from './filter/Price'
 import Size from './filter/Size'
 
+import { useFilterStore } from '@/zustand/filterStore'
+
 export function FilterDrawer() {
+  const { resetFilters } = useFilterStore()
+
   return (
     <Drawer>
       <div className="flex justify-end">
@@ -24,13 +28,20 @@ export function FilterDrawer() {
       </div>
 
       <DrawerContent className="container">
-        <div className=" space-y-3 mt-3">
+        <div className=" space-y-3 mt-3 pb-8">
           <SearchProduct />
           <Rental />
           <LocalPickup />
           {/* <EventDate /> */}
           <Price />
           <Size />
+
+          <button
+            onClick={resetFilters}
+            className="w-full mt-4 py-2 text-sm uppercase tracking-widest border border-black hover:bg-black hover:text-white transition-all duration-300"
+          >
+            Clear Filters
+          </button>
         </div>
       </DrawerContent>
     </Drawer>

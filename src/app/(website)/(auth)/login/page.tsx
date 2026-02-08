@@ -9,7 +9,7 @@ const Page = () => {
           {/* Left side image */}
           <div className="md:col-span-3 h-[500px] md:h-[794px] w-full">
             <Image
-              src="/images/login_banner.jpg"
+              src="/pages/alreadyPartofMuse.webp"
               alt="sign-up"
               width={1000}
               height={1000}

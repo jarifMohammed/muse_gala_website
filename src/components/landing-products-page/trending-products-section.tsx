@@ -1,9 +1,11 @@
 'use client'
 
 import Link from 'next/link'
-import Image from 'next/image'
 import { useQuery } from '@tanstack/react-query'
 import { TrendingProduct } from '@/types/trending-products'
+
+import { ProductCard } from '@/components/product/product-card'
+import { Product } from '@/types/product'
 
 type TrendingApiResponse = {
   status: boolean
@@ -11,15 +13,12 @@ type TrendingApiResponse = {
   data: TrendingProduct[]
 }
 
-const CARD_WIDTH = 290
-const CARD_HEIGHT = 350
-
 const TrendingNow = () => {
   const { data, isLoading } = useQuery<TrendingApiResponse>({
     queryKey: ['trending-now'],
     queryFn: async () => {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/admin/master-dresses?limit=4`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/admin/master-dresses?limit=5`,
       )
       return res.json()
     },
@@ -29,7 +28,7 @@ const TrendingNow = () => {
   const products = data?.data ?? []
 
   return (
-    <section className="">
+    <section className="max-w-[1800px] mx-auto px-2 md:px-4 lg:px-6">
       {/* 🔹 Header */}
       <div className="text-center mb-12 space-y-5">
         <h2 className="uppercase tracking-[12px] text-lg md:text-xl lg:text-2xl font-light">
@@ -44,58 +43,22 @@ const TrendingNow = () => {
         </Link>
       </div>
 
-      {/* 🔹 Responsive Grid with fixed card width */}
+      {/* 🔹 Responsive Grid */}
       <div className="flex justify-center">
-        <div
-          className="grid gap-8"
-          style={{
-            gridTemplateColumns: `repeat(auto-fit, minmax(${CARD_WIDTH}px, 1fr))`,
-            maxWidth: `${CARD_WIDTH * 4 + 96}px`,
-            width: '100%',
-          }}
-        >
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8 w-full max-w-[1500px]">
           {isLoading
-            ? Array.from({ length: 4 }).map((_, i) => (
-                <div
-                  key={i}
-                  style={{ width: CARD_WIDTH, height: CARD_HEIGHT }}
-                  className="mx-auto animate-pulse"
-                >
-                  <div className="h-full bg-gray-200" />
+            ? Array.from({ length: 5 }).map((_, i) => (
+              <div key={i} className="flex flex-col h-full animate-pulse">
+                <div className="overflow-hidden mb-4 aspect-[2/3] w-full bg-gray-200" />
+                <div className="text-center space-y-2">
+                  <div className="h-4 bg-gray-300 rounded w-3/4 mx-auto"></div>
+                  <div className="h-3 bg-gray-300 rounded w-1/2 mx-auto"></div>
                 </div>
-              ))
+              </div>
+            ))
             : products.map(product => (
-                <Link
-                  key={product._id}
-                  href={`/shop/${product._id}`}
-                  className="mx-auto group"
-                  style={{ width: CARD_WIDTH }}
-                >
-                  {/* Image */}
-                  <div
-                    className="relative overflow-hidden"
-                    style={{ height: CARD_HEIGHT }}
-                  >
-                    <Image
-                      src={product.thumbnail || product.media?.[0]}
-                      alt={product.dressName}
-                      fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                  </div>
-
-                  {/* Info */}
-                  <div className="text-center mt-4">
-                    <h3 className="text-sm font-light uppercase tracking-wide">
-                      {product.dressName}
-                    </h3>
-
-                    <p className="text-xs text-gray-500 mt-1 tracking-widest">
-                      Rent ${product.basePrice} | RRP ${product.rrpPrice}
-                    </p>
-                  </div>
-                </Link>
-              ))}
+              <ProductCard key={product._id} product={product as unknown as Product} />
+            ))}
         </div>
       </div>
     </section>

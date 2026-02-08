@@ -12,26 +12,38 @@ export const LocalPickup = () => {
         Delivery
       </h3>
 
-      <div className="space-y-2">
-        <label className="flex items-center gap-2 cursor-pointer">
+      <div className="space-y-4">
+        <div className="flex items-center gap-3">
           <input
-            type="radio"
-            name="delivery"
+            type="checkbox"
+            id="shipping-filter"
             checked={shipping}
             onChange={selectShipping}
+            className="h-4 w-4 accent-black cursor-pointer"
           />
-          <span>SHIPPING</span>
-        </label>
+          <label
+            htmlFor="shipping-filter"
+            className="font-avenir tracking-[0.2rem] opacity-75 uppercase cursor-pointer"
+          >
+            SHIPPING
+          </label>
+        </div>
 
-        <label className="flex items-center gap-2 cursor-pointer">
+        <div className="flex items-center gap-3">
           <input
-            type="radio"
-            name="delivery"
+            type="checkbox"
+            id="local-pickup-filter"
             checked={localPickup}
             onChange={selectLocalPickup}
+            className="h-4 w-4 accent-black cursor-pointer"
           />
-          <span>LOCAL PICKUP</span>
-        </label>
+          <label
+            htmlFor="local-pickup-filter"
+            className="font-avenir tracking-[0.2rem] opacity-75 uppercase cursor-pointer"
+          >
+            LOCAL PICKUP
+          </label>
+        </div>
       </div>
     </div>
   )

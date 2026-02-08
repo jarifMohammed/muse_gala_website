@@ -65,20 +65,20 @@ const SignUpForm = () => {
     mutate(values)
   }
   return (
-    <div className="mt-16">
+    <div>
       <div className="grid grid-cols-1 md:grid-cols-5 gap-[20px] md:gap-[40px] lg:gap-[60px] px-5 md:px-0">
         {/* left side image part  */}
         <div className="md:col-span-3">
           <Image
-            src="/images/register_banner.jpg"
+            src="/pages/signUp.webp"
             alt="sign-up"
-            width={500}
-            height={500}
-            className="w-full h-[400px] md:h-[496px] object-cover"
+            width={1000}
+            height={1000}
+            className="w-full h-[500px] md:h-[794px] object-cover"
           />
         </div>
         {/* form part  */}
-        <div className="md:col-span-2 md:pr-[50px] lg:pr-[100px]">
+        <div className="md:col-span-2 md:pr-[50px] lg:pr-[100px] md:pt-[150px] lg:pt-[200px]">
           <h2 className="text-2xl md:text-[27px] lg:text-3xl font-normal text-black leading-[36px] pb-[25px] md:pb-[35px] lg:pb-[45px] text-right">
             NEW HERE? JOIN MUSE CLUB
           </h2>

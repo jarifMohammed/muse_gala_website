@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useState } from 'react'
 import {
   Form,
   FormControl,
@@ -13,6 +13,7 @@ import { Input } from '@/components/ui/input'
 import { cn } from '@/lib/utils'
 import { Loader2 } from 'lucide-react'
 import { useForm } from 'react-hook-form'
+import { useToast } from '@/hooks/use-toast'
 
 type FormValues = {
   name: string
@@ -21,6 +22,9 @@ type FormValues = {
 }
 
 const ContactForm = () => {
+  const [isLoading, setIsLoading] = useState(false)
+  const { toast } = useToast()
+
   const form = useForm<FormValues>({
     defaultValues: {
       name: '',
@@ -29,8 +33,49 @@ const ContactForm = () => {
     },
   })
 
-  const onSubmit = (data: FormValues) => {
-    console.log('Contact Form Data:', data)
+  const onSubmit = async (data: FormValues) => {
+    setIsLoading(true)
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/support/general`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            name: data.name,
+            email: data.email,
+            message: data.message,
+          }),
+        }
+      )
+
+      const result = await response.json()
+
+      if (response.ok) {
+        toast({
+          title: 'Success',
+          description: result.message || 'Your message has been sent successfully!',
+        })
+        form.reset()
+      } else {
+        toast({
+          title: 'Error',
+          description: result.message || 'Failed to send message. Please try again.',
+          variant: 'destructive',
+        })
+      }
+    } catch (error) {
+      console.error('Contact form submission error:', error)
+      toast({
+        title: 'Error',
+        description: 'Something went wrong. Please try again later.',
+        variant: 'destructive',
+      })
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -111,11 +156,12 @@ const ContactForm = () => {
             <button
               className={cn(
                 'text-sm font-normal tracking-[.1em] disabled:text-black/90 text-black leading-[20px] border-b border-black py-[10px] uppercase flex items-center gap-x-3 bg-transparent',
-                'opacity-50'
+                isLoading && 'opacity-50'
               )}
               type="submit"
+              disabled={isLoading}
             >
-              {false ? (
+              {isLoading ? (
                 <>
                   Please wait <Loader2 className="h-4 w-4 animate-spin" />
                 </>

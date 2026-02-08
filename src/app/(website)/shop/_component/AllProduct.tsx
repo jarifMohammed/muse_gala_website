@@ -8,7 +8,7 @@ import {
   useQuery,
   useQueryClient,
 } from '@tanstack/react-query'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import Image from 'next/image'
 
 const AllProduct = () => {
@@ -18,6 +18,7 @@ const AllProduct = () => {
     minPrice,
     maxPrice,
     fourDayRental,
+    eightDayRental,
     shipping,
     localPickup,
     page,
@@ -44,20 +45,22 @@ const AllProduct = () => {
     minPrice,
     maxPrice,
     fourDayRental,
+    eightDayRental,
     shipping,
     localPickup,
     setPage,
   ])
 
   // ✅ Build query safely (backend aligned)
-  const buildQuery = (currentPage: number) => {
+  const buildQuery = useCallback((currentPage: number) => {
     const params = new URLSearchParams()
 
     if (search) params.append('search', search)
     if (size) params.append('size', size)
-    if (minPrice) params.append('min', minPrice)
-    if (maxPrice) params.append('max', maxPrice)
+    if (minPrice) params.append('minPrice', minPrice)
+    if (maxPrice) params.append('maxPrice', maxPrice)
     if (fourDayRental) params.append('fourDaysSelected', 'true')
+    if (eightDayRental) params.append('eightDaysSelected', 'true')
 
     // 🔥 IMPORTANT: backend logic
     if (shipping) params.append('shipping', 'true')
@@ -66,7 +69,16 @@ const AllProduct = () => {
     params.append('page', String(currentPage))
 
     return params.toString()
-  }
+  }, [
+    search,
+    size,
+    minPrice,
+    maxPrice,
+    fourDayRental,
+    eightDayRental,
+    shipping,
+    localPickup,
+  ])
 
   const { data, isLoading, isFetching, isSuccess } = useQuery({
     queryKey: [
@@ -76,14 +88,14 @@ const AllProduct = () => {
       minPrice,
       maxPrice,
       fourDayRental,
+      eightDayRental,
       shipping,
       localPickup,
       page,
     ],
     queryFn: async () => {
       const res = await fetch(
-        `${
-          process.env.NEXT_PUBLIC_BACKEND_URL
+        `${process.env.NEXT_PUBLIC_BACKEND_URL
         }/api/v1/admin/master-dresses?${buildQuery(page)}`
       )
       return res.json()
@@ -134,8 +146,7 @@ const AllProduct = () => {
       ],
       queryFn: async () => {
         const res = await fetch(
-          `${
-            process.env.NEXT_PUBLIC_BACKEND_URL
+          `${process.env.NEXT_PUBLIC_BACKEND_URL
           }/api/v1/admin/master-dresses?${buildQuery(page + 1)}`
         )
         return res.json()
@@ -152,25 +163,26 @@ const AllProduct = () => {
     fourDayRental,
     shipping,
     localPickup,
+    buildQuery,
   ])
 
   return (
     <div>
       {/* ✅ Product Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 lg:gap-12 gap-10">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
         {isLoading && page === 1
           ? Array.from({ length: 16 }).map((_, index) => (
-              <div key={index} className="flex flex-col h-full animate-pulse">
-                <div className="overflow-hidden mb-4 aspect-[2/3] w-full bg-gray-200 rounded-md" />
-                <div className="text-center space-y-2 mt-auto">
-                  <div className="h-4 bg-gray-300 rounded w-3/4 mx-auto"></div>
-                  <div className="h-3 bg-gray-300 rounded w-1/2 mx-auto"></div>
-                </div>
+            <div key={index} className="flex flex-col h-full animate-pulse">
+              <div className="overflow-hidden mb-4 aspect-[2/3] w-full bg-gray-200 rounded-md" />
+              <div className="text-center space-y-2 mt-auto">
+                <div className="h-4 bg-gray-300 rounded w-3/4 mx-auto"></div>
+                <div className="h-3 bg-gray-300 rounded w-1/2 mx-auto"></div>
               </div>
-            ))
+            </div>
+          ))
           : products.map((product) => (
-              <ProductCard key={product._id} product={product} />
-            ))}
+            <ProductCard key={product._id} product={product} />
+          ))}
       </div>
 
       {/* ✅ No Products */}

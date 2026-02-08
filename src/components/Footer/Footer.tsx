@@ -1,9 +1,9 @@
 'use client'
-import { ArrowRight, Facebook, Instagram } from 'lucide-react'
+import { ArrowRight, Instagram } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 // import { useState } from 'react'
-import { FaTiktok } from 'react-icons/fa6'
+// import { FaTiktok } from 'react-icons/fa6'
 // import CustomerTermsConditionsDialog from '../tmc/customer-terms-conditions-dialog'
 // import LenderTermsConditions from '../tmc/lender -terms-Conditions'
 import { Button } from '../ui/button'
@@ -13,7 +13,7 @@ const Footer = () => {
   // const [open1, setOpne1] = useState(false)
   return (
     <footer className="w-full bg-white">
-      <div className="container mx-auto">
+      <div className="max-w-[1800px] mx-auto px-2 md:px-4 lg:px-6">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
           {/* CUSTOMER SECTION */}
           <div className="space-y-4">
@@ -74,7 +74,10 @@ const Footer = () => {
               >
                 Lender FAQ
               </Link>
-              <Link href="/login" className="text-gray-600 hover:text-gray-900">
+              <Link
+                href="https://lender.musegala.com.au"
+                className="text-gray-600 hover:text-gray-900"
+              >
                 Lender Login
               </Link>
               <Link
@@ -130,25 +133,13 @@ const Footer = () => {
             </h3>
             <div className="flex space-x-4 ">
               <Link
-                href="#"
-                aria-label="Facebook"
-                className="text-gray-600 hover:text-gray-900"
-              >
-                <Facebook className="h-6 w-6" />
-              </Link>
-              <Link
-                href="#"
+                href="https://www.instagram.com/musegala/"
+                target="_blank"
+                rel="noopener noreferrer"
                 aria-label="Instagram"
                 className="text-gray-600 hover:text-gray-900"
               >
                 <Instagram className="h-6 w-6" />
-              </Link>
-              <Link
-                href="#"
-                aria-label="TikTok"
-                className="text-gray-600 hover:text-gray-900"
-              >
-                <FaTiktok className="h-6 w-6" />
               </Link>
             </div>
             <div className="space-y-2">

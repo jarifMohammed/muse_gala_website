@@ -8,7 +8,7 @@ import { FilterDrawer } from './_component/FilterDrawer'
 
 const page = () => {
   return (
-    <div className="max-w-[1600px] mx-auto px-4 md:px-8 lg:px-12 pb-8 pt-[100px]">
+    <div className="max-w-[1800px] mx-auto px-2 md:px-4 lg:px-6 pb-8 pt-[100px]">
       <div className="text-center">
         <h1 className=" uppercase headerClass font-light">RENT</h1>
         <p className="font-avenir text-sm font-light uppercase sub-title text-black/70 !tracking-[.2rem]">
@@ -16,16 +16,16 @@ const page = () => {
         </p>
       </div>
 
-      <div className="flex flex-col lg:flex-row lg:items-start gap-10 mt-10">
-        <div>
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-10 mt-10">
+        <div className="lg:hidden">
           <FilterDrawer />
         </div>
 
-        <div className="hidden lg:block w-[25%]">
+        <div className="hidden lg:block lg:col-span-1">
           <FilterProduct />
         </div>
 
-        <div className="flex-1 mb-5 md:mb-8">
+        <div className="flex-1 mb-5 md:mb-8 lg:col-span-4">
           <AllProduct />
         </div>
       </div>

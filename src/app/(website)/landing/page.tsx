@@ -34,7 +34,7 @@ export default function Home() {
           <StyledByYou />
         </div>
 
-        <div className="container mx-auto  py-8 md:py-12 lg:py-16 space-y-12 md:space-y-24">
+        <div className="max-w-[1800px] mx-auto px-2 md:px-4 lg:px-6 py-8 md:py-12 lg:py-16 space-y-12 md:space-y-24">
           {/* Header */}
           <header className="text-center mb-12 md:mb-16">
             <h1 className="headerClass">MUSE GALS SAY</h1>

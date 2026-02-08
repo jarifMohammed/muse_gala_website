@@ -52,14 +52,14 @@ const StyledByYou = () => {
       </div>
 
       {/* 🔹 Image Grid */}
-      <div className="max-w-[1400px] mx-auto px-4">
+      <div className="max-w-[1800px] mx-auto px-2 md:px-4 lg:px-6">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {section.image.map((img, index) => (
             <div
               key={index}
               className="
                 relative overflow-hidden
-                aspect-[3/4]
+                aspect-[2/3]
                 bg-gray-100
               "
             >

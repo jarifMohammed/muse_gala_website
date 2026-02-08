@@ -18,6 +18,10 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet'
 import { Session } from 'next-auth'
+import { TrendingProduct } from '@/types/trending-products'
+import { SearchProductCard } from './SearchProductCard'
+import { useDebounce } from '@/hooks/useDebounce'
+import { useQuery } from '@tanstack/react-query'
 // import { Input } from "@/components/ui/input";
 
 interface Props {
@@ -30,11 +34,24 @@ const Navbar = ({ isLoggedin, session }: Props) => {
   const pathname = usePathname()
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
+  const debouncedSearchQuery = useDebounce(searchQuery, 500)
   const searchRef = useRef<HTMLDivElement>(null)
   const searchModalRef = useRef<HTMLDivElement>(null)
   const [isAccountOpen, setIsAccountOpen] = useState(false)
   const accountRef = useRef<HTMLDivElement>(null)
   const router = useRouter()
+
+  const { data: searchResults, isLoading: isSearchLoading } = useQuery({
+    queryKey: ['navbar-search', debouncedSearchQuery],
+    queryFn: async () => {
+      if (!debouncedSearchQuery.trim()) return { data: [] }
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/admin/master-dresses?search=${debouncedSearchQuery}`
+      )
+      return res.json()
+    },
+    enabled: isSearchOpen && debouncedSearchQuery.trim().length > 0,
+  })
 
   const menus = [
     { id: 1, href: '/', linkText: 'HOME' },
@@ -53,6 +70,13 @@ const Navbar = ({ isLoggedin, session }: Props) => {
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
+
+  useEffect(() => {
+    // Reset search when modal closes
+    if (!isSearchOpen) {
+      setSearchQuery('')
+    }
+  }, [isSearchOpen])
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -98,10 +122,8 @@ const Navbar = ({ isLoggedin, session }: Props) => {
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     if (searchQuery.trim()) {
-      // Handle search logic here
-      console.log('Searching for:', searchQuery)
-      // You can redirect to search results page or handle search
-      // router.push(`/search?q=${encodeURIComponent(searchQuery)}`)
+      setIsSearchOpen(false)
+      router.push(`/shop?search=${encodeURIComponent(searchQuery.trim())}`)
     }
   }
 
@@ -119,12 +141,13 @@ const Navbar = ({ isLoggedin, session }: Props) => {
     return scrolling ||
       pathname.startsWith('/become-lender') ||
       pathname.startsWith('/product/') ||
-      pathname.startsWith('/shop/') || // ✅ add this
+      pathname.startsWith('/shop/') ||
       pathname === '/shop' ||
       pathname === '/account' ||
       pathname === '/about' ||
       pathname === '/how-it-works' ||
       pathname.startsWith('/find-near-you') ||
+      pathname === '/contact-us' ||
       pathname === '/login' ||
       pathname === '/sign-up' ||
       pathname === '/forgot-password' ||
@@ -145,6 +168,7 @@ const Navbar = ({ isLoggedin, session }: Props) => {
       pathname === '/about' ||
       pathname === '/how-it-works' ||
       pathname.startsWith('/find-near-you') ||
+      pathname === '/contact-us' ||
       pathname === '/login' ||
       pathname === '/sign-up' ||
       pathname === '/forgot-password' ||
@@ -160,7 +184,7 @@ const Navbar = ({ isLoggedin, session }: Props) => {
         className={`fixed top-0 z-50 min-w-full py-3 transition duration-300 ${scrolling ? 'bg-white' : isHomePage ? '' : 'bg-transparent mt-0'
           }`}
       >
-        <div className="container mx-auto">
+        <div className="max-w-[1800px] mx-auto px-2 md:px-4 lg:px-6">
           <div className="grid grid-cols-3 items-center w-full">
             {/* Left: Mobile Hamburger and Desktop Links */}
             <div className="flex items-center">
@@ -240,6 +264,7 @@ const Navbar = ({ isLoggedin, session }: Props) => {
                   pathname === '/shop' ||
                   pathname === '/about' ||
                   pathname === '/how-it-works' ||
+                  pathname === '/contact-us' ||
                   pathname.startsWith('/find-near-you') ? (
                   <Image
                     src="/logo-black.svg"
@@ -340,10 +365,10 @@ const Navbar = ({ isLoggedin, session }: Props) => {
               <div className="flex-1 relative">
                 <input
                   type="text"
-                  placeholder="Search..."
+                  placeholder="SEARCH FOR DRESSES..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full border-0 border-b border-gray-500 focus:border-gray-500 focus:outline-none px-0 py-2 placeholder:text-gray-400"
+                  className="w-full border-0 border-b border-black focus:border-black focus:outline-none px-0 py-2 placeholder:text-gray-400 font-avenir tracking-widest text-sm uppercase"
                   autoFocus
                 />
               </div>
@@ -358,6 +383,39 @@ const Navbar = ({ isLoggedin, session }: Props) => {
                 <X size={24} />
               </button>
             </form>
+
+            {/* Search Results Dropdown */}
+            {searchQuery.trim().length > 0 && (
+              <div className="mt-6 max-h-[60vh] overflow-y-auto custom-scrollbar">
+                {isSearchLoading ? (
+                  <div className="flex justify-center py-10">
+                    <div className="animate-pulse flex gap-2">
+                      <div className="w-2 h-2 bg-black rounded-full animate-bounce"></div>
+                      <div className="w-2 h-2 bg-black rounded-full animate-bounce [animation-delay:-.3s]"></div>
+                      <div className="w-2 h-2 bg-black rounded-full animate-bounce [animation-delay:-.5s]"></div>
+                    </div>
+                  </div>
+                ) : searchResults?.data?.length > 0 ? (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {searchResults.data.map((product: TrendingProduct) => (
+                      <SearchProductCard
+                        key={product._id}
+                        product={product}
+                        onClick={() => setIsSearchOpen(false)}
+                      />
+                    ))}
+                  </div>
+                ) : (
+                  debouncedSearchQuery.trim().length > 0 && (
+                    <div className="text-center py-10">
+                      <p className="text-gray-500 font-avenir tracking-widest text-sm uppercase">
+                        No dresses found for &quot;{searchQuery}&quot;
+                      </p>
+                    </div>
+                  )
+                )}
+              </div>
+            )}
           </div>
         </div>
       )}

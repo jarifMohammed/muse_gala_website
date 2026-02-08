@@ -6,6 +6,8 @@ interface IFilter {
 
   fourDayRental: boolean
   setFourDayRental: (value: boolean) => void
+  eightDayRental: boolean
+  setEightDayRental: (value: boolean) => void
 
   shipping: boolean
   localPickup: boolean
@@ -25,14 +27,16 @@ interface IFilter {
   resetPage: () => void
   nextPage: () => void
   setPage: (value: number) => void
+  resetFilters: () => void
 }
 
 const initialState = {
   search: '',
   fourDayRental: false,
+  eightDayRental: false,
 
-  shipping: true, // ✅ default
-  localPickup: false, // ✅ default
+  shipping: false, // ✅ default changed to show all
+  localPickup: false, // ✅ default changed to show all
 
   minPrice: '',
   maxPrice: '',
@@ -43,29 +47,30 @@ const initialState = {
 export const useFilterStore = create<IFilter>((set) => ({
   ...initialState,
 
-  setSearch: (value) => set({ search: value }),
-  setFourDayRental: (value) => set({ fourDayRental: value }),
+  setSearch: (value) => set({ search: value, page: 1 }),
+  setFourDayRental: (value) => set({ fourDayRental: value, page: 1 }),
+  setEightDayRental: (value) => set({ eightDayRental: value, page: 1 }),
 
-  // ✅ radio behavior
+  // ✅ Independent Toggle behavior for checkboxes
   selectShipping: () =>
-    set({
-      shipping: true,
-      localPickup: false,
+    set((state) => ({
+      shipping: !state.shipping,
       page: 1,
-    }),
+    })),
 
   selectLocalPickup: () =>
-    set({
-      shipping: false,
-      localPickup: true,
+    set((state) => ({
+      localPickup: !state.localPickup,
       page: 1,
-    }),
+    })),
 
-  setMinPrice: (value) => set({ minPrice: value }),
-  setMaxPrice: (value) => set({ maxPrice: value }),
-  setSize: (value) => set({ size: value }),
+  setMinPrice: (value) => set({ minPrice: value, page: 1 }),
+  setMaxPrice: (value) => set({ maxPrice: value, page: 1 }),
+  setSize: (value) => set({ size: value, page: 1 }),
 
   resetPage: () => set({ page: 1 }),
   nextPage: () => set((state) => ({ page: state.page + 1 })),
   setPage: (value) => set({ page: value }),
+
+  resetFilters: () => set({ ...initialState }),
 }))

@@ -3,7 +3,7 @@
 import { Product } from '@/types/product'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 interface ProductCardProps {
   product: Product
@@ -13,24 +13,32 @@ export function ProductCard({ product }: ProductCardProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [isHovered, setIsHovered] = useState(false)
 
-  // Ensure thumbnail shows first, followed by media images (if any)
-  const images =
-    product?.thumbnail || (product?.media && product.media.length > 0)
-      ? [
-          { src: product.thumbnail, alt: product.dressName },
-          ...(product.media || []).map((url) => ({
-            src: url,
-            alt: product.dressName,
-          })),
-        ]
-      : [{ src: '/placeholder.svg', alt: 'Product image' }]
+  // Ensure thumbnail shows first, followed by media images (if any), removing duplicates
+  const images = useMemo(() => {
+    const allImgs = [
+      product?.thumbnail,
+      ...(product?.media || [])
+    ].filter(Boolean) as string[]
+
+    // Remove duplicates while preserving order
+    const uniqueImgs = Array.from(new Set(allImgs))
+
+    if (uniqueImgs.length === 0) {
+      return [{ src: '/placeholder.svg', alt: 'Product image' }]
+    }
+
+    return uniqueImgs.map(url => ({ src: url, alt: product.dressName }))
+  }, [product])
 
   useEffect(() => {
-    if (!isHovered || images.length <= 1) return
+    if (!isHovered || images.length <= 1) {
+      setCurrentImageIndex(0)
+      return
+    }
 
     const interval = setInterval(() => {
       setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length)
-    }, 1500)
+    }, 500)
 
     return () => clearInterval(interval)
   }, [isHovered, images.length])

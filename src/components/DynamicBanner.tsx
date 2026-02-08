@@ -7,7 +7,7 @@ import { useQuery } from '@tanstack/react-query'
 import { useState, useEffect } from 'react'
 import { useBannerStore } from '@/zustand/bannerStore'
 
-const FALLBACK_BANNER = '/images/Hero_banner.png'
+const FALLBACK_BANNER = '/pages/hero.webp'
 
 // Fetch from API
 async function getBanner() {
@@ -47,10 +47,10 @@ export default function DynamicBanner() {
   const finalBanner = imgError || !bannerUrl ? FALLBACK_BANNER : bannerUrl
 
   return (
-    <div className="relative w-full h-[60vh] md:h-[75vh]">
+    <div className="relative w-full h-[70vh] md:h-[80vh]">
       {/* Loader until image fully loaded */}
       {!loaded && (
-        <Skeleton className="absolute inset-0.5 w-full h-full rounded-none" />
+        <Skeleton className="absolute inset-0 w-full h-full rounded-none" />
       )}
 
       <Image
@@ -59,17 +59,19 @@ export default function DynamicBanner() {
         fill
         priority
         quality={100}
+        sizes="100vw"
         onLoad={() => setLoaded(true)}
         onError={() => setImgError(true)}
-        className={`object-cover transition-opacity duration-700 ${loaded ? 'opacity-100' : 'opacity-0'
+        style={{ objectPosition: 'center 20%' }}
+        className={`object-cover md:!object-[center_30%] transition-opacity duration-700 ${loaded ? 'opacity-100' : 'opacity-0'
           }`}
       />
 
       {/* Content */}
-      <div className="absolute inset-0 flex flex-col items-center justify-center gap-y-5">
+      <div className="absolute inset-0 flex flex-col items-center justify-center">
         <Link href="/login">
-          <p className="sub-header text-slate-200 mt-[100px] md:mt-[120px] md:text-[24px] text-sm text-center capitalize lg:text-[36px] font-light leading-[64px] tracking-[.5em]">
-            EFFORTLESS FASHION HIRE
+          <p className="sub-header text-slate-200 md:text-[24px] text-sm text-center capitalize lg:text-[36px] font-light leading-[64px] tracking-[.5em]">
+            BROWSE TO RENT
           </p>
         </Link>
       </div>

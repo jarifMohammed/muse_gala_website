@@ -4,23 +4,13 @@ const AboutPage = () => {
   return (
     <div className="mb-24 font-avenir pt-[100px]">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-        <div className="bg-[#891D33] md:grid-cols-1 h-[500px] md:h-[794px] w-full flex flex-col justify-center items-center px-[1rem]">
+        <div className="relative h-[500px] md:h-[794px] w-full">
           <Image
-            src="/logo.svg"
-            alt="about logo"
-            width={1000}
-            height={1000}
-            className="object-cover h-[122px] w-[146px]"
+            src="/pages/about.webp"
+            alt="about"
+            fill
+            className="object-contain"
           />
-          <div className="pt-5 md:pt-6 lg:pt-[30px]">
-            <Image
-              src="/images/muse_gala.png"
-              alt="muse gala"
-              width={363}
-              height={44}
-              className="w-full h-[20px] md:h-[30px]"
-            />
-          </div>
         </div>
 
         <div className="md:grid-cols-1 bg-white w-full flex flex-col justify-center px-[1rem] lg:pr-16 ">

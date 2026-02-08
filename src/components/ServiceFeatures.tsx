@@ -31,7 +31,7 @@ export default function ServiceFeatures() {
 
   return (
     <section className="py-12 px-4 bg-white">
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-[1800px] mx-auto">
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-8 md:gap-12">
           {features.map((feature, index) => (
             <div

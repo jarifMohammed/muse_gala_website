@@ -3,7 +3,7 @@
 import { useFilterStore } from '@/zustand/filterStore'
 
 const Rental = () => {
-  const { setFourDayRental } = useFilterStore()
+  const { fourDayRental, setFourDayRental, eightDayRental, setEightDayRental } = useFilterStore()
 
   return (
     <div className="space-y-4">
@@ -19,24 +19,31 @@ const Rental = () => {
 
       <div className="flex items-center gap-3">
         <input
-          className="h-4 w-4"
+          className="h-4 w-4 accent-black cursor-pointer"
           type="checkbox"
-          id="XXS"
-          onChange={() => setFourDayRental(true)}
+          id="four-day-rental"
+          checked={fourDayRental}
+          onChange={(e) => setFourDayRental(e.target.checked)}
         />
         <label
-          htmlFor="XXS"
-          className="font-avenir tracking-[0.2rem] opacity-75 uppercase"
+          htmlFor="four-day-rental"
+          className="font-avenir tracking-[0.2rem] opacity-75 uppercase cursor-pointer"
         >
           4-Day Rental
         </label>
       </div>
 
       <div className="flex items-center gap-3">
-        <input className="h-4 w-4" type="checkbox" id="XXS" />
+        <input
+          className="h-4 w-4 accent-black cursor-pointer"
+          type="checkbox"
+          id="eight-day-rental"
+          checked={eightDayRental}
+          onChange={(e) => setEightDayRental(e.target.checked)}
+        />
         <label
-          htmlFor="XXS"
-          className="font-avenir tracking-[0.2rem] opacity-75 uppercase"
+          htmlFor="eight-day-rental"
+          className="font-avenir tracking-[0.2rem] opacity-75 uppercase cursor-pointer"
         >
           8-DAY RENTAL
         </label>
