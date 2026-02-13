@@ -36,7 +36,7 @@ export default function MapProductCard({
             alt={name || 'Product Image'}
             width={196}
             height={257}
-            className="w-full md:w-[196px] h-[203px] md:h-[238px] object-cover"
+            className="w-full aspect-[2/3] object-cover object-top"
           />
         </div>
 

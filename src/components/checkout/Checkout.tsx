@@ -25,7 +25,7 @@ const Checkout = () => {
   // console.log('single product : ', singleProduct)
 
   return (
-    <div className="container mb-8">
+    <div className="max-w-[1800px] mx-auto px-4 md:px-6 lg:px-8 mb-8">
       <div className="flex flex-col lg:flex-row gap-10 lg:gap-12">
         <div className="lg:flex-1">
           <CheckoutForm />

@@ -25,7 +25,6 @@ const Paymentcard: React.FC<PaymentcardProps> = ({ membershipTier }) => {
         price="$300+"
         benefits={[
           '$20 "Welcome to Silver" voucher',
-          '$15 birthday voucher',
           'Surprise perks: bonus credits, small gifts',
         ]}
         active={membershipTier === 'Muse Star'}
@@ -36,7 +35,6 @@ const Paymentcard: React.FC<PaymentcardProps> = ({ membershipTier }) => {
         price="$600+"
         benefits={[
           '$30 "Welcome to Gold" voucher',
-          '$30 birthday voucher',
           'Free insurance on 1 rental per year',
           'Priority customer support',
         ]}

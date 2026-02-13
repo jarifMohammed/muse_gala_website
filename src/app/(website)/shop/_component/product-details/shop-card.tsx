@@ -87,12 +87,12 @@ const ShopCard = ({ thumbnailImage, allImages, isLoading, productdata }: ShopCar
   return (
     <div className="flex flex-col lg:flex-row gap-5">
       {/* Sidebar Thumbnails */}
-      <div className="flex flex-row lg:flex-col gap-5 lg:w-[20%] w-full overflow-x-auto lg:overflow-visible">
+      <div className="flex flex-row lg:flex-col gap-5 lg:w-[22%] w-full overflow-x-auto lg:overflow-visible">
         {images.map((src, index) => (
           <div
             key={index}
             onClick={() => setCurrentImageIndex(index)}
-            className={`min-w-[150px] lg:h-[150px] h-[100px] cursor-pointer rounded overflow-hidden border-[2px] ${currentImageIndex === index ? 'border-gray-500' : 'border-transparent'
+            className={`min-w-[100px] lg:h-[150px] h-[110px] cursor-pointer rounded overflow-hidden border-[2px] ${currentImageIndex === index ? 'border-gray-500' : 'border-transparent'
               }`}
           >
             <Image
@@ -100,19 +100,19 @@ const ShopCard = ({ thumbnailImage, allImages, isLoading, productdata }: ShopCar
               alt={`image-${index}`}
               width={500}
               height={500}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover object-top"
             />
           </div>
         ))}
       </div>
 
       {/* Main Image Display */}
-      <div className="flex-1 min-h-[400px] lg:h-[660px] relative">
+      <div className="flex-1 min-h-[500px] lg:h-[800px] relative">
         <Image
           src={images[currentImageIndex] || '/placeholder.jpg'}
           alt={`main-image-${currentImageIndex}`}
           fill
-          className="object-cover rounded-lg"
+          className="object-cover object-top rounded-lg"
         />
 
         {/* ACTION BUTTONS */}
@@ -121,8 +121,8 @@ const ShopCard = ({ thumbnailImage, allImages, isLoading, productdata }: ShopCar
           {/* ❤️ WISHLIST TOGGLE */}
           <Heart
             onClick={handleToggleWishlist}
-            className={`bg-black/60 p-2 rounded-full w-9 h-9 cursor-pointer 
-              ${isWishlisted ? 'fill-white ' : ''}`}
+            className={`bg-black/60 p-2 rounded-full w-9 h-9 cursor-pointer transition-all duration-300 
+              ${isWishlisted ? 'fill-[#ff0000] text-[#ff0000]' : 'text-white'}`}
           />
         </div>
       </div>

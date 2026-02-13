@@ -35,7 +35,7 @@ export default function ProductCard({
             alt={name}
             width={300}
             height={300}
-            className="w-[323px] h-[280px] object-cover flex-shrink-0"
+            className="w-full aspect-[2/3] object-cover object-top flex-shrink-0"
           />
         </div>
 

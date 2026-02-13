@@ -8,7 +8,7 @@ const Page = () => {
   const { user } = useUserStore()
 
   return (
-    <div className="container mx-auto pb-24 pt-[110px]">
+    <div className="max-w-[1800px] mx-auto px-4 md:px-6 lg:px-8 pb-24 pt-[110px]">
       <div className="my-5">
         <DocumentVerification user={user} />
       </div>

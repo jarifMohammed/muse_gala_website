@@ -36,6 +36,7 @@ interface ProductData {
   updatedAt?: string
   shippingDetails?: ShippingDetails
   bookedDates?: string[][]
+  brand?: string
 }
 
 interface ShopDetailsProps {
@@ -69,13 +70,14 @@ const ShopDetails: React.FC<ShopDetailsProps> = ({
   return (
     <div className="lg:min-h-[660px] font-avenir">
       {pathName?.startsWith('/shop/checkout') &&
-      !pathName.includes('/confirmation') ? (
+        !pathName.includes('/confirmation') ? (
         <h1 className="font-light opacity-75 text-[18px] tracking-[0.5rem] uppercase mb-8">
           Order Summary
         </h1>
       ) : (
         <div>
           <h1 className="font-light opacity-75 text-[18px] tracking-[0.5rem] uppercase">
+            {data.brand && <span className="block mb-2">BRAND: {data.brand}</span>}
             {data.dressName}
           </h1>
 
@@ -94,12 +96,13 @@ const ShopDetails: React.FC<ShopDetailsProps> = ({
                 alt={data.dressName}
                 width={1000}
                 height={1000}
-                className="w-[120px] h-[120px] object-cover"
+                className="w-[120px] h-[120px] object-cover object-top"
               />
             </div>
 
             <div className="pt-6">
               <h1 className="font-light text-sm lg:text-lg opacity-75 tracking-[0.1rem] uppercase">
+                {data.brand && <span className="block mb-1">BRAND: {data.brand}</span>}
                 {data.dressName}
               </h1>
               <p className="tracking-wider mt-2 opacity-75 uppercase text-sm lg:text-lg">
@@ -117,22 +120,20 @@ const ShopDetails: React.FC<ShopDetailsProps> = ({
       <div className="mt-12 opacity-75 flex items-center gap-5">
         <button
           onClick={() => setRent('4')}
-          className={`w-1/2 pb-2 uppercase ${
-            rent === '4'
-              ? 'border-b-2 border-black'
-              : 'border-b-2 border-transparent'
-          }`}
+          className={`w-1/2 pb-2 uppercase ${rent === '4'
+            ? 'border-b-2 border-black'
+            : 'border-b-2 border-transparent'
+            }`}
         >
           4 day rent
         </button>
 
         <button
           onClick={() => setRent('8')}
-          className={`w-1/2 pb-2 uppercase ${
-            rent === '8'
-              ? 'border-b-2 border-black'
-              : 'border-b-2 border-transparent'
-          }`}
+          className={`w-1/2 pb-2 uppercase ${rent === '8'
+            ? 'border-b-2 border-black'
+            : 'border-b-2 border-transparent'
+            }`}
         >
           8 day rent (+$15)
         </button>

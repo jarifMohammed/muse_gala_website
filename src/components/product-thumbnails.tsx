@@ -26,7 +26,7 @@ export function ProductThumbnails({ images, onSelect, selectedIndex }: ProductTh
             alt={image.alt}
             width={100}
             height={120}
-            className="aspect-[5/6] object-cover"
+            className="aspect-[5/6] object-cover object-top"
           />
           <span className="sr-only">View Image {index + 1}</span>
         </button>

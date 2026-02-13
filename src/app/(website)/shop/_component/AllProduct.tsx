@@ -169,11 +169,11 @@ const AllProduct = () => {
   return (
     <div>
       {/* ✅ Product Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-10">
         {isLoading && page === 1
           ? Array.from({ length: 16 }).map((_, index) => (
             <div key={index} className="flex flex-col h-full animate-pulse">
-              <div className="overflow-hidden mb-4 aspect-[2/3] w-full bg-gray-200 rounded-md" />
+              <div className="overflow-hidden mb-2 md:mb-4 aspect-[2/3] w-full bg-gray-200 rounded-md" />
               <div className="text-center space-y-2 mt-auto">
                 <div className="h-4 bg-gray-300 rounded w-3/4 mx-auto"></div>
                 <div className="h-3 bg-gray-300 rounded w-1/2 mx-auto"></div>

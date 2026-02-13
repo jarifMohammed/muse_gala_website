@@ -36,6 +36,7 @@ export interface Product {
   slug: string
   masterDressId: string
   __v: number
+  brand: string
 }
 
 export interface SingleProductResponse {
@@ -59,11 +60,10 @@ const ProductDetails = () => {
       return `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/admin/master-dress/${idOrName}`
     } else {
       // If it's a name -> query search
-      return `${
-        process.env.NEXT_PUBLIC_BACKEND_URL
-      }/api/v1/customer/bookings/search?dressName=${encodeURIComponent(
-        idOrName,
-      )}`
+      return `${process.env.NEXT_PUBLIC_BACKEND_URL
+        }/api/v1/customer/bookings/search?dressName=${encodeURIComponent(
+          idOrName,
+        )}`
     }
   })()
 
@@ -87,7 +87,7 @@ const ProductDetails = () => {
   return (
     <div>
       <div className="flex flex-col lg:flex-row gap-10 lg:gap-12">
-        <div className="lg:flex-1">
+        <div className="lg:w-1/2">
           <ShopCard
             thumbnailImage={thumbnailImage}
             allImages={allImages}
@@ -96,7 +96,7 @@ const ProductDetails = () => {
           />
         </div>
 
-        <div className="lg:w-[40%]">
+        <div className="lg:w-1/2">
           <ShopDetails
             singleProduct={{ data: singleProduct }}
             isLoading={isLoading}

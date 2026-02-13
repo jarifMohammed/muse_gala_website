@@ -114,7 +114,7 @@ export default function FAQSection() {
   };
 
   return (
-    <div id="faq" className="container mx-auto py-12 md:py-16">
+    <div id="faq" className="max-w-[1800px] mx-auto px-4 md:px-6 lg:px-8 py-12 md:py-16">
       <h1 className="headerClass text-center pb-[30px] md:pb-[45px] lg:pb-[60px]">
         F A Q
       </h1>
@@ -123,11 +123,10 @@ export default function FAQSection() {
         {faqCategories.map((category) => (
           <div
             key={category.id}
-            className={`${
-              category.id
+            className={`${category.id
                 ? "border-b-[1px] border-black"
                 : "border-t-[1px] border-black"
-            }`}
+              }`}
           >
             <button
               onClick={() => handleCategoryToggle(category.id)}
@@ -135,9 +134,8 @@ export default function FAQSection() {
             >
               <span>{category.title}</span>
               <svg
-                className={`w-4 h-4 transition-transform ${
-                  openCategory === category.id ? "rotate-180" : ""
-                }`}
+                className={`w-4 h-4 transition-transform ${openCategory === category.id ? "rotate-180" : ""
+                  }`}
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -154,11 +152,10 @@ export default function FAQSection() {
 
             {openCategory === category.id && (
               <div
-                className={`${
-                  openCategory === category.id
+                className={`${openCategory === category.id
                     ? "border-t-[1px] border-black"
                     : "border-0"
-                } pb-6 animate-fadeIn`}
+                  } pb-6 animate-fadeIn`}
               >
                 <div className="space-y-4">
                   {category.questions.map((faq, index) => (

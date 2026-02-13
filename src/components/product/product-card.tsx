@@ -57,12 +57,12 @@ export function ProductCard({ product }: ProductCardProps) {
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
-        <div className="overflow-hidden mb-4 aspect-[2/3] w-full relative">
+        <div className="overflow-hidden mb-4 aspect-[3/5] w-full relative">
           <Image
             src={images[currentImageIndex]?.src}
             alt={images[currentImageIndex]?.alt}
             fill
-            className="object-cover transition-all duration-500 ease-in-out group-hover:scale-110"
+            className="object-cover object-top origin-top transition-all duration-500 ease-in-out group-hover:scale-110"
           />
           <div className="absolute bottom-0 left-0 right-0 p-4 opacity-0 group-hover:opacity-100 transition-all duration-500 ease-in-out">
             <button

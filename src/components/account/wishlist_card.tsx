@@ -42,7 +42,7 @@ const WishlistCard = ({ item, onRemove }: Props) => {
               src={item.thumbnail}
               alt={item.dressName}
               fill
-              className="object-cover rounded-md"
+              className="object-cover object-top rounded-md"
             />
           </div>
 

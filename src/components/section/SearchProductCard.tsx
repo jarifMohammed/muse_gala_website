@@ -21,7 +21,7 @@ export const SearchProductCard = ({ product, onClick }: SearchProductCardProps) 
                     src={product.thumbnail || product.media?.[0] || '/placeholder.svg'}
                     alt={product.dressName}
                     fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    className="object-cover object-top group-hover:scale-105 transition-transform duration-300"
                 />
             </div>
             <div className="flex flex-col gap-1 overflow-hidden">
