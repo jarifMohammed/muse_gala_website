@@ -142,6 +142,7 @@ const TableHeader = () => (
   <thead className="bg-gray-200">
     <tr>
       {[
+        'Order ID',
         'Order Date',
         'Event Date',
         'Dress Name',
@@ -163,7 +164,7 @@ const TableHeader = () => (
 
 const LoadingRow = () => (
   <tr>
-    <td colSpan={7} className="text-center py-10 text-gray-500">
+    <td colSpan={8} className="text-center py-10 text-gray-500">
       Loading orders...
     </td>
   </tr>
@@ -171,7 +172,7 @@ const LoadingRow = () => (
 
 const EmptyRow = () => (
   <tr>
-    <td colSpan={7} className="text-center py-10 text-gray-500">
+    <td colSpan={8} className="text-center py-10 text-gray-500">
       No bookings found.
     </td>
   </tr>
@@ -206,11 +207,15 @@ const OrderRow = ({ order, onTrackOrder }: OrderRowProps) => {
     order.deliveryStatus === 'Delivered'
       ? 'green'
       : order.deliveryStatus === 'Pending'
-      ? 'yellow'
-      : 'red'
+        ? 'yellow'
+        : 'red'
 
   return (
     <tr className="border-b">
+      <td className="py-6 px-4 sm:px-6 lg:px-10 text-base text-gray-900 border-r font-light tracking-wide border-gray-300">
+        {order._id}
+      </td>
+
       <td className="py-6 px-4 sm:px-6 lg:px-10 text-base text-gray-900 border-r font-light tracking-wide border-gray-300">
         {orderDate}
       </td>
