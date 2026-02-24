@@ -5,10 +5,11 @@ import clsx from 'clsx'
 import { Button } from '../ui/button'
 // import Link from 'next/link'
 import { useSession } from 'next-auth/react'
-import { useQuery, keepPreviousData } from '@tanstack/react-query'
+import { useQuery, keepPreviousData, useMutation, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
+
 
 // Types
 interface Order {
@@ -36,8 +37,11 @@ const OrderHistory = () => {
   const router = useRouter()
   const [page, setPage] = useState(1)
 
+  const queryClient = useQueryClient()
+
   // Fetch Orders
   const { data, isLoading, isFetching } = useQuery({
+
     queryKey: ['customer-bookings', page],
     queryFn: async () => {
       const res = await fetch(
@@ -57,6 +61,38 @@ const OrderHistory = () => {
 
   const orders: Order[] = data?.data?.bookings || []
   const pagination: PaginationInfo | null = data?.data?.paginationInfo || null
+
+  // Handle Cancel Booking
+  const cancelBookingMutation = useMutation({
+    mutationFn: async (bookingId: string) => {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/customer/bookings/${bookingId}`,
+        {
+          method: 'DELETE',
+
+          headers: {
+            Authorization: `Bearer ${session?.user?.accessToken}`,
+          },
+        },
+      )
+      const result = await res.json()
+      if (!res.ok) {
+        throw new Error(result.message || 'Failed to cancel booking')
+      }
+      return result
+    },
+    onSuccess: () => {
+      toast.success('Booking cancelled successfully')
+      queryClient.invalidateQueries({ queryKey: ['customer-bookings'] })
+    },
+    onError: (error: any) => {
+      toast.error(error.message || 'Failed to cancel booking')
+    },
+  })
+
+  const handleCancelBooking = (id: string) => {
+    cancelBookingMutation.mutate(id)
+  }
 
   // Handle Track Order
   const handleTrackOrder = async (order: Order) => {
@@ -90,6 +126,7 @@ const OrderHistory = () => {
     }
   }
 
+
   return (
     <div className="w-full">
       <section>
@@ -108,7 +145,13 @@ const OrderHistory = () => {
                   key={order._id}
                   order={order}
                   onTrackOrder={handleTrackOrder}
+                  onCancelBooking={handleCancelBooking}
+                  isCancelling={
+                    cancelBookingMutation.isPending &&
+                    cancelBookingMutation.variables === order._id
+                  }
                 />
+
               ))}
             </tbody>
           </table>
@@ -181,9 +224,17 @@ const EmptyRow = () => (
 interface OrderRowProps {
   order: Order
   onTrackOrder: (order: Order) => void
+  onCancelBooking: (id: string) => void
+  isCancelling: boolean
 }
 
-const OrderRow = ({ order, onTrackOrder }: OrderRowProps) => {
+const OrderRow = ({
+  order,
+  onTrackOrder,
+  onCancelBooking,
+  isCancelling,
+}: OrderRowProps) => {
+
   const orderDate = new Date(order.createdAt).toLocaleDateString('en-US', {
     month: 'short',
     day: 'numeric',
@@ -248,16 +299,26 @@ const OrderRow = ({ order, onTrackOrder }: OrderRowProps) => {
         ${order.totalAmount}
       </td>
 
-      <td className="py-6 px-4 sm:px-6 lg:px-10 text-base text-gray-900 font-light tracking-wide">
+      <td className="py-6 px-4 sm:px-6 lg:px-10 text-base text-gray-900 font-light tracking-wide flex flex-col items-start gap-2">
         <Button
           variant="link"
           size="sm"
-          className="text-xs p-0 h-auto text-blue-600 font-light tracking-wide"
+          className="text-xs p-0 h-auto text-blue-600 font-light tracking-wide uppercase"
           onClick={() => onTrackOrder(order)}
         >
           TRACK ORDER
         </Button>
+        <Button
+          variant="link"
+          size="sm"
+          className="text-xs p-0 h-auto text-red-600 font-light tracking-wide uppercase"
+          onClick={() => onCancelBooking(order._id)}
+          disabled={isCancelling}
+        >
+          {isCancelling ? 'CANCELLING...' : 'CANCEL BOOKING'}
+        </Button>
       </td>
+
     </tr>
   )
 }
