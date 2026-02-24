@@ -7,8 +7,7 @@ import * as z from "zod"
 import { useMutation } from "@tanstack/react-query"
 import { toast } from "sonner"
 import Image from "next/image"
-import { ArrowRight, Loader2, X } from "lucide-react"
-import { motion, AnimatePresence } from "framer-motion"
+import { ArrowRight, Loader2 } from "lucide-react"
 import {
     Dialog,
     DialogContent,
@@ -92,7 +91,7 @@ export default function NewsletterPopup() {
             toast.success("Thank you for subscribing!")
             handleClose()
         },
-        onError: (error: any) => {
+        onError: (error: Error) => {
             toast.error(error.message)
         },
     })
