@@ -94,8 +94,12 @@ export default function ReturnForm({
 
             toast.success('Return confirmed successfully');
             onSuccess();
-        } catch (error: any) {
-            toast.error(error.message || 'An error occurred. Please try again.');
+        } catch (error: Error | unknown) {
+            if (error instanceof Error) {
+                toast.error(error.message || 'An error occurred. Please try again.');
+            } else {
+                toast.error('An error occurred. Please try again.');
+            }
         } finally {
             setIsSubmitting(false);
         }

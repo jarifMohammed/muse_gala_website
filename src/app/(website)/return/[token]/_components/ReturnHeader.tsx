@@ -27,7 +27,7 @@ export default function ReturnHeader({ data }: { data: ReturnData }) {
                 <p className="text-xl font-semibold">
                     {data.dressName} <span className="text-muted-foreground font-normal">by {data.brand}</span>
                 </p>
-                <p className="text-muted-foreground mt-1">is coming to an end. It's time to return it.</p>
+                <p className="text-muted-foreground mt-1">is coming to an end. It&apos;s time to return it.</p>
             </div>
         </div>
     );

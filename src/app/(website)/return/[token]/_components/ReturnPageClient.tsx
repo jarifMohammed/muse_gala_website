@@ -8,7 +8,6 @@ import ReturnInfoBox from './ReturnInfoBox';
 import ReturnForm from './ReturnForm';
 import ReturnConfirmationView from './ReturnConfirmationView';
 import { Loader2, AlertCircle } from 'lucide-react';
-import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 

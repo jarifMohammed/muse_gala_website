@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { format } from 'date-fns';
 import { ReturnData } from './types';
 import {
@@ -8,10 +8,8 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { FileUp, Info, Package, Truck, CheckCircle2 } from 'lucide-react';
-import Image from 'next/image';
+import { Info, Package, Truck, CheckCircle2 } from 'lucide-react';
 
 export default function ReturnConfirmationView({ data }: { data: ReturnData }) {
     const getMethodIcon = (method: string) => {

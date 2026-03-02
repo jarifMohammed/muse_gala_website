@@ -5,7 +5,7 @@ import {
     Card,
     CardContent,
 } from '@/components/ui/card';
-import { CalendarIcon, Info } from 'lucide-react';
+import { CalendarIcon } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 
 export default function ReturnInfoBox({ data }: { data: ReturnData }) {
