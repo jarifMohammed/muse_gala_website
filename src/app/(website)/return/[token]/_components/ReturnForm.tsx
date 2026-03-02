@@ -81,7 +81,7 @@ export default function ReturnForm({
                 formData.append('receiptPhoto', selectedFile);
             }
 
-            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/customer/return/${token}/submit`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/return/${token}/submit`, {
                 method: 'POST',
                 body: formData,
             });

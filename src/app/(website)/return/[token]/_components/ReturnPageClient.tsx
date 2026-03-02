@@ -18,7 +18,7 @@ interface ReturnResponse {
 }
 
 export default function ReturnPageClient({ token }: { token: string }) {
-    const apiUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/customer/return/${token}`;
+    const apiUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/return/${token}`;
 
     const { data, isLoading, error, isError, refetch } = useQuery<ReturnResponse>({
         queryKey: ['return-details', token],
