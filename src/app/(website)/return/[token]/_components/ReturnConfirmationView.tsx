@@ -67,9 +67,19 @@ export default function ReturnConfirmationView({ data }: { data: ReturnData }) {
                         <div className="space-y-2">
                             <p className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground/60">Timestamp</p>
                             <p className="text-sm font-medium tracking-tight text-gray-700">
-                                {data.returnConfirmedAt
-                                    ? format(new Date(data.returnConfirmedAt), 'MMM d, yyyy · h:mm a')
-                                    : 'N/A'}
+                                {(() => {
+                                    try {
+                                        if (data.returnConfirmedAt) {
+                                            const date = new Date(data.returnConfirmedAt);
+                                            if (!isNaN(date.getTime())) {
+                                                return format(date, 'MMM d, yyyy · h:mm a');
+                                            }
+                                        }
+                                        return 'N/A';
+                                    } catch (e) {
+                                        return 'N/A';
+                                    }
+                                })()}
                             </p>
                         </div>
 
@@ -93,7 +103,7 @@ export default function ReturnConfirmationView({ data }: { data: ReturnData }) {
             </Card>
 
             <p className="mt-8 text-center text-[10px] text-muted-foreground/60 uppercase tracking-[0.1em]">
-                Confirmation ID: {data._id.slice(0, 8).toUpperCase()}
+                Confirmation ID: {(data._id || '').slice(0, 8).toUpperCase() || 'N/A'}
             </p>
         </div>
     );

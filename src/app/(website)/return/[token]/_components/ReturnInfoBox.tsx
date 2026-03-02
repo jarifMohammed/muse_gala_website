@@ -4,7 +4,17 @@ import { ReturnData } from './types';
 import { CalendarIcon } from 'lucide-react';
 
 export default function ReturnInfoBox({ data }: { data: ReturnData }) {
-    const formattedDate = format(new Date(data.returnDueDate), 'EEEE, MMMM do, yyyy');
+    let formattedDate = 'N/A';
+    try {
+        if (data.returnDueDate) {
+            const date = new Date(data.returnDueDate);
+            if (!isNaN(date.getTime())) {
+                formattedDate = format(date, 'EEEE, MMMM do, yyyy');
+            }
+        }
+    } catch (error) {
+        console.error('Error formatting return due date:', error);
+    }
 
     return (
         <div className="flex flex-col items-center justify-center mb-12 py-6 border-y border-primary/5 bg-primary/[0.02]">

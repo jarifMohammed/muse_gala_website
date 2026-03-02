@@ -20,7 +20,7 @@ export default function ReturnHeader({ data }: { data: ReturnData }) {
 
             <div className="space-y-1.5">
                 <p className="text-sm uppercase tracking-[0.2em] text-muted-foreground font-medium">Return Confirmation</p>
-                <h1 className="text-xl font-light tracking-tight">Hi {data.customerName.split(' ')[0]},</h1>
+                <h1 className="text-xl font-light tracking-tight">Hi {(data.customerName || 'Customer').split(' ')[0]},</h1>
                 <p className="text-sm text-muted-foreground">
                     Regarding your rental of <span className="text-foreground font-medium">{data.dressName}</span> by <span className="text-foreground font-medium">{data.brand}</span>
                 </p>
