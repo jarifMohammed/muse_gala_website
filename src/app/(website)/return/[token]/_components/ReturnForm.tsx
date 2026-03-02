@@ -18,7 +18,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { UploadCloud, CheckCircle2 } from 'lucide-react';
+import { UploadCloud, CheckCircle2, Info } from 'lucide-react';
+import Image from 'next/image';
 
 const returnFormSchema = z.object({
     returnMethod: z.string().min(1, 'Please select a return method'),
@@ -113,6 +114,14 @@ export default function ReturnForm({
 
     return (
         <Card className="mb-10">
+            <div className="flex justify-center mb-6">
+                <Image
+                    src="/logo-black.svg"
+                    height={80}
+                    width={80}
+                    alt="Logo"
+                />
+            </div>
             <CardHeader>
                 <CardTitle className="text-xl">Confirm Your Return</CardTitle>
                 <CardDescription>
@@ -134,24 +143,14 @@ export default function ReturnForm({
                                     value={field.value}
                                     className="grid gap-3 sm:grid-cols-2"
                                 >
-                                    {data.returnMethods.includes('StandardShipping') && (
-                                        <div className="flex items-center space-x-2 border rounded-lg p-4 focus-within:ring-1 focus-within:ring-primary hover:bg-muted/50 transition-colors cursor-pointer bg-card">
-                                            <RadioGroupItem value="StandardShipping" id="StandardShipping" />
-                                            <Label htmlFor="StandardShipping" className="flex-1 cursor-pointer">Standard Shipping</Label>
-                                        </div>
-                                    )}
-                                    {data.returnMethods.includes('ExpressShipping') && (
-                                        <div className="flex items-center space-x-2 border rounded-lg p-4 focus-within:ring-1 focus-within:ring-primary hover:bg-muted/50 transition-colors cursor-pointer bg-card">
-                                            <RadioGroupItem value="ExpressShipping" id="ExpressShipping" />
-                                            <Label htmlFor="ExpressShipping" className="flex-1 cursor-pointer">Express Shipping</Label>
-                                        </div>
-                                    )}
-                                    {data.returnMethods.includes('InPersonDropOff') && (
-                                        <div className="flex items-center space-x-2 border rounded-lg p-4 focus-within:ring-1 focus-within:ring-primary hover:bg-muted/50 transition-colors cursor-pointer bg-card">
-                                            <RadioGroupItem value="InPersonDropOff" id="InPersonDropOff" />
-                                            <Label htmlFor="InPersonDropOff" className="flex-1 cursor-pointer">In-Person Drop Off</Label>
-                                        </div>
-                                    )}
+                                    <div className="flex items-center space-x-2 border rounded-lg p-4 focus-within:ring-1 focus-within:ring-primary hover:bg-muted/50 transition-colors cursor-pointer bg-card">
+                                        <RadioGroupItem value="LocalDropOff" id="LocalDropOff" />
+                                        <Label htmlFor="LocalDropOff" className="flex-1 cursor-pointer">Local Drop-Off</Label>
+                                    </div>
+                                    <div className="flex items-center space-x-2 border rounded-lg p-4 focus-within:ring-1 focus-within:ring-primary hover:bg-muted/50 transition-colors cursor-pointer bg-card">
+                                        <RadioGroupItem value="ExpressShipping" id="ExpressShipping" />
+                                        <Label htmlFor="ExpressShipping" className="flex-1 cursor-pointer">Express Shipping</Label>
+                                    </div>
                                 </RadioGroup>
                             )}
                         />
@@ -175,10 +174,14 @@ export default function ReturnForm({
                     )}
 
                     <div className="space-y-2">
-                        <Label htmlFor="returnNotes">Return Notes (Optional)</Label>
+                        <Label htmlFor="returnNotes">Tracking Notes (Optional)</Label>
+                        <div className="flex items-center gap-2 text-sm text-muted-foreground mb-1">
+                            <Info size={14} className="text-primary" />
+                            <span>Please put the tracking link in the notes below</span>
+                        </div>
                         <Textarea
                             id="returnNotes"
-                            placeholder="Any additional information about the return"
+                            placeholder="Paste your tracking link or add additional notes here"
                             className="resize-y"
                             {...register('returnNotes')}
                         />

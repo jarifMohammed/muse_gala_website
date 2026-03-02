@@ -15,9 +15,8 @@ export default function ReturnConfirmationView({ data }: { data: ReturnData }) {
     const getMethodIcon = (method: string) => {
         switch (method) {
             case 'ExpressShipping':
-            case 'StandardShipping':
                 return <Truck className="w-5 h-5" />;
-            case 'InPersonDropOff':
+            case 'LocalDropOff':
                 return <Package className="w-5 h-5" />;
             default:
                 return <Package className="w-5 h-5" />;
@@ -28,10 +27,8 @@ export default function ReturnConfirmationView({ data }: { data: ReturnData }) {
         switch (method) {
             case 'ExpressShipping':
                 return 'Express Shipping';
-            case 'StandardShipping':
-                return 'Standard Shipping';
-            case 'InPersonDropOff':
-                return 'Drop Off';
+            case 'LocalDropOff':
+                return 'Local Drop-Off';
             default:
                 return method;
         }

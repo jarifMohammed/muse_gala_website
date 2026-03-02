@@ -43,10 +43,6 @@ export default function ReturnInfoBox({ data }: { data: ReturnData }) {
                             <p className="font-semibold text-lg">{formattedDate}</p>
                         </div>
                     </div>
-                    <div className="flex flex-col items-start sm:items-end gap-1">
-                        <p className="text-sm text-muted-foreground font-medium">Boking Status</p>
-                        {getStatusBadge(data.currentStatus)}
-                    </div>
                 </div>
             </CardContent>
         </Card>
