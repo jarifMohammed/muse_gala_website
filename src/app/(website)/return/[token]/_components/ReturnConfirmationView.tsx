@@ -76,7 +76,7 @@ export default function ReturnConfirmationView({ data }: { data: ReturnData }) {
                                             }
                                         }
                                         return 'N/A';
-                                    } catch (e) {
+                                    } catch {
                                         return 'N/A';
                                     }
                                 })()}

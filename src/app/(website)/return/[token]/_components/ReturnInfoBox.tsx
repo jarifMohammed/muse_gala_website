@@ -12,8 +12,8 @@ export default function ReturnInfoBox({ data }: { data: ReturnData }) {
                 formattedDate = format(date, 'EEEE, MMMM do, yyyy');
             }
         }
-    } catch (error) {
-        console.error('Error formatting return due date:', error);
+    } catch {
+        console.error('Error formatting return due date');
     }
 
     return (
