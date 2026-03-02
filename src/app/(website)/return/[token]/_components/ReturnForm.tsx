@@ -2,7 +2,6 @@ import React, { useState, useRef } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ReturnData } from './types';
 import { toast } from 'sonner';
 
 import {
@@ -38,11 +37,9 @@ const returnFormSchema = z.object({
 type ReturnFormValues = z.infer<typeof returnFormSchema>;
 
 export default function ReturnForm({
-    data,
     token,
     onSuccess
 }: {
-    data: ReturnData;
     token: string;
     onSuccess: () => void;
 }) {

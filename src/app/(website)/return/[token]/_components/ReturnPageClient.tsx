@@ -84,7 +84,6 @@ export default function ReturnPageClient({ token }: { token: string }) {
                 <ReturnConfirmationView data={returnData} />
             ) : (
                 <ReturnForm
-                    data={returnData}
                     token={token}
                     onSuccess={() => refetch()}
                 />

@@ -6,28 +6,8 @@ import {
     CardContent,
 } from '@/components/ui/card';
 import { CalendarIcon } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
 
 export default function ReturnInfoBox({ data }: { data: ReturnData }) {
-    const getStatusBadge = (status: string) => {
-        switch (status) {
-            case 'PickedUp':
-            case 'Delivered':
-                return <Badge variant="secondary" className="bg-blue-100 text-blue-800 hover:bg-blue-200">Pending Return</Badge>;
-            case 'ReturnInitiated':
-            case 'DroppedOff':
-            case 'InTransit':
-                return <Badge variant="secondary" className="bg-purple-100 text-purple-800 hover:bg-purple-200">Return Initiated</Badge>;
-            case 'Returned':
-                return <Badge variant="secondary" className="bg-green-100 text-green-800 hover:bg-green-200">Returned</Badge>;
-            case 'Overdue':
-            case 'ReturnEscalated':
-                return <Badge variant="destructive">Overdue</Badge>;
-            default:
-                return <Badge variant="outline">{status}</Badge>;
-        }
-    };
-
     const formattedDate = format(new Date(data.returnDueDate), 'EEEE, MMMM do, yyyy');
 
     return (
