@@ -110,120 +110,152 @@ export default function ReturnForm({
     };
 
     return (
-        <Card className="mb-10">
-            <div className="flex justify-center mb-6">
+        <div className="max-w-xl mx-auto animate-in fade-in slide-in-from-bottom-4 duration-1000 ease-out">
+            <div className="flex justify-center mb-10">
                 <Image
                     src="/logo-black.svg"
-                    height={80}
-                    width={80}
+                    height={70}
+                    width={70}
                     alt="Logo"
+                    className="opacity-90 hover:opacity-100 transition-opacity"
                 />
             </div>
-            <CardHeader>
-                <CardTitle className="text-xl">Confirm Your Return</CardTitle>
-                <CardDescription>
-                    Please provide details about how you are returning the item.
-                    This is required to release any holds or finalize your rental.
-                </CardDescription>
-            </CardHeader>
 
-            <form onSubmit={handleSubmit(onSubmit)}>
-                <CardContent className="space-y-6">
-                    <div className="space-y-3">
-                        <Label className="text-base">Return Method <span className="text-red-500">*</span></Label>
-                        <Controller
-                            name="returnMethod"
-                            control={control}
-                            render={({ field }) => (
-                                <RadioGroup
-                                    onValueChange={field.onChange}
-                                    value={field.value}
-                                    className="grid gap-3 sm:grid-cols-2"
-                                >
-                                    <div className="flex items-center space-x-2 border rounded-lg p-4 focus-within:ring-1 focus-within:ring-primary hover:bg-muted/50 transition-colors cursor-pointer bg-card">
-                                        <RadioGroupItem value="LocalDropOff" id="LocalDropOff" />
-                                        <Label htmlFor="LocalDropOff" className="flex-1 cursor-pointer">Local Drop-Off</Label>
-                                    </div>
-                                    <div className="flex items-center space-x-2 border rounded-lg p-4 focus-within:ring-1 focus-within:ring-primary hover:bg-muted/50 transition-colors cursor-pointer bg-card">
-                                        <RadioGroupItem value="ExpressShipping" id="ExpressShipping" />
-                                        <Label htmlFor="ExpressShipping" className="flex-1 cursor-pointer">Express Shipping</Label>
-                                    </div>
-                                </RadioGroup>
-                            )}
-                        />
-                        {errors.returnMethod && <p className="text-sm text-destructive">{errors.returnMethod.message}</p>}
-                    </div>
+            <Card className="border-none shadow-[0_8px_30px_rgb(0,0,0,0.04)] bg-white rounded-2xl overflow-hidden">
+                <CardHeader className="pt-10 pb-6 px-8 text-center border-b border-gray-50">
+                    <CardTitle className="text-xl font-light tracking-tight">Confirm Your Return</CardTitle>
+                    <CardDescription className="text-xs uppercase tracking-[0.15em] mt-2 opacity-60">
+                        Finalize your rental journey
+                    </CardDescription>
+                </CardHeader>
 
-                    {(returnMethod === 'ExpressShipping' || returnMethod === 'StandardShipping') && (
-                        <div className="space-y-2">
-                            <Label htmlFor="trackingNumber">
-                                Tracking Number
-                                {returnMethod === 'ExpressShipping' && <span className="text-red-500 ml-1">*</span>}
-                            </Label>
-                            <Input
-                                id="trackingNumber"
-                                placeholder="Enter postal tracking number"
-                                {...register('trackingNumber')}
-                                className={errors.trackingNumber ? 'border-destructive' : ''}
+                <form onSubmit={handleSubmit(onSubmit)}>
+                    <CardContent className="p-8 space-y-8">
+                        {/* Return Method Selection */}
+                        <div className="space-y-4">
+                            <Label className="text-[11px] uppercase tracking-[0.2em] font-semibold text-muted-foreground">Select Return Method</Label>
+                            <Controller
+                                name="returnMethod"
+                                control={control}
+                                render={({ field }) => (
+                                    <RadioGroup
+                                        onValueChange={field.onChange}
+                                        value={field.value}
+                                        className="grid gap-4"
+                                    >
+                                        <div className={`group flex items-center space-x-3 border rounded-xl p-5 transition-all duration-300 cursor-pointer ${field.value === 'LocalDropOff' ? 'border-primary bg-primary/[0.02] ring-1 ring-primary' : 'border-gray-100 hover:border-gray-200 bg-gray-50/30'}`}>
+                                            <RadioGroupItem value="LocalDropOff" id="LocalDropOff" className="sr-only" />
+                                            <div className={`w-4 h-4 rounded-full border flex items-center justify-center transition-colors ${field.value === 'LocalDropOff' ? 'border-primary' : 'border-gray-300Group-hover:border-gray-400'}`}>
+                                                {field.value === 'LocalDropOff' && <div className="w-2 h-2 rounded-full bg-primary" />}
+                                            </div>
+                                            <Label htmlFor="LocalDropOff" className="flex-1 cursor-pointer font-medium text-sm tracking-tight text-gray-700">Local Drop-Off</Label>
+                                        </div>
+
+                                        <div className={`group flex items-center space-x-3 border rounded-xl p-5 transition-all duration-300 cursor-pointer ${field.value === 'ExpressShipping' ? 'border-primary bg-primary/[0.02] ring-1 ring-primary' : 'border-gray-100 hover:border-gray-200 bg-gray-50/30'}`}>
+                                            <RadioGroupItem value="ExpressShipping" id="ExpressShipping" className="sr-only" />
+                                            <div className={`w-4 h-4 rounded-full border flex items-center justify-center transition-colors ${field.value === 'ExpressShipping' ? 'border-primary' : 'border-gray-300 group-hover:border-gray-400'}`}>
+                                                {field.value === 'ExpressShipping' && <div className="w-2 h-2 rounded-full bg-primary" />}
+                                            </div>
+                                            <Label htmlFor="ExpressShipping" className="flex-1 cursor-pointer font-medium text-sm tracking-tight text-gray-700">Express Shipping</Label>
+                                        </div>
+                                    </RadioGroup>
+                                )}
                             />
-                            {errors.trackingNumber && <p className="text-sm text-destructive">{errors.trackingNumber.message}</p>}
+                            {errors.returnMethod && <p className="text-[10px] text-destructive uppercase tracking-widest font-semibold">{errors.returnMethod.message}</p>}
                         </div>
-                    )}
 
-                    <div className="space-y-2">
-                        <Label htmlFor="returnNotes">Tracking Notes (Optional)</Label>
-                        <div className="flex items-center gap-2 text-sm text-muted-foreground mb-1">
-                            <Info size={14} className="text-primary" />
-                            <span>Please put the tracking link in the notes below</span>
+                        {/* Tracking Number (Conditional) */}
+                        {returnMethod === 'ExpressShipping' && (
+                            <div className="space-y-3 animate-in fade-in slide-in-from-top-2 duration-400">
+                                <Label htmlFor="trackingNumber" className="text-[11px] uppercase tracking-[0.2em] font-semibold text-muted-foreground">
+                                    Tracking Number
+                                </Label>
+                                <Input
+                                    id="trackingNumber"
+                                    placeholder="Enter your tracking code"
+                                    {...register('trackingNumber')}
+                                    className={`h-12 bg-gray-50/50 border-gray-100 focus:bg-white transition-all text-sm rounded-xl ${errors.trackingNumber ? 'border-destructive focus:ring-destructive' : ''}`}
+                                />
+                                {errors.trackingNumber && <p className="text-[10px] text-destructive uppercase tracking-widest font-semibold">{errors.trackingNumber.message}</p>}
+                            </div>
+                        )}
+
+                        {/* Tracking Notes */}
+                        <div className="space-y-3">
+                            <Label htmlFor="returnNotes" className="text-[11px] uppercase tracking-[0.2em] font-semibold text-muted-foreground">Tracking Notes</Label>
+                            <div className="flex items-start gap-2 text-[10px] text-muted-foreground/70 italic mb-2">
+                                <Info size={12} className="text-primary mt-0.5" />
+                                <span>Please include the direct tracking link in the field below.</span>
+                            </div>
+                            <Textarea
+                                id="returnNotes"
+                                placeholder="Paste tracking link or additional details here..."
+                                className="min-h-[100px] bg-gray-50/50 border-gray-100 focus:bg-white transition-all text-sm rounded-xl resize-none"
+                                {...register('returnNotes')}
+                            />
                         </div>
-                        <Textarea
-                            id="returnNotes"
-                            placeholder="Paste your tracking link or add additional notes here"
-                            className="resize-y"
-                            {...register('returnNotes')}
-                        />
-                    </div>
 
-                    <div className="space-y-2">
-                        <Label htmlFor="receiptPhoto" className="block mb-2">Upload Receipt or Photo (Optional)</Label>
-                        <div
-                            className="border-2 border-dashed border-input rounded-xl p-6 flex flex-col items-center justify-center bg-muted/30 cursor-pointer hover:bg-muted/50 transition-colors text-center"
-                            onClick={() => fileInputRef.current?.click()}
+                        {/* File Upload */}
+                        <div className="space-y-3">
+                            <Label className="text-[11px] uppercase tracking-[0.2em] font-semibold text-muted-foreground">Upload Receipt (Optional)</Label>
+                            <div
+                                className={`border-2 border-dashed rounded-2xl p-8 flex flex-col items-center justify-center transition-all duration-300 text-center ${selectedFile ? 'border-green-100 bg-green-50/30' : 'border-gray-100 bg-gray-50/30 hover:bg-gray-50/50 hover:border-gray-200'}`}
+                                onClick={() => fileInputRef.current?.click()}
+                            >
+                                <input
+                                    type="file"
+                                    ref={fileInputRef}
+                                    className="hidden"
+                                    accept="image/*,.pdf"
+                                    onChange={handleFileChange}
+                                />
+                                {selectedFile ? (
+                                    <div className="flex flex-col items-center">
+                                        <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-3 text-green-600">
+                                            <CheckCircle2 className="w-6 h-6" />
+                                        </div>
+                                        <span className="font-medium text-xs text-gray-700 truncate max-w-[200px]">{selectedFile.name}</span>
+                                        <Button
+                                            type="button"
+                                            variant="ghost"
+                                            size="sm"
+                                            className="mt-2 text-[10px] uppercase tracking-widest text-destructive hover:bg-destructive/5"
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                setSelectedFile(null);
+                                                if (fileInputRef.current) fileInputRef.current.value = '';
+                                            }}
+                                        >
+                                            Remove
+                                        </Button>
+                                    </div>
+                                ) : (
+                                    <div className="flex flex-col items-center">
+                                        <UploadCloud className="w-8 h-8 mb-3 text-gray-300" />
+                                        <p className="text-xs font-medium text-gray-600">Click to upload receipt or photo</p>
+                                        <p className="text-[10px] text-gray-400 mt-1 uppercase tracking-tighter">PNG, JPG or PDF up to 5MB</p>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </CardContent>
+
+                    <CardFooter className="px-8 pb-10 pt-2">
+                        <Button
+                            type="submit"
+                            size="lg"
+                            disabled={isSubmitting}
+                            className="w-full h-14 rounded-xl text-xs uppercase tracking-[0.25em] font-semibold shadow-lg shadow-primary/10 hover:shadow-xl hover:shadow-primary/20 transition-all active:scale-[0.98]"
                         >
-                            <input
-                                type="file"
-                                ref={fileInputRef}
-                                className="hidden"
-                                accept="image/*,.pdf"
-                                onChange={handleFileChange}
-                            />
-                            {selectedFile ? (
-                                <div className="flex flex-col items-center text-primary">
-                                    <CheckCircle2 className="w-8 h-8 mb-2 text-green-500" />
-                                    <span className="font-medium text-foreground">{selectedFile.name}</span>
-                                    <span className="text-xs text-muted-foreground mt-1">{(selectedFile.size / 1024 / 1024).toFixed(2)} MB</span>
-                                    <Button type="button" variant="link" size="sm" className="mt-2 text-primary" onClick={(e) => {
-                                        e.stopPropagation();
-                                        setSelectedFile(null);
-                                        if (fileInputRef.current) fileInputRef.current.value = '';
-                                    }}>Remove file</Button>
-                                </div>
-                            ) : (
-                                <div className="flex flex-col items-center text-muted-foreground">
-                                    <UploadCloud className="w-10 h-10 mb-3 text-muted-foreground/50" />
-                                    <p className="font-medium text-foreground">Click to upload or drag and drop</p>
-                                    <p className="text-sm mt-1">SVG, PNG, JPG or PDF (max. 5MB)</p>
-                                </div>
-                            )}
-                        </div>
-                    </div>
-                </CardContent>
-                <CardFooter className="bg-muted/30 border-t px-6 py-4 flex justify-end">
-                    <Button type="submit" size="lg" disabled={isSubmitting} className="w-full sm:w-auto min-w-[150px]">
-                        {isSubmitting ? 'Submitting...' : 'Confirm Return'}
-                    </Button>
-                </CardFooter>
-            </form>
-        </Card>
+                            {isSubmitting ? 'Confirming...' : 'Submit Confirmation'}
+                        </Button>
+                    </CardFooter>
+                </form>
+            </Card>
+
+            <p className="mt-8 text-center text-[10px] text-muted-foreground/60 uppercase tracking-[0.1em]">
+                &copy; {new Date().getFullYear()} Muse Gala. Minimalist Luxury Rental.
+            </p>
+        </div>
     );
 }

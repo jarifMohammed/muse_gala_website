@@ -35,59 +35,66 @@ export default function ReturnConfirmationView({ data }: { data: ReturnData }) {
     };
 
     return (
-        <Card className="border-green-200">
-            <CardHeader className="bg-green-50/50 rounded-t-xl border-b border-green-100 text-center py-8">
-                <div className="mx-auto w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4 text-green-600">
-                    <CheckCircle2 className="w-8 h-8" />
-                </div>
-                <CardTitle className="text-2xl text-green-900">Return Confirmed</CardTitle>
-                <CardDescription className="text-base text-green-700/80 mt-2 max-w-md mx-auto">
-                    Thank you for confirming your return. The lender has been notified.
-                </CardDescription>
-            </CardHeader>
-            <CardContent className="p-6 sm:p-8">
-                <h3 className="text-lg font-semibold mb-6 border-b pb-2">Return Details</h3>
-
-                <div className="grid gap-6 sm:grid-cols-2">
-                    <div className="space-y-1">
-                        <p className="text-sm font-medium text-muted-foreground flex items-center gap-1.5">
-                            <span className="text-primary">{getMethodIcon(data.returnMethod || '')}</span>
-                            Return Method
-                        </p>
-                        <p className="font-medium">{getMethodLabel(data.returnMethod || '')}</p>
+        <div className="max-w-xl mx-auto animate-in fade-in slide-in-from-bottom-4 duration-1000 ease-out">
+            <Card className="border-none shadow-[0_8px_30px_rgb(0,0,0,0.04)] bg-white rounded-2xl overflow-hidden">
+                <CardHeader className="pt-12 pb-8 px-8 text-center border-b border-gray-50 bg-green-50/20">
+                    <div className="mx-auto w-14 h-14 bg-green-100/50 rounded-full flex items-center justify-center mb-6 text-green-600 ring-8 ring-green-50/50">
+                        <CheckCircle2 className="w-7 h-7" />
                     </div>
+                    <CardTitle className="text-2xl font-light tracking-tight text-gray-900">Return confirmed</CardTitle>
+                    <CardDescription className="text-xs uppercase tracking-[0.2em] mt-3 text-green-700/70 font-medium">
+                        Thank you. Your return process has begun.
+                    </CardDescription>
+                </CardHeader>
 
-                    {data.trackingNumber && (
-                        <div className="space-y-1">
-                            <p className="text-sm font-medium text-muted-foreground">Tracking Number</p>
+                <CardContent className="p-8 space-y-10">
+                    <div className="grid grid-cols-2 gap-x-8 gap-y-10">
+                        <div className="space-y-2">
+                            <p className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground/60">Method</p>
                             <div className="flex items-center gap-2">
-                                <p className="font-medium font-mono bg-secondary/50 px-2 py-0.5 rounded">{data.trackingNumber}</p>
+                                <span className="text-primary/70">{getMethodIcon(data.returnMethod || '')}</span>
+                                <p className="text-sm font-medium tracking-tight text-gray-700">{getMethodLabel(data.returnMethod || '')}</p>
                             </div>
                         </div>
-                    )}
 
-                    <div className="space-y-1">
-                        <p className="text-sm font-medium text-muted-foreground">Confirmed On</p>
-                        <p className="font-medium">
-                            {data.returnConfirmedAt
-                                ? format(new Date(data.returnConfirmedAt), 'MMM do, yyyy h:mm a')
-                                : 'N/A'}
+                        {data.trackingNumber && (
+                            <div className="space-y-2">
+                                <p className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground/60">Tracking</p>
+                                <p className="text-sm font-mono text-gray-700 bg-gray-50 px-2 py-0.5 rounded-md inline-block">{data.trackingNumber}</p>
+                            </div>
+                        )}
+
+                        <div className="space-y-2">
+                            <p className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground/60">Timestamp</p>
+                            <p className="text-sm font-medium tracking-tight text-gray-700">
+                                {data.returnConfirmedAt
+                                    ? format(new Date(data.returnConfirmedAt), 'MMM d, yyyy · h:mm a')
+                                    : 'N/A'}
+                            </p>
+                        </div>
+
+                        <div className="space-y-2">
+                            <p className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground/60">Current Status</p>
+                            <Badge variant="secondary" className="bg-primary/10 text-primary border-none text-[10px] uppercase tracking-widest font-bold py-1 px-3">
+                                {data.currentStatus || 'InTransit'}
+                            </Badge>
+                        </div>
+                    </div>
+
+                    <div className="p-6 bg-gray-50/50 rounded-2xl flex gap-4 border border-gray-100/50">
+                        <div className="mt-0.5">
+                            <Info size={16} className="text-primary/60" />
+                        </div>
+                        <p className="text-[11px] leading-relaxed text-muted-foreground">
+                            The lender will verify your item within <span className="text-gray-900 font-medium">48 hours</span> of arrival. Your security deposit will be processed upon successful inspection.
                         </p>
                     </div>
+                </CardContent>
+            </Card>
 
-                    <div className="space-y-1">
-                        <p className="text-sm font-medium text-muted-foreground">Current Status</p>
-                        <Badge variant="outline" className="font-medium">{data.currentStatus || 'InTransit'}</Badge>
-                    </div>
-                </div>
-
-                <div className="mt-8 p-4 bg-muted/50 rounded-lg flex gap-3 text-sm text-muted-foreground">
-                    <Info className="w-5 h-5 text-primary flex-shrink-0" />
-                    <p>
-                        Please allow up to 48 hours for the lender to receive and verify the item once it arrives. Your deposit hold will be released upon successful inspection.
-                    </p>
-                </div>
-            </CardContent>
-        </Card>
+            <p className="mt-8 text-center text-[10px] text-muted-foreground/60 uppercase tracking-[0.1em]">
+                Confirmation ID: {data._id.slice(0, 8).toUpperCase()}
+            </p>
+        </div>
     );
 }
