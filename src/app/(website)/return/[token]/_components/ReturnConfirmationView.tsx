@@ -96,7 +96,7 @@ export default function ReturnConfirmationView({ data }: { data: ReturnData }) {
                             <Info size={16} className="text-primary/60" />
                         </div>
                         <p className="text-[11px] leading-relaxed text-muted-foreground">
-                            The lender will verify your item within <span className="text-gray-900 font-medium">48 hours</span> of arrival. Your security deposit will be processed upon successful inspection.
+                            The lender will verify your item within <span className="text-gray-900 font-medium">48 hours</span> of arrival.
                         </p>
                     </div>
                 </CardContent>
