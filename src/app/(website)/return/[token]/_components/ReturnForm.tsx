@@ -143,20 +143,26 @@ export default function ReturnForm({
                                         value={field.value}
                                         className="grid gap-4"
                                     >
-                                        <div className={`group flex items-center space-x-3 border rounded-xl p-5 transition-all duration-300 cursor-pointer ${field.value === 'LocalDropOff' ? 'border-primary bg-primary/[0.02] ring-1 ring-primary' : 'border-gray-100 hover:border-gray-200 bg-gray-50/30'}`}>
+                                        <div
+                                            onClick={() => field.onChange('LocalDropOff')}
+                                            className={`group flex items-center space-x-3 border rounded-xl p-5 transition-all duration-300 cursor-pointer ${field.value === 'LocalDropOff' ? 'border-primary bg-primary/[0.02] ring-1 ring-primary' : 'border-gray-100 hover:border-gray-200 bg-gray-50/30'}`}
+                                        >
                                             <RadioGroupItem value="LocalDropOff" id="LocalDropOff" className="sr-only" />
-                                            <div className={`w-4 h-4 rounded-full border flex items-center justify-center transition-colors ${field.value === 'LocalDropOff' ? 'border-primary' : 'border-gray-300Group-hover:border-gray-400'}`}>
+                                            <div className={`w-4 h-4 rounded-full border flex items-center justify-center transition-colors ${field.value === 'LocalDropOff' ? 'border-primary' : 'border-gray-300 group-hover:border-gray-400'}`}>
                                                 {field.value === 'LocalDropOff' && <div className="w-2 h-2 rounded-full bg-primary" />}
                                             </div>
-                                            <Label htmlFor="LocalDropOff" className="flex-1 cursor-pointer font-medium text-sm tracking-tight text-gray-700">Local Drop-Off</Label>
+                                            <Label htmlFor="LocalDropOff" className="flex-1 cursor-pointer font-medium text-sm tracking-tight text-gray-700 pointer-events-none">Local Drop-Off</Label>
                                         </div>
 
-                                        <div className={`group flex items-center space-x-3 border rounded-xl p-5 transition-all duration-300 cursor-pointer ${field.value === 'ExpressShipping' ? 'border-primary bg-primary/[0.02] ring-1 ring-primary' : 'border-gray-100 hover:border-gray-200 bg-gray-50/30'}`}>
+                                        <div
+                                            onClick={() => field.onChange('ExpressShipping')}
+                                            className={`group flex items-center space-x-3 border rounded-xl p-5 transition-all duration-300 cursor-pointer ${field.value === 'ExpressShipping' ? 'border-primary bg-primary/[0.02] ring-1 ring-primary' : 'border-gray-100 hover:border-gray-200 bg-gray-50/30'}`}
+                                        >
                                             <RadioGroupItem value="ExpressShipping" id="ExpressShipping" className="sr-only" />
                                             <div className={`w-4 h-4 rounded-full border flex items-center justify-center transition-colors ${field.value === 'ExpressShipping' ? 'border-primary' : 'border-gray-300 group-hover:border-gray-400'}`}>
                                                 {field.value === 'ExpressShipping' && <div className="w-2 h-2 rounded-full bg-primary" />}
                                             </div>
-                                            <Label htmlFor="ExpressShipping" className="flex-1 cursor-pointer font-medium text-sm tracking-tight text-gray-700">Express Shipping</Label>
+                                            <Label htmlFor="ExpressShipping" className="flex-1 cursor-pointer font-medium text-sm tracking-tight text-gray-700 pointer-events-none">Express Shipping</Label>
                                         </div>
                                     </RadioGroup>
                                 )}

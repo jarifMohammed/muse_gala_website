@@ -76,7 +76,7 @@ export default function ReturnPageClient({ token }: { token: string }) {
     const returnData = data.data;
 
     return (
-        <div className="animate-in fade-in duration-500">
+        <div className="animate-in fade-in duration-500 pt-24 pb-12 px-4 sm:px-6">
             <ReturnHeader data={returnData} />
             <ReturnInfoBox data={returnData} />
 
