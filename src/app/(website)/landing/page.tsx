@@ -48,7 +48,7 @@ export default function Home() {
           {/* MUSE GALS SAY */}
           <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16 md:mb-24">
             <div className="flex flex-col space-y-4 justify-between min-h-[116px]">
-              <p className="text-[16px] font-light font-avenir ">
+              <p className="text-[12px] font-light font-avenir ">
                 “Found a dress in minutes. Booking was straightforward.”
               </p>
               <span className="text-[13px] text-gray-600 uppercase font-avenir font-light">
@@ -57,21 +57,21 @@ export default function Home() {
             </div>
 
             <div className="flex flex-col space-y-4 justify-between min-h-[116px]">
-              <p className="text-[16px] font-light font-avenir ">
+              <p className="text-[12px] font-light font-avenir ">
                 “Loved being able to see what was available near me.”
               </p>
               <span className="text-[13px] text-gray-600 uppercase font-avenir font-light">Amelia R.</span>
             </div>
 
             <div className="flex flex-col space-y-4 justify-between min-h-[116px]">
-              <p className="text-[16px] font-light font-avenir ">
+              <p className="text-[12px] font-light font-avenir ">
                 “Everything arrived on time and exactly as described.”
               </p>
               <span className="text-[13px] text-gray-600 uppercase font-avenir font-light">Isabella M.</span>
             </div>
 
             <div className="flex flex-col space-y-4 justify-between min-h-[116px]">
-              <p className="text-[16px] font-light font-avenir ">
+              <p className="text-[12px] font-light font-avenir ">
                 “Easy to book. Easy to return. I always use this platform when I don’t know what to wear.”
               </p>
               <span className="text-[13px] text-gray-600 uppercase font-avenir font-light">Chloe T.</span>
