@@ -181,14 +181,22 @@ const Footer = () => {
                 <input
                   type="email"
                   placeholder="YOUR EMAIL"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   className="border brand-body border-t-0 border-l-0 border-r-0 border-[#000000] px-2 py-[10px] mb-4 sm:mb-0 sm:flex-1 outline-none font-avenir font-light"
                 />
                 <Button
                   variant="ghost"
                   size="icon"
                   className="ml-0 absolute right-0 sm:ml-2"
+                  onClick={() => mutate()}
+                  disabled={isPending}
                 >
-                  <ArrowRight className="h-5 w-6" />
+                  {isPending ? (
+                    <Loader2 className="h-5 w-6 animate-spin" />
+                  ) : (
+                    <ArrowRight className="h-5 w-6" />
+                  )}
                 </Button>
               </div>
               <p className="brand-body text-gray-500">
