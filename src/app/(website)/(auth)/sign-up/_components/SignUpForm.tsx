@@ -90,7 +90,7 @@ const SignUpForm = () => {
                   name="firstName"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-[14px] font-inter font-normal text-black leading-[20px] uppercase">
+                      <FormLabel className="text-[14px] font-avenir font-normal text-black leading-[20px] uppercase">
                         First Name
                       </FormLabel>
                       <FormControl>

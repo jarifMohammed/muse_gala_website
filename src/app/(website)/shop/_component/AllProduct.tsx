@@ -204,7 +204,7 @@ const AllProduct = () => {
       {/* ✅ Pagination */}
       {pagination && products.length > 0 && (
         <div className="text-center mt-8 md:mt-12 lg:mt-16">
-          <p className="text-gray-600 mb-4">
+          <p className="text-gray-600 mb-4 font-avenir">
             Showing {products.length} of {pagination.totalItems} dresses near
             you
           </p>
@@ -213,7 +213,7 @@ const AllProduct = () => {
             <button
               onClick={nextPage}
               disabled={isFetching}
-              className="inline-block border-b border-black font-light px-6 py-2 text-[14px] uppercase tracking-widest hover:bg-black hover:text-white transition-all"
+              className="inline-block border-b border-black font-light px-6 py-2 text-[14px] uppercase tracking-widest hover:bg-black hover:text-white transition-all font-avenir"
             >
               {isFetching ? 'Loading...' : 'Load More'}
             </button>

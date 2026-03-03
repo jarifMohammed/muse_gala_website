@@ -95,7 +95,7 @@ const ContactForm = () => {
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-[14px] font-inter font-thin tracking-[.1em] text-black leading-[20px] uppercase">
+                <FormLabel className="text-[14px] font-avenir font-thin tracking-[.1em] text-black leading-[20px] uppercase">
                   Name
                 </FormLabel>
                 <FormControl>

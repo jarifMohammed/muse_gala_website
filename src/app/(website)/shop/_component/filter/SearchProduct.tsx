@@ -20,7 +20,7 @@ const SearchProduct = () => {
     <div>
       <input
         type="text"
-        className="border-b border-black pb-1 focus:outline-none w-full placeholder:font-avenir placeholder:tracking-widest placeholder:text-black/50"
+        className="border-b border-black pb-1 focus:outline-none w-full font-avenir placeholder:font-avenir placeholder:tracking-widest placeholder:text-black/50"
         placeholder="SEARCH"
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}

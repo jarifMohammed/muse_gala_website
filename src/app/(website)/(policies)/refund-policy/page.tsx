@@ -11,7 +11,7 @@ export default function Page() {
       </div>
 
       {/* Content */}
-      <div className="space-y-10 text-gray-800 font-inter leading-[30px] tracking-[.08em] font-light">
+      <div className="space-y-10 text-gray-800 font-avenir leading-[30px] tracking-[.08em] font-light">
         {/* Introduction */}
         <div className="space-y-4">
           <p className="text-gray-600">
@@ -163,7 +163,7 @@ export default function Page() {
         </section>
 
         {/* Summary */}
-        <p className="font-light font-inter text-sm tracking-[0.1em] text-gray-800 border-t pt-4">
+        <p className="font-light font-avenir text-sm tracking-[0.1em] text-gray-800 border-t pt-4">
           Summary — Muse Gala maintains a fair refund process that balances
           customer protection with lender commitments.
         </p>

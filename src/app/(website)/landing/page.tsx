@@ -14,12 +14,12 @@ export default function Home() {
     <div className="space-y-8 md:space-y-12">
       <DynamicBanner />
 
-      <div className=" bg-white space-y-16">
-        <div className="mb-8 md:mb-12">
+      <div className=" bg-white space-y-12">
+        <div>
           <TrendingNow />
         </div>
 
-        <div className="mt-5">
+        <div>
           <FindNearDressSection />
         </div>
 
@@ -34,13 +34,13 @@ export default function Home() {
           <StyledByYou />
         </div>
 
-        <div className="max-w-[1800px] mx-auto px-2 md:px-4 lg:px-6 py-8 md:py-12 lg:py-16 space-y-12 md:space-y-24">
+        <div className="max-w-[1800px] mx-auto px-6 md:px-12 lg:px-20 py-4 md:py-6 space-y-12 md:space-y-24">
           {/* Header */}
           <header className="text-center mb-12 md:mb-16">
-            <h1 className="headerClass">MUSE GALS SAY</h1>
+            <h1 className="headerClass uppercase">Muse Gals Say</h1>
             <div className="flex justify-center">
-              <Link href="#" className="sub-header hover:bg-black hover:text-white inline-block  border-b border-black">
-                BROWSE THE EDIT
+              <Link href="/shop" className="sub-header !font-avenir !font-light hover:bg-black hover:text-white inline-block border-b border-black uppercase">
+                Browse The Edit
               </Link>
             </div>
           </header>
@@ -48,68 +48,65 @@ export default function Home() {
           {/* MUSE GALS SAY */}
           <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16 md:mb-24">
             <div className="flex flex-col space-y-4 justify-between min-h-[116px]">
-              <p className="text-[16px] font-normal font-inter ">
-                I found my dress in five minutes — and actually loved everything
-                I saw.
+              <p className="text-[16px] font-light font-avenir ">
+                “Found a dress in minutes. Booking was straightforward.”
               </p>
-              <span className="text-[13px] text-gray-600">
-                @HIRINGWITHGRACE
+              <span className="text-[13px] text-gray-600 uppercase font-avenir font-light">
+                Sophie L.
               </span>
             </div>
 
             <div className="flex flex-col space-y-4 justify-between min-h-[116px]">
-              <p className="text-[16px] font-normal font-inter ">
-                So much easier than chasing DMs. I booked and picked up the next
-                day.
+              <p className="text-[16px] font-light font-avenir ">
+                “Loved being able to see what was available near me.”
               </p>
-              <span className="text-[13px] text-gray-600">@ELLAWEARSDIT</span>
+              <span className="text-[13px] text-gray-600 uppercase font-avenir font-light">Amelia R.</span>
             </div>
 
             <div className="flex flex-col space-y-4 justify-between min-h-[116px]">
-              <p className="text-[16px] font-normal font-inter ">
-                I used to scroll 10 pages to find one decent dress. This was
-                curated, clean, and just better.
+              <p className="text-[16px] font-light font-avenir ">
+                “Everything arrived on time and exactly as described.”
               </p>
-              <span className="text-[13px] text-gray-600">@STYLEDBYBAE</span>
+              <span className="text-[13px] text-gray-600 uppercase font-avenir font-light">Isabella M.</span>
             </div>
 
             <div className="flex flex-col space-y-4 justify-between min-h-[116px]">
-              <p className="text-[16px] font-normal font-inter ">
-                It feels more like shopping at a boutique than a rental site.
+              <p className="text-[16px] font-light font-avenir ">
+                “Easy to book. Easy to return. I always use this platform when I don’t know what to wear.”
               </p>
-              <span className="text-[13px] text-gray-600">@THEFORMALEDIT</span>
+              <span className="text-[13px] text-gray-600 uppercase font-avenir font-light">Chloe T.</span>
             </div>
           </section>
 
           {/* List With Us */}
           <section className="text-center mb-16">
-            <h2 className="headerClass">LIST WITH US</h2>
-            <p className=" sub-title max-w-3xl mx-auto mb-8">
+            <h2 className="headerClass uppercase">List With Us</h2>
+            <p className="text-[12px] max-w-3xl !normal-case mx-auto mb-8 font-avenir font-light">
               No listing fees. No lock-ins. Just more exposure, more rentals,
               and a seamless dashboard.
             </p>
             <div className="flex justify-center">
               <Link
                 href="/become-lender"
-                className="inline-block border-b border-black  py-2 text-[14px] uppercase tracking-widest hover:bg-black hover:text-white"
+                className="inline-block border-b border-black py-2 text-[14px] uppercase tracking-widest hover:bg-black hover:text-white font-avenir font-light"
               >
-                BECOME A LENDER
+                Become A Lender
               </Link>
             </div>
           </section>
 
           {/* Referral */}
           <section className="text-center mb-16 md:mb-24">
-            <h2 className="headerClass">GET $10, GIVE $10</h2>
-            <p className="sub-title mb-8 max-w-3xl mx-auto">
+            <h2 className="headerClass uppercase">Get $10, Give $10</h2>
+            <p className="text-[12px] mb-8 max-w-3xl !normal-case mx-auto font-avenir font-light">
               Get $10 off your first rental when you join. Share your code and
               give friends $10 too.
             </p>
             <div className="flex relative flex-col sm:flex-row justify-center items-center max-w-md mx-auto">
               <input
                 type="email"
-                placeholder="Email@example.com"
-                className="border  border-t-0 border-l-0 border-r-0 border-[#000000]  px-2 py-[10px] mb-4 sm:mb-0 sm:flex-1 outline-none"
+                placeholder="YOUR EMAIL"
+                className="border border-t-0 border-l-0 border-r-0 border-[#000000] px-2 py-[10px] mb-4 sm:mb-0 sm:flex-1 outline-none font-avenir"
               />
               <Button
                 variant="ghost"

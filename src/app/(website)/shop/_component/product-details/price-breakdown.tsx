@@ -469,12 +469,12 @@ const PriceBreakDown = ({ singleProduct }: ShopDetailsProps) => {
               value={promoCode}
               onChange={e => setPromoCode(e.target.value)}
               disabled={!!appliedPromo || isApplyingPromo}
-              className="flex-1 bg-transparent  tracking-widest text-sm focus:ring-1 focus:ring-black h-10"
+              className="flex-1 bg-transparent  tracking-widest text-sm focus:ring-1 focus:ring-black h-10 font-avenir"
             />
             {appliedPromo ? (
               <button
                 onClick={clearPromoCode}
-                className="px-4 py-2 border border-red-700 text-red-700 rounded-sm text-sm tracking-widest uppercase hover:bg-red-50 transition-colors"
+                className="px-4 py-2 border border-red-700 text-red-700 rounded-sm text-sm tracking-widest uppercase hover:bg-red-50 transition-colors font-avenir"
               >
                 Remove
               </button>
@@ -482,7 +482,7 @@ const PriceBreakDown = ({ singleProduct }: ShopDetailsProps) => {
               <button
                 onClick={handleApplyPromo}
                 disabled={isApplyingPromo || !promoCode.trim()}
-                className="px-4 py-2 border border-black text-sm tracking-widest uppercase hover:bg-black hover:text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-4 py-2 border border-black text-sm tracking-widest uppercase hover:bg-black hover:text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-avenir"
               >
                 {isApplyingPromo ? 'Applying...' : 'Apply'}
               </button>
@@ -497,7 +497,7 @@ const PriceBreakDown = ({ singleProduct }: ShopDetailsProps) => {
               Select Size
             </label>
             <Select value={selectedSize} onValueChange={setSelectedSize}>
-              <SelectTrigger className="w-full bg-transparent uppercase tracking-widest text-sm focus:ring-1 focus:ring-black h-10">
+              <SelectTrigger className="w-full bg-transparent uppercase tracking-widest text-sm focus:ring-1 focus:ring-black h-10 font-avenir">
                 <SelectValue placeholder="Choose a size" />
               </SelectTrigger>
               <SelectContent>
@@ -518,7 +518,7 @@ const PriceBreakDown = ({ singleProduct }: ShopDetailsProps) => {
 
       <div className="text-center border-b-2 border-gray-500 pb-1 mt-10">
         {pathName?.startsWith('/shop/checkout') &&
-        !pathName.includes('/confirmation') ? (
+          !pathName.includes('/confirmation') ? (
           <div>
             {isConfirm ? (
               <button
@@ -526,7 +526,7 @@ const PriceBreakDown = ({ singleProduct }: ShopDetailsProps) => {
                 disabled={
                   updateBookingForPayment.isPending || createCheckout.isPending
                 }
-                className="opacity-75 tracking-widest uppercase disabled:opacity-50"
+                className="opacity-75 tracking-widest uppercase disabled:opacity-50 font-avenir"
               >
                 {updateBookingForPayment.isPending || createCheckout.isPending
                   ? 'Processing...'
@@ -535,7 +535,7 @@ const PriceBreakDown = ({ singleProduct }: ShopDetailsProps) => {
             ) : (
               <button
                 onClick={handleCheckout}
-                className="opacity-75 tracking-widest uppercase"
+                className="opacity-75 tracking-widest uppercase font-avenir"
               >
                 Confirm & Pay
               </button>
@@ -545,7 +545,7 @@ const PriceBreakDown = ({ singleProduct }: ShopDetailsProps) => {
           <button
             onClick={handleRentNow}
             disabled={createBookingForRentNow.isPending}
-            className="opacity-75 tracking-widest uppercase disabled:opacity-50"
+            className="opacity-75 tracking-widest uppercase disabled:opacity-50 font-avenir"
           >
             {createBookingForRentNow.isPending ? 'Processing...' : 'Rent Now'}
           </button>

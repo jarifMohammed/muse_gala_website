@@ -343,7 +343,7 @@ export default function AustraliaLocationSelector({
 
   return (
     <div className={`w-full relative space-y-4 ${className}`}>
-      <div className="flex flex-col sm:flex-row gap-2 relative">
+      <div className="flex flex-row gap-2 relative">
         <div className="relative flex-1">
           <Input
             type="text"
@@ -357,7 +357,7 @@ export default function AustraliaLocationSelector({
                 onSearch?.()
               }
             }}
-            className="pl-10 pr-10 text-sm sm:text-base"
+            className="pl-8 pr-10 text-[13px] h-9 md:h-10 border-black/20 focus:border-black transition-all rounded-none shadow-none"
           />
           <button
             type="button"
@@ -365,10 +365,12 @@ export default function AustraliaLocationSelector({
               e.preventDefault()
               onSearch?.()
             }}
-            className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-black transition-colors"
+            className="absolute left-2.5 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-black transition-colors"
           >
-            <Search className="h-4 w-4" />
+            <Search className="h-3.5 w-3.5" />
           </button>
+
+
           {searchQuery && (
             <Button
               variant="ghost"
@@ -377,9 +379,9 @@ export default function AustraliaLocationSelector({
                 setSearchQuery('')
                 setShowResults(false)
               }}
-              className="absolute right-1 top-1/2 transform -translate-y-1/2 h-8 w-8 p-0"
+              className="absolute right-1 top-1/2 transform -translate-y-1/2 h-7 w-7 p-0 hover:bg-transparent"
             >
-              <X className="h-4 w-4" />
+              <X className="h-3.5 w-3.5" />
             </Button>
           )}
         </div>
@@ -390,11 +392,10 @@ export default function AustraliaLocationSelector({
             size="default"
             onClick={getCurrentLocation}
             disabled={isGettingLocation}
-            className="flex items-center justify-center gap-2 bg-transparent brand-button w-full sm:w-auto whitespace-nowrap"
+            className="flex items-center justify-center gap-2 bg-transparent brand-button whitespace-nowrap h-9 md:h-10 px-3 border-black/20 hover:border-black rounded-none transition-all text-[13px]"
           >
-            <Navigation className="h-4 w-4" />
-            <span className="hidden sm:inline">{isGettingLocation ? 'Getting...' : 'My Location'}</span>
-            <span className="sm:hidden">{isGettingLocation ? 'Getting...' : 'My Location'}</span>
+            <Navigation className="h-3.5 w-3.5" />
+            <span className="hidden md:inline">{isGettingLocation ? 'Getting...' : 'My Location'}</span>
           </Button>
         )}
       </div>

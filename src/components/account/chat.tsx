@@ -127,7 +127,7 @@ export default function ChatSystem() {
   )
 
   return (
-    <div className="font-sans px-4 sm:px-6 md:px-8 pb-5">
+    <div className="font-avenir px-4 sm:px-6 md:px-8 pb-5">
       <div className="flex flex-col md:flex-row md:h-[600px] gap-6 rounded-lg overflow-hidden mb-[100px]">
         {/* Left Panel - Conversation List */}
         <div className="w-full md:w-1/3">
@@ -144,9 +144,8 @@ export default function ChatSystem() {
             {conversations.map((conversation) => (
               <div
                 key={conversation.id}
-                className={`p-4 flex items-start gap-3 cursor-pointer hover:bg-gray-50 border-b ${
-                  activeConversation === conversation.id ? 'bg-gray-100' : ''
-                }`}
+                className={`p-4 flex items-start gap-3 cursor-pointer hover:bg-gray-50 border-b ${activeConversation === conversation.id ? 'bg-gray-100' : ''
+                  }`}
                 onClick={() => setActiveConversation(conversation.id)}
               >
                 <div className="bg-gray-200 rounded-full p-2 flex-shrink-0">
@@ -195,18 +194,16 @@ export default function ChatSystem() {
                   {activeChat.messages.map((message) => (
                     <div
                       key={message.id}
-                      className={`flex ${
-                        message.sender === 'user'
+                      className={`flex ${message.sender === 'user'
                           ? 'justify-end'
                           : 'justify-start'
-                      }`}
+                        }`}
                     >
                       <div
-                        className={`max-w-[85%] sm:max-w-[70%] rounded-lg px-4 py-2 ${
-                          message.sender === 'user'
+                        className={`max-w-[85%] sm:max-w-[70%] rounded-lg px-4 py-2 ${message.sender === 'user'
                             ? 'bg-black text-white'
                             : 'bg-gray-100 text-gray-800'
-                        }`}
+                          }`}
                       >
                         <p className="text-sm">{message.content}</p>
                       </div>

@@ -18,14 +18,14 @@ export default function PolicyLayout({
           {title}
         </h1>
         {description && (
-          <p className="mt-3 text-gray-600 text-sm md:text-base mx-auto font-light font-inter tracking-[.1em]">
+          <p className="mt-3 text-gray-600 text-sm md:text-base mx-auto font-light font-avenir tracking-[.1em]">
             {description}
           </p>
         )}
       </div>
 
       {/* Content */}
-      <div className="space-y-10 text-gray-800 font-inter leading-[30px] tracking-[.08em] font-light">
+      <div className="space-y-10 text-gray-800 font-avenir leading-[30px] tracking-[.08em] font-light">
         {children}
       </div>
     </div>

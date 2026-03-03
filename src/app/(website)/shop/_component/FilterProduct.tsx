@@ -14,7 +14,7 @@ const FilterProduct = () => {
   const { resetFilters } = useFilterStore()
 
   return (
-    <div className=" space-y-5">
+    <div className=" space-y-5 font-avenir">
       <SearchProduct />
       <Rental />
       <LocalPickup />

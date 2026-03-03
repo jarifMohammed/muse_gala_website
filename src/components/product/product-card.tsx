@@ -1,5 +1,6 @@
 'use client'
 
+import { motion } from 'framer-motion'
 import { Product } from '@/types/product'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -12,6 +13,14 @@ interface ProductCardProps {
 export function ProductCard({ product }: ProductCardProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [isHovered, setIsHovered] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768)
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
 
   // Ensure thumbnail shows first, followed by media images (if any), removing duplicates
   const images = useMemo(() => {
@@ -64,21 +73,26 @@ export function ProductCard({ product }: ProductCardProps) {
             fill
             className="object-cover object-top origin-top transition-all duration-500 ease-in-out group-hover:scale-110"
           />
-          <div className="absolute bottom-0 left-0 right-0 p-4 opacity-0 group-hover:opacity-100 transition-all duration-500 ease-in-out">
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={isMobile ? { opacity: 1 } : { opacity: 0 }}
+            whileHover={{ opacity: 1 }}
+            viewport={{ amount: 0.7 }}
+            className="absolute bottom-0 left-0 right-0 p-4 transition-all duration-500 ease-in-out"
+          >
             <button
-              className="w-full bg-white py-2 rounded hover:bg-gray-200 transition duration-300 text-black text-[14px]"
-              onClick={(e) => e.preventDefault()}
+              className="w-full bg-white py-2 rounded-none hover:bg-gray-200 transition duration-300 text-black text-[14px] uppercase font-avenir"
             >
-              BOOK NOW
+              Book Now
             </button>
-          </div>
+          </motion.div>
         </div>
 
         <div className="text-center space-y-3 mt-auto">
-          <h3 className="text-[14px] font-light tracking-[0.1rem] transition-colors duration-300 group-hover:text-gray-700">
+          <h3 className="text-[14px] font-light tracking-[0.1rem] transition-colors duration-300 group-hover:text-gray-700 font-avenir">
             {product.dressName}
           </h3>
-          <p className="text-[12px] tracking-[.1rem] font-light transition-colors duration-300 group-hover:text-gray-600">
+          <p className="text-[12px] tracking-[.1rem] font-light transition-colors duration-300 group-hover:text-gray-600 font-avenir">
             RENT ${product?.basePrice} | RRP ${product?.rrpPrice}
           </p>
         </div>

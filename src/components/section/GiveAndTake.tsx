@@ -1,36 +1,28 @@
+import { Button } from "../ui/button";
+import { ArrowRight } from "lucide-react";
+
 export default function GiveAndTake() {
   return (
-    <div>
-      {/* Get $10, Give $10 Section */}
-      <div className="max-w-6xl mx-auto px-4 py-16 text-center">
-        <h2 className="headerClass mb-4">GET $10, GIVE $10</h2>
-        <p className="mb-8 sub-title">
-          Get $10 off your first rental when you join. Share your code and give
-          friends $10 too.
-        </p>
+    <div className="max-w-6xl mx-auto px-4 py-16 text-center">
+      <h2 className="headerClass uppercase">GET $10, GIVE $10</h2>
+      <p className="text-[12px] mb-8 max-w-3xl !normal-case mx-auto font-avenir font-light">
+        Get $10 off your first rental when you join. Share your code and give
+        friends $10 too.
+      </p>
 
-        <div className="max-w-md mx-auto relative">
-          <input
-            type="email"
-            placeholder="your.Email@example.com"
-            className="w-full border-b border-black py-2 pr-10 focus:outline-none"
-          />
-          <button className="absolute right-0 top-1/2 transform -translate-y-1/2">
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <line x1="5" y1="12" x2="19" y2="12"></line>
-              <polyline points="12 5 19 12 12 19"></polyline>
-            </svg>
-          </button>
-        </div>
+      <div className="flex relative flex-col sm:flex-row justify-center items-center max-w-md mx-auto">
+        <input
+          type="email"
+          placeholder="YOUR EMAIL"
+          className="border border-t-0 border-l-0 border-r-0 border-[#000000] px-2 py-[10px] mb-4 sm:mb-0 sm:flex-1 outline-none font-avenir font-light"
+        />
+        <Button
+          variant="ghost"
+          size="icon"
+          className="ml-0 absolute right-0 sm:ml-2"
+        >
+          <ArrowRight className="h-5 w-6" />
+        </Button>
       </div>
     </div>
   );

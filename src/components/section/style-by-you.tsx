@@ -36,16 +36,16 @@ const StyledByYou = () => {
     <section className="">
       {/* 🔹 Header */}
       <div className="text-center mb-14">
-        <h2 className="uppercase tracking-[12px]  text-lg md:text-2xl font-light">
+        <h2 className="uppercase tracking-[12px] text-lg md:text-2xl font-light font-avenir">
           {section.sectionName}
         </h2>
 
-        <p className="mt-3 text-xs md:text-xs uppercase tracking-widest text-gray-700">
+        <p className="mt-3 text-xs md:text-xs uppercase tracking-widest text-gray-700 font-avenir font-light">
           {section.content}
         </p>
 
         <Link href={'/shop'}>
-          <p className="mt-4 text-[10px] uppercase tracking-[5px] underline text-gray-800">
+          <p className="mt-4 text-[10px] uppercase tracking-[5px] underline text-gray-800 font-avenir">
             explore more
           </p>
         </Link>
@@ -59,7 +59,7 @@ const StyledByYou = () => {
               key={index}
               className="
                 relative overflow-hidden
-                aspect-[2/3]
+                aspect-square
                 bg-gray-100
               "
             >

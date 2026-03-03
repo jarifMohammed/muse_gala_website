@@ -71,7 +71,7 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={cn("antialiased", avenir.variable, inter.className)}>
+      <body className={cn("antialiased", avenir.className)}>
         <AuthSessionProvider>
           <AppProvider>
             {children}

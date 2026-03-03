@@ -114,7 +114,7 @@ export default function FAQSection() {
   };
 
   return (
-    <div id="faq" className="max-w-[1800px] mx-auto px-4 md:px-6 lg:px-8 py-12 md:py-16">
+    <div id="faq" className="max-w-[1800px] mx-auto px-4 md:px-6 lg:px-8 py-12 md:py-16 font-avenir">
       <h1 className="headerClass text-center pb-[30px] md:pb-[45px] lg:pb-[60px]">
         F A Q
       </h1>
@@ -124,13 +124,13 @@ export default function FAQSection() {
           <div
             key={category.id}
             className={`${category.id
-                ? "border-b-[1px] border-black"
-                : "border-t-[1px] border-black"
+              ? "border-b-[1px] border-black"
+              : "border-t-[1px] border-black"
               }`}
           >
             <button
               onClick={() => handleCategoryToggle(category.id)}
-              className="flex justify-between items-center w-full pb-2 pt-3 text-left text-[16px] font-normal text-black leading-[24px] focus:outline-none"
+              className="flex justify-between items-center w-full pb-2 pt-3 text-left text-[16px] font-avenir font-light text-black leading-[24px] focus:outline-none"
             >
               <span>{category.title}</span>
               <svg
@@ -153,17 +153,17 @@ export default function FAQSection() {
             {openCategory === category.id && (
               <div
                 className={`${openCategory === category.id
-                    ? "border-t-[1px] border-black"
-                    : "border-0"
+                  ? "border-t-[1px] border-black"
+                  : "border-0"
                   } pb-6 animate-fadeIn`}
               >
                 <div className="space-y-4">
                   {category.questions.map((faq, index) => (
                     <div key={index} className=" pt-4">
-                      <h3 className="text-[16px] font-normal text-black leading-[24px] mb-2">
+                      <h3 className="text-[16px] font-avenir font-light text-black leading-[24px] mb-2 uppercase tracking-wider">
                         {faq.question}
                       </h3>
-                      <p className="text-[14px] font-light text-black leading-[24px]">
+                      <p className="text-[14px] font-avenir font-light text-black leading-[24px]">
                         {faq.answer}
                       </p>
                     </div>

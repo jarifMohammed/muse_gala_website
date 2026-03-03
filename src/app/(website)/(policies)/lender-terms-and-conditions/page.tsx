@@ -11,7 +11,7 @@ export default function LenderTermsConditions() {
       </div>
 
       {/* Content */}
-      <div className="space-y-10 text-gray-800 font-inter leading-[30px] tracking-[.08em] font-light">
+      <div className="space-y-10 text-gray-800 font-avenir leading-[30px] tracking-[.08em] font-light">
         {/* 1. Eligibility */}
         <section>
           <h2 className="font-light text-lg tracking-[.1em] text-gray-900 mb-3">

@@ -127,7 +127,7 @@ export default function FindNearYou() {
   // console.log('map route all products: ', allProducts)
 
   return (
-    <section className="container mx-auto pt-4 pb-12">
+    <section className="container mx-auto pt-1 pb-12">
       <h1 className="brand-header mb-4">
         Find Near You
       </h1>
@@ -135,22 +135,8 @@ export default function FindNearYou() {
         FIND YOUR DRESS NEAR YOU FOR LOCAL PICK UP
       </p>
 
-      {/* Row 1: Filters & View Toggle */}
-      <div className="flex items-center justify-center gap-4 mb-6">
-        <Button
-          variant="outline"
-          onClick={() => setShowFilters(!showFilters)}
-          className="flex items-center gap-1 brand-button px-3 md:px-4 text-xs md:text-sm tracking-tighter md:tracking-normal h-8 md:h-10"
-        >
-          <Filter size={14} className="md:size-4" />
-          Filters{' '}
-          {showFilters ? <ChevronUp size={14} className="md:size-4" /> : <ChevronDown size={14} className="md:size-4" />}
-        </Button>
-        <ViewToggle />
-      </div>
-
-      {/* Location Selector */}
-      <div className="mb-6">
+      {/* Search Bar / Location Selector */}
+      <div className="mb-8">
         <AustraliaLocationSelector
           accessToken={mapboxtoken || ''}
           initialLocation={
@@ -173,24 +159,45 @@ export default function FindNearYou() {
                 placeName: data.placeName,
               },
             })
+            // Reset and search automatically
+            resetPage()
+            setAllProducts([])
+            setTimeout(() => refetch(), 0) // Ensure state update is processed
           }}
           onSearch={handleSearchNearYou}
           placeholder="Search for your location..."
           mapHeight="300px"
         />
       </div>
-      {/* Radius Slider */}
-      <div className="mb-6">
-        <p className="brand-body mb-2">
-          Radius: <span className="brand-body">{radius} km</span>
-        </p>
-        <Slider
-          value={[radius]}
-          max={100}
-          step={2}
-          className="w-full"
-          onValueChange={(val) => setState({ radius: val[0] })}
-        />
+
+      {/* Controls Row: Filters, View Toggle, and Radius */}
+      <div className="flex flex-nowrap items-center justify-center gap-2 md:gap-8 mb-10 px-2 md:px-4 overflow-x-auto no-scrollbar">
+        <div className="flex items-center gap-2 md:gap-4 shrink-0">
+          <Button
+            variant="outline"
+            onClick={() => setShowFilters(!showFilters)}
+            className="flex items-center gap-1 brand-button px-2 md:px-4 text-[10px] md:text-sm tracking-tighter md:tracking-normal h-8 md:h-10 shrink-0"
+          >
+            <Filter size={12} className="md:size-4" />
+            Filters{' '}
+            {showFilters ? <ChevronUp size={12} className="md:size-4" /> : <ChevronDown size={12} className="md:size-4" />}
+          </Button>
+          <ViewToggle />
+        </div>
+
+        {/* Radius control in the same row */}
+        <div className="flex items-center gap-2 md:gap-4 flex-1 md:flex-none min-w-[120px] md:min-w-[300px]">
+          <span className="brand-body whitespace-nowrap text-[10px] md:text-xs">
+            Radius: <span className="font-medium">{radius}km</span>
+          </span>
+          <Slider
+            value={[radius]}
+            max={100}
+            step={2}
+            className="flex-1"
+            onValueChange={(val) => setState({ radius: val[0] })}
+          />
+        </div>
       </div>
 
       {/* Filters */}

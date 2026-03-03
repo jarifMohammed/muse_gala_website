@@ -76,13 +76,13 @@ const ShopDetails: React.FC<ShopDetailsProps> = ({
         </h1>
       ) : (
         <div>
-          <h1 className="font-light opacity-75 text-[18px] tracking-[0.5rem] uppercase">
-            {data.brand && <span className="block mb-2">BRAND: {data.brand}</span>}
-            {data.dressName}
+          <h1 className="font-light opacity-75 tracking-[0.5rem] uppercase">
+            {data.brand && <span className="block mb-2 sub-header">{data.brand}</span>}
+            <span className="brand-body">{data.dressName}</span>
           </h1>
 
           <p className="tracking-wider mt-2 opacity-75 uppercase">
-            $ {displayPrice} / {rent === '4' ? '4 days' : '8 days'}
+            ${displayPrice} RENT
           </p>
         </div>
       )}
@@ -101,12 +101,12 @@ const ShopDetails: React.FC<ShopDetailsProps> = ({
             </div>
 
             <div className="pt-6">
-              <h1 className="font-light text-sm lg:text-lg opacity-75 tracking-[0.1rem] uppercase">
-                {data.brand && <span className="block mb-1">BRAND: {data.brand}</span>}
-                {data.dressName}
+              <h1 className="font-light opacity-75 tracking-[0.1rem] uppercase">
+                {data.brand && <span className="block mb-1 sub-header text-sm lg:text-lg">{data.brand}</span>}
+                <span className="brand-body text-sm lg:text-lg">{data.dressName}</span>
               </h1>
               <p className="tracking-wider mt-2 opacity-75 uppercase text-sm lg:text-lg">
-                ${displayPrice} / {rent === '4' ? '4 days' : '8 days'}
+                ${displayPrice} RENT
               </p>
 
               <p className="tracking-wider mt-2 opacity-75 uppercase text-sm lg:text-base">

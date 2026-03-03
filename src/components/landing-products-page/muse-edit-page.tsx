@@ -49,13 +49,13 @@ const TheMuseEdit = () => {
     <section className="pt-8 max-w-[1800px] mx-auto px-4 md:px-6 lg:px-8">
       {/* 🔹 Header */}
       <div className="text-center mb-12 space-y-5">
-        <h2 className="uppercase tracking-[12px] text-lg md:text-xl lg:text-2xl font-light">
-          THE MUSE EDIT
+        <h2 className="uppercase tracking-[12px] text-lg md:text-xl lg:text-2xl font-light font-avenir">
+          The Muse Edit
         </h2>
 
         <Link
           href="/shop"
-          className="inline-block mt-3 text-sm uppercase tracking-widest border-b border-black pb-1 hover:opacity-70 transition"
+          className="inline-block mt-3 text-sm uppercase tracking-widest border-b border-black pb-1 hover:opacity-70 transition font-avenir font-light"
         >
           Explore the Edit
         </Link>
@@ -86,7 +86,7 @@ const TheMuseEdit = () => {
               href="/shop"
               className="w-full aspect-[2/3] flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-lg hover:border-black transition-colors space-y-4"
             >
-              <span className="text-sm font-light tracking-[0.2rem] uppercase text-center px-4">
+              <span className="text-sm font-light tracking-[0.2rem] uppercase text-center px-4 font-avenir">
                 Explore the Edit
               </span>
               <div className="w-10 h-10 rounded-full border border-black flex items-center justify-center">

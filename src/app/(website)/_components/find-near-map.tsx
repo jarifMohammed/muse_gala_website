@@ -35,15 +35,13 @@ const CustomMarker = ({
   >
     <MapPin
       size={30}
-      className={`text-[#800000] transition-all ${
-        active ? 'scale-110 fill-white' : 'fill-white'
-      }`}
+      className={`text-[#800000] transition-all ${active ? 'scale-110 fill-white' : 'fill-white'
+        }`}
     />
     {title && (
       <div
-        className={`bg-white px-2 py-1 rounded text-xs font-medium text-[#800000] mt-1 whitespace-nowrap ${
-          active ? 'font-bold' : ''
-        }`}
+        className={`bg-white px-2 py-1 rounded text-xs font-medium text-[#800000] mt-1 whitespace-nowrap ${active ? 'font-bold' : ''
+          }`}
       >
         {title}
       </div>
@@ -99,7 +97,7 @@ const ProductPopover = ({
       </div>
 
       {/* Scrollable content */}
-      <div className="divide-y divide-gray-200 font-inter ">
+      <div className="divide-y divide-gray-200 font-avenir ">
         {products.map((product) => (
           <Link key={product.id} href={`/shop/${product.name}`}>
             <div

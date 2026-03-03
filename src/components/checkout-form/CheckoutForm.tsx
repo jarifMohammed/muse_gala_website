@@ -28,7 +28,7 @@ const CheckoutForm = () => {
   // }
 
   return (
-    <div className="font-sans">
+    <div className="font-avenir">
       <div>
         {/* Header */}
         <h1 className="font-light opacity-75 text-[18px] md:text-2xl tracking-[0.5rem] uppercase">
@@ -42,7 +42,7 @@ const CheckoutForm = () => {
           </h2>
 
           {isConfirm && idPreview ? (
-            <div className="font-sans border-b border-black pb-2">
+            <div className="font-avenir border-b border-black pb-2">
               <h1 className="block text-sm text-black mb-2 uppercase opacity-75">
                 Full Name : {fullName}
               </h1>
@@ -68,7 +68,7 @@ const CheckoutForm = () => {
                     type="text"
                     value={fullName}
                     onChange={(e) => setField('fullName', e.target.value)}
-                    className="w-full bg-transparent border-0 border-b border-black pb-2 text-black opacity-75 placeholder-gray-400 focus:outline-none focus:border-black uppercase"
+                    className="w-full bg-transparent border-0 border-b border-black pb-2 text-black opacity-75 placeholder-gray-400 focus:outline-none focus:border-black uppercase font-avenir"
                   />
                 </div>
 
@@ -82,7 +82,7 @@ const CheckoutForm = () => {
                     value={email}
                     required
                     onChange={(e) => setField('email', e.target.value)}
-                    className="w-full bg-transparent border-0 border-b border-black pb-2 text-black opacity-75 placeholder-gray-400 focus:outline-none focus:border-black"
+                    className="w-full bg-transparent border-0 border-b border-black pb-2 text-black opacity-75 placeholder-gray-400 focus:outline-none focus:border-black font-avenir"
                   />
                 </div>
 
@@ -95,7 +95,7 @@ const CheckoutForm = () => {
                     type="tel"
                     value={phone}
                     onChange={(e) => setField('phone', e.target.value)}
-                    className="w-full bg-transparent border-0 border-b border-black pb-2 text-black opacity-75 placeholder-gray-400 focus:outline-none focus:border-black uppercase"
+                    className="w-full bg-transparent border-0 border-b border-black pb-2 text-black opacity-75 placeholder-gray-400 focus:outline-none focus:border-black uppercase font-avenir"
                   />
                 </div>
 
@@ -108,7 +108,7 @@ const CheckoutForm = () => {
                     type="text"
                     value={address}
                     onChange={(e) => setField('address', e.target.value)}
-                    className="w-full bg-transparent border-0 border-b border-black pb-2 text-black opacity-75 placeholder-gray-400 focus:outline-none focus:border-black "
+                    className="w-full bg-transparent border-0 border-b border-black pb-2 text-black opacity-75 placeholder-gray-400 focus:outline-none focus:border-black font-avenir"
                   />
                 </div>
 
@@ -149,7 +149,7 @@ const CheckoutForm = () => {
               </div>
 
               {/* {!user?.kycVerified && (
-                <p className="text-sm font-light text-gray-600 mt-6 leading-relaxed font-sans tracking-[.05rem]">
+                <p className="text-sm font-light text-gray-600 mt-6 leading-relaxed font-avenir tracking-[.05rem]">
                   Upload a valid photo ID to complete your booking. No 3D field
                   will be placed.
                 </p>

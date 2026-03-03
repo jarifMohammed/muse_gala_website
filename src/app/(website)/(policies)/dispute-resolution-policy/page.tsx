@@ -8,7 +8,7 @@ export default function DisputeResolutionPolicy() {
         <h1 className="text-3xl tracking-[0.35rem] uppercase font-normal text-gray-900">
           Dispute Resolution Policy
         </h1>
-        <p className="mt-3 text-gray-600 text-sm md:text-base mx-auto font-light font-inter tracking-[.1em]">
+        <p className="mt-3 text-gray-600 text-sm md:text-base mx-auto font-light font-avenir tracking-[.1em]">
           At Muse Gala, we aim to provide a seamless rental experience for both
           customers and lenders. However, we understand that issues may
           occasionally arise. This Dispute Resolution Policy outlines how
@@ -18,7 +18,7 @@ export default function DisputeResolutionPolicy() {
       </div>
 
       {/* Policy Content */}
-      <div className="space-y-10 text-gray-800 font-inter leading-[30px] tracking-[.08em] font-light">
+      <div className="space-y-10 text-gray-800 font-avenir leading-[30px] tracking-[.08em] font-light">
         {/* Scope of Disputes */}
         <section>
           <h2 className="font-light text-lg tracking-[.1em] text-gray-900 mb-3">

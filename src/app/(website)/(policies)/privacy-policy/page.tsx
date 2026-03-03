@@ -134,7 +134,7 @@ export default function PrivacyPolicyPage() {
         </li>
       </ol>
 
-      <p className="font-light font-inter text-sm tracking-[0.1em] text-gray-800 border-t pt-4">
+      <p className="font-light font-avenir text-sm tracking-[0.1em] text-gray-800 border-t pt-4">
         Summary — Muse Gala is committed to protecting your privacy by ensuring
         transparency, security, and compliance with applicable privacy laws.
       </p>

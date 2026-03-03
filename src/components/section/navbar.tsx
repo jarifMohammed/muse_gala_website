@@ -206,7 +206,7 @@ const Navbar = ({ isLoggedin, session }: Props) => {
                             className={`${pathname === menu.href
                               ? 'font-semibold'
                               : 'font-light'
-                              } text-lg hover:text-gray-600 transition-colors`}
+                              } text-lg hover:text-gray-600 transition-colors font-avenir`}
                           >
                             <SheetClose>{menu.linkText}</SheetClose>
                           </Link>
@@ -214,7 +214,7 @@ const Navbar = ({ isLoggedin, session }: Props) => {
                         {!isLoggedin && (
                           <Link
                             href="/login"
-                            className="text-lg font-medium hover:text-gray-600 transition-colors"
+                            className="text-lg font-light hover:text-gray-600 transition-colors font-avenir uppercase"
                           >
                             <SheetClose>Login</SheetClose>
                           </Link>
@@ -233,7 +233,7 @@ const Navbar = ({ isLoggedin, session }: Props) => {
                     variant="link"
                     effect="hoverUnderline"
                     asChild
-                    className={`text-[12px] font-inter font-light ${getTextColor()}`}
+                    className={`text-[12px] font-avenir font-light ${getTextColor()}`}
                   >
                     <Link
                       href={menu.href}
@@ -325,7 +325,7 @@ const Navbar = ({ isLoggedin, session }: Props) => {
                             className="block text-center w-full"
                             onClick={() => setIsAccountOpen(!isAccountOpen)}
                           >
-                            <span className="text-black text-xs md:text-sm tracking-[0.2em] uppercase">
+                            <span className="text-black text-xs md:text-sm tracking-[0.2em] uppercase font-avenir font-light">
                               MY ACCOUNT
                             </span>
                             <div className="h-[1px] bg-black w-full mt-1"></div>
@@ -334,7 +334,7 @@ const Navbar = ({ isLoggedin, session }: Props) => {
                             onClick={handleSignOut}
                             className="block text-center w-full"
                           >
-                            <span className="text-black text-xs md:text-sm tracking-[0.2em] uppercase">
+                            <span className="text-black text-xs md:text-sm tracking-[0.2em] uppercase font-avenir font-light">
                               SIGN OUT
                             </span>
                             <div className="h-[1px] bg-black w-full mt-1"></div>
@@ -348,89 +348,93 @@ const Navbar = ({ isLoggedin, session }: Props) => {
             </div>
           </div>
         </div>
-      </div>
+      </div >
 
       {/* Full-width Search Dropdown */}
-      {isSearchOpen && (
-        <div
-          ref={searchModalRef}
-          className="fixed top-[70px] left-0 md:left-[14%] w-full md:w-[72%] bg-white border-b border-gray-200 shadow-lg z-[60] animate-in slide-in-from-top-2 duration-200"
-          onClick={(e) => e.stopPropagation()} // Prevent clicks inside from bubbling up
-        >
-          <div className="container mx-auto py-8 px-4">
-            <form
-              onSubmit={handleSearchSubmit}
-              className="flex items-center gap-4"
-            >
-              <div className="flex-1 relative">
-                <input
-                  type="text"
-                  placeholder="SEARCH FOR DRESSES..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full border-0 border-b border-black focus:border-black focus:outline-none px-0 py-2 placeholder:text-gray-400 font-avenir tracking-widest text-sm uppercase"
-                  autoFocus
-                />
-              </div>
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation()
-                  setIsSearchOpen(false)
-                }}
-                className="text-gray-400 hover:text-black transition-colors p-2"
+      {
+        isSearchOpen && (
+          <div
+            ref={searchModalRef}
+            className="fixed top-[70px] left-0 md:left-[14%] w-full md:w-[72%] bg-white border-b border-gray-200 shadow-lg z-[60] animate-in slide-in-from-top-2 duration-200"
+            onClick={(e) => e.stopPropagation()} // Prevent clicks inside from bubbling up
+          >
+            <div className="container mx-auto py-8 px-4">
+              <form
+                onSubmit={handleSearchSubmit}
+                className="flex items-center gap-4"
               >
-                <X size={24} />
-              </button>
-            </form>
+                <div className="flex-1 relative">
+                  <input
+                    type="text"
+                    placeholder="SEARCH FOR DRESSES..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="w-full border-0 border-b border-black focus:border-black focus:outline-none px-0 py-2 placeholder:text-gray-400 font-avenir tracking-widest text-sm uppercase"
+                    autoFocus
+                  />
+                </div>
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    setIsSearchOpen(false)
+                  }}
+                  className="text-gray-400 hover:text-black transition-colors p-2"
+                >
+                  <X size={24} />
+                </button>
+              </form>
 
-            {/* Search Results Dropdown */}
-            {searchQuery.trim().length > 0 && (
-              <div className="mt-6 max-h-[60vh] overflow-y-auto custom-scrollbar">
-                {isSearchLoading ? (
-                  <div className="flex justify-center py-10">
-                    <div className="animate-pulse flex gap-2">
-                      <div className="w-2 h-2 bg-black rounded-full animate-bounce"></div>
-                      <div className="w-2 h-2 bg-black rounded-full animate-bounce [animation-delay:-.3s]"></div>
-                      <div className="w-2 h-2 bg-black rounded-full animate-bounce [animation-delay:-.5s]"></div>
+              {/* Search Results Dropdown */}
+              {searchQuery.trim().length > 0 && (
+                <div className="mt-6 max-h-[60vh] overflow-y-auto custom-scrollbar">
+                  {isSearchLoading ? (
+                    <div className="flex justify-center py-10">
+                      <div className="animate-pulse flex gap-2">
+                        <div className="w-2 h-2 bg-black rounded-full animate-bounce"></div>
+                        <div className="w-2 h-2 bg-black rounded-full animate-bounce [animation-delay:-.3s]"></div>
+                        <div className="w-2 h-2 bg-black rounded-full animate-bounce [animation-delay:-.5s]"></div>
+                      </div>
                     </div>
-                  </div>
-                ) : searchResults?.data?.length > 0 ? (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {searchResults.data.map((product: TrendingProduct) => (
-                      <SearchProductCard
-                        key={product._id}
-                        product={product}
-                        onClick={() => setIsSearchOpen(false)}
-                      />
-                    ))}
-                  </div>
-                ) : (
-                  debouncedSearchQuery.trim().length > 0 && (
-                    <div className="text-center py-10">
-                      <p className="text-gray-500 font-avenir tracking-widest text-sm uppercase">
-                        No dresses found for &quot;{searchQuery}&quot;
-                      </p>
+                  ) : searchResults?.data?.length > 0 ? (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                      {searchResults.data.map((product: TrendingProduct) => (
+                        <SearchProductCard
+                          key={product._id}
+                          product={product}
+                          onClick={() => setIsSearchOpen(false)}
+                        />
+                      ))}
                     </div>
-                  )
-                )}
-              </div>
-            )}
+                  ) : (
+                    debouncedSearchQuery.trim().length > 0 && (
+                      <div className="text-center py-10">
+                        <p className="text-gray-500 font-avenir tracking-widest text-sm uppercase">
+                          No dresses found for &quot;{searchQuery}&quot;
+                        </p>
+                      </div>
+                    )
+                  )}
+                </div>
+              )}
+            </div>
           </div>
-        </div>
-      )}
+        )
+      }
 
       {/* Overlay to close search when clicking outside */}
-      {isSearchOpen && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-20 z-[59]"
-          onClick={(e) => {
-            // This will be handled by the click outside detection
-            // We don't want to close here directly as it would interfere with our logic
-            e.stopPropagation()
-          }}
-        />
-      )}
+      {
+        isSearchOpen && (
+          <div
+            className="fixed inset-0 bg-black bg-opacity-20 z-[59]"
+            onClick={(e) => {
+              // This will be handled by the click outside detection
+              // We don't want to close here directly as it would interfere with our logic
+              e.stopPropagation()
+            }}
+          />
+        )
+      }
     </>
   )
 }

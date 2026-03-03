@@ -65,9 +65,9 @@ const RentalDates = () => {
   const displayDate =
     selectedRange?.from && selectedRange?.to
       ? `${format(selectedRange.from, 'dd/MM/yyyy')} - ${format(
-          selectedRange.to,
-          'dd/MM/yyyy'
-        )}`
+        selectedRange.to,
+        'dd/MM/yyyy'
+      )}`
       : ''
 
   return (
@@ -132,8 +132,8 @@ const RentalDates = () => {
           />
 
           {/* Helpful hint */}
-          <div className="p-3 text-xs text-gray-500 border-t text-center pt-1 font-light tracking-wide">
-            Click on start date again to reset
+          <div className="p-3 text-xs text-gray-500 border-t text-center pt-1 font-light tracking-wide font-avenir">
+            Book Now
           </div>
         </PopoverContent>
       </Popover>

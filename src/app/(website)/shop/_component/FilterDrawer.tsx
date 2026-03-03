@@ -21,14 +21,14 @@ export function FilterDrawer() {
     <Drawer>
       <div className="flex justify-end">
         <DrawerTrigger asChild className="lg:hidden">
-          <Button variant="outline">
+          <Button variant="outline" className="font-avenir">
             <Filter /> Filter
           </Button>
         </DrawerTrigger>
       </div>
 
-      <DrawerContent className="container">
-        <div className=" space-y-3 mt-3 pb-8">
+      <DrawerContent className="container font-avenir">
+        <div className=" space-y-3 mt-3 pb-8 font-avenir">
           <SearchProduct />
           <Rental />
           <LocalPickup />

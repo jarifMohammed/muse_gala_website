@@ -13,7 +13,7 @@ const Footer = () => {
   // const [open1, setOpne1] = useState(false)
   return (
     <footer className="w-full bg-white">
-      <div className="max-w-[1800px] mx-auto px-2 md:px-4 lg:px-6">
+      <div className="max-w-[1800px] mx-auto px-6 md:px-12 lg:px-20">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
           {/* CUSTOMER SECTION */}
           <div className="space-y-4">
@@ -149,8 +149,8 @@ const Footer = () => {
               <div className="flex relative flex-col sm:flex-row justify-center items-center max-w-md mx-auto">
                 <input
                   type="email"
-                  placeholder="Email@example.com"
-                  className="border brand-body border-t-0 border-l-0 border-r-0 border-[#000000] px-2 py-[10px] mb-4 sm:mb-0 sm:flex-1 outline-none"
+                  placeholder="YOUR EMAIL"
+                  className="border brand-body border-t-0 border-l-0 border-r-0 border-[#000000] px-2 py-[10px] mb-4 sm:mb-0 sm:flex-1 outline-none font-avenir font-light"
                 />
                 <Button
                   variant="ghost"
@@ -171,9 +171,9 @@ const Footer = () => {
         </div>
 
         {/* LOGO AND PAYMENT METHODS */}
-        <div className="mt-12 flex flex-col items-center justify-between space-y-6  pt-8 md:flex-row md:space-y-0 relative pb-10">
-          <div className="flex flex-col gap-y-10 items-center space-y-4 md:flex-row md:space-x-4 md:space-y-0">
-            <div className="flex space-x-4 mb-10 md:mb-0">
+        <div className="mt-12 flex flex-col items-center justify-between space-y-12 pt-8 md:flex-row md:space-y-0 relative pb-10">
+          <div className="flex flex-col items-center md:items-start space-y-4">
+            <div className="flex space-x-4">
               <Image
                 src="/images/footer/amex.svg"
                 alt="Mastercard"
@@ -205,24 +205,24 @@ const Footer = () => {
             </div>
           </div>
 
-          <div className="flex flex-col items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 my-5 w-max">
+          <div className="flex flex-col items-center md:absolute md:top-1/2 md:left-1/2 md:transform md:-translate-x-1/2 md:-translate-y-1/2 my-5 w-full md:w-max">
             <div>
               <Image
                 src={'/logo-black.svg'}
                 width={300}
                 height={300}
                 alt="logo"
-                className="w-12 h-12"
+                className="w-12 h-12 mx-auto"
               />
             </div>
-            <div className="flex items-center space-x-2">
-              <span className="brand-subheader whitespace-nowrap">MUSE GALA</span>
+            <div className="flex items-center justify-center space-x-2">
+              <span className="brand-subheader tracking-[10px] md:tracking-[20px] whitespace-nowrap">MUSE GALA</span>
             </div>
           </div>
-          <div></div>
+          <div className="hidden md:block w-[120px]"></div>
         </div>
       </div>
-      <p className="text-center border-t border-gray-600 py-4 brand-body">
+      <p className="text-center border-t border-gray-600 py-4 brand-body font-avenir font-light">
         © MUSE GALA 2025
       </p>
     </footer>

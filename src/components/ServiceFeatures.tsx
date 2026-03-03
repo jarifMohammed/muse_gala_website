@@ -3,36 +3,32 @@ import Image from "next/image";
 export default function ServiceFeatures() {
   const features = [
     {
-      imageSrc: "/images/homeIcon1.png",
-      title: "VERIFIED BOUTIQUES ONLY",
-      description: "",
+      imageSrc: "/images/check.svg",
+      title: "Trusted Lenders",
+
     },
     {
-      imageSrc: "/images/homeIcon2.png",
-      title: "BOOK INSTANTLY,",
-      description: "NO WAITING",
+      imageSrc: "/images/clock.svg",
+      title: "Instant Booking",
+
     },
     {
-      imageSrc: "/images/homeIcon3.png",
-      title: "PICKUP LOCALLY",
-      description: "OR SHIP FAST",
+      imageSrc: "/images/location.svg",
+      title: "Find Near You",
+
     },
     {
-      imageSrc: "/images/homeIcon4.png",
-      title: "LOYALTY REWARDS",
-      description: "AND PERKS",
+      imageSrc: "/images/delivery-box.svg",
+      title: "Pick Up Or Express Delivery",
+
     },
-    {
-      imageSrc: "/images/homeIcon5.png",
-      title: "OPTIONAL INSURANCE",
-      description: "FOR PEACE OF MIND",
-    },
+
   ];
 
   return (
-    <section className="py-12 px-4 bg-white">
+    <section className="py-4 px-6 md:px-12 lg:px-20 bg-white">
       <div className="max-w-[1800px] mx-auto">
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-8 md:gap-12">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-8 md:gap-12">
           {features.map((feature, index) => (
             <div
               key={index}
@@ -47,12 +43,10 @@ export default function ServiceFeatures() {
                   className="mx-auto"
                 />
               </div>
-              <h3 className={`text-sm font-inter tracking-wider mb-1 ${index >= 3 ? "font-medium" : "font-normal"}`}>
+              <h3 className="text-sm font-avenir uppercase  tracking-wider mb-1">
                 {feature.title}
               </h3>
-              {feature.description && (
-                <p className="text-sm tracking-wider">{feature.description}</p>
-              )}
+
             </div>
           ))}
         </div>

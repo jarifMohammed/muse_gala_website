@@ -14,7 +14,7 @@ export const SearchProductCard = ({ product, onClick }: SearchProductCardProps) 
         <Link
             href={`/shop/${product._id}`}
             onClick={onClick}
-            className="flex items-center gap-4 p-2 hover:bg-gray-50 transition-colors group"
+            className="flex items-center gap-4 p-2 hover:bg-gray-50 transition-colors group font-avenir"
         >
             <div className="relative w-16 h-20 flex-shrink-0 overflow-hidden bg-gray-100">
                 <Image

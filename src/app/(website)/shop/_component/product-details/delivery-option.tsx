@@ -59,11 +59,10 @@ const DeliveryOption = ({ masterDressId }: DeliveryOptionProps) => {
         {/* SHIPPING BTN */}
         <button
           onClick={() => setDeliveryOption('shipping')}
-          className={`w-1/2 pb-2 uppercase tracking-widest ${
-            deliveryOption === 'shipping'
-              ? 'border-b-2 border-black'
-              : 'border-b-2 border-white'
-          }`}
+          className={`w-1/2 pb-2 uppercase tracking-widest ${deliveryOption === 'shipping'
+            ? 'border-b-2 border-black'
+            : 'border-b-2 border-white'
+            }`}
         >
           Shipping
         </button>
@@ -74,11 +73,10 @@ const DeliveryOption = ({ masterDressId }: DeliveryOptionProps) => {
             setDeliveryOption('pickup')
             handleLocalPickup()
           }}
-          className={`w-1/2 pb-2 uppercase tracking-widest ${
-            deliveryOption === 'pickup'
-              ? 'border-b-2 border-black'
-              : 'border-b-2 border-white'
-          }`}
+          className={`w-1/2 pb-2 uppercase tracking-widest ${deliveryOption === 'pickup'
+            ? 'border-b-2 border-black'
+            : 'border-b-2 border-white'
+            }`}
         >
           Local Pickup
         </button>
@@ -87,10 +85,7 @@ const DeliveryOption = ({ masterDressId }: DeliveryOptionProps) => {
       {/* Description / Map */}
       <div>
         {deliveryOption === 'shipping' ? (
-          <p className="pt-5 md:pt-10 font-light text-sm font-sans tracking-[0.1rem]">
-            $30 shipping fee (includes prepaid return label). Estimated
-            delivery: 1–2 business days.
-          </p>
+          <div className="pt-5 md:pt-10" />
         ) : (
           <div className="pt-5 w-full">
             <ShoppinghMap />

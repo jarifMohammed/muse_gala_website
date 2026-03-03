@@ -13,18 +13,18 @@ export default function ViewToggle() {
       {isMapView ? (
         <Link
           href="/find-near-you"
-          className="flex items-center gap-1 border border-black px-3 md:px-4 py-1.5 md:py-2 brand-button text-xs md:text-sm tracking-tighter md:tracking-normal whitespace-nowrap h-8 md:h-10"
+          className="flex items-center gap-1 px-3 md:px-4 py-1.5 md:py-2 brand-button text-xs md:text-sm tracking-tighter md:tracking-normal whitespace-nowrap h-8 md:h-10 uppercase"
         >
           <List size={14} className="md:size-4" />
-          List View
+          LIST / MAP
         </Link>
       ) : (
         <Link
           href="/find-near-you/map"
-          className="flex items-center gap-1 border border-black px-3 md:px-4 py-1.5 md:py-2 brand-button text-xs md:text-sm tracking-tighter md:tracking-normal whitespace-nowrap h-8 md:h-10"
+          className="flex items-center gap-1 px-3 md:px-4 py-1.5 md:py-2 brand-button text-xs md:text-sm tracking-tighter md:tracking-normal whitespace-nowrap h-8 md:h-10 uppercase"
         >
           <Map size={14} className="md:size-4" />
-          Map View
+          LIST / MAP
         </Link>
       )}
     </div>

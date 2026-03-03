@@ -10,6 +10,15 @@
   .animate-fadeIn {
     animation: fadeIn 0.3s ease-in-out;
   }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 }
 
 @keyframes fadeIn {
@@ -22,6 +31,10 @@
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 @layer base {
@@ -95,11 +108,12 @@
   }
 
   .sub-header {
-    @apply font-inter font-light uppercase tracking-[8px] text-[16px];
+    @apply font-avenir font-light uppercase tracking-[8px] text-[16px];
   }
 }
 
 .sub-title {
+  font-family: var(--font-avenir);
   font-weight: 400;
   font-size: 16px;
   line-height: 32px;
@@ -153,6 +167,13 @@
     letter-spacing: 20px;
     text-transform: uppercase;
     text-align: center;
+  }
+
+  @media (max-width: 768px) {
+    .brand-header {
+      font-size: 18px;
+      letter-spacing: 8px;
+    }
   }
 
   .brand-subheader {

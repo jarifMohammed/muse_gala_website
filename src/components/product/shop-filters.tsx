@@ -183,9 +183,8 @@ export function ShopFilters({ filters, onFilterChange }: ShopFiltersProps) {
         className="flex items-center cursor-pointer"
       >
         <span
-          className={`inline-block w-4 h-4 rounded-full mr-2 ${
-            checked ? "ring-1 ring-black" : ""
-          }`}
+          className={`inline-block w-4 h-4 rounded-full mr-2 ${checked ? "ring-1 ring-black" : ""
+            }`}
           style={{ backgroundColor: color }}
         ></span>
         <span className="text-xs uppercase tracking-wider">{label}</span>
@@ -194,7 +193,7 @@ export function ShopFilters({ filters, onFilterChange }: ShopFiltersProps) {
   );
 
   return (
-    <div className="mt-6">
+    <div className="mt-6 font-avenir">
       <Checkbox
         id="available-near-me"
         label="AVAILABLE NEAR ME"

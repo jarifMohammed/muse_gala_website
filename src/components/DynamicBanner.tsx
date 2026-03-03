@@ -7,7 +7,7 @@ import { useQuery } from '@tanstack/react-query'
 import { useState, useEffect } from 'react'
 import { useBannerStore } from '@/zustand/bannerStore'
 
-const FALLBACK_BANNER = '/pages/hero.webp'
+const FALLBACK_BANNER = '/pages/HeroPhoto.webp'
 
 // Fetch from API
 async function getBanner() {
@@ -68,11 +68,12 @@ export default function DynamicBanner() {
       />
 
       {/* Content */}
-      <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <Link href="/login">
-          <p className="sub-header text-slate-200 md:text-[24px] text-sm text-center capitalize lg:text-[36px] font-light leading-[64px] tracking-[.5em]">
-            BROWSE TO RENT
-          </p>
+      <div className="absolute inset-0 flex flex-col items-center justify-end pb-20">
+        <Link
+          href="/shop"
+          className="text-white text-sm md:text-base lg:text-lg font-avenir font-light !tracking-[0.5em] hover:opacity-70 transition-opacity uppercase"
+        >
+          View Collection
         </Link>
       </div>
     </div>

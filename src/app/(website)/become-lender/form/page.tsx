@@ -154,7 +154,7 @@ const BecomeALenderForm = () => {
               <Accordion type="single" collapsible defaultValue="item-1">
                 {/* first  */}
                 <AccordionItem value="item-1">
-                  <AccordionTrigger className="text-xl font-inter font-normal font-nimbus tracking-[0.2em] leading-[48px] uppercase">
+                  <AccordionTrigger className="text-xl font-avenir font-normal tracking-[0.2em] leading-[48px] uppercase">
                     BUSINESS INFORMATION
                   </AccordionTrigger>
                   <AccordionContent>
@@ -164,7 +164,7 @@ const BecomeALenderForm = () => {
                         name="businessName"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel className="text-sm font-normal font-nimbus tracking-[15%] leading-[28px] text-black ">
+                            <FormLabel className="text-sm font-normal font-avenir tracking-[15%] leading-[28px] text-black ">
                               Business Name{' '}
                               <sup className="pl-1 text-[#891D33]">*</sup>
                             </FormLabel>
@@ -185,9 +185,9 @@ const BecomeALenderForm = () => {
                         name="abnNumber"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel className="text-sm font-normal font-nimbus tracking-[15%] leading-[28px] text-black ">
+                            <FormLabel className="text-sm font-normal font-avenir tracking-[15%] leading-[28px] text-black ">
                               Business ABN{' '}
-                              <span className="pl-4 md:pl-5 text-lg font-normal tracking-[0%] text-[#595959] font-nimbus leading-[24px] ">
+                              <span className="pl-4 md:pl-5 text-lg font-normal tracking-[0%] text-[#595959] font-avenir leading-[24px] ">
                                 (if available)
                               </span>
                             </FormLabel>
@@ -208,7 +208,7 @@ const BecomeALenderForm = () => {
                         name="instagramHandle"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel className="text-sm font-normal font-nimbus tracking-[15%] leading-[28px] text-black ">
+                            <FormLabel className="text-sm font-normal font-avenir tracking-[15%] leading-[28px] text-black ">
                               Instagram Handle{' '}
                               <sup className="pl-1 text-[#891D33]">*</sup>
                             </FormLabel>
@@ -229,9 +229,9 @@ const BecomeALenderForm = () => {
                         name="businessWebsite"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel className="text-sm font-normal font-nimbus tracking-[15%] leading-[28px] text-black ">
+                            <FormLabel className="text-sm font-normal font-avenir tracking-[15%] leading-[28px] text-black ">
                               Website
-                              <span className="pl-4 md:pl-5 text-lg font-normal tracking-[0%] text-[#595959] font-nimbus leading-[24px] ">
+                              <span className="pl-4 md:pl-5 text-lg font-normal tracking-[0%] text-[#595959] font-avenir leading-[24px] ">
                                 (if available)
                               </span>
                             </FormLabel>
@@ -250,7 +250,7 @@ const BecomeALenderForm = () => {
                 </AccordionItem>
                 {/* second  */}
                 <AccordionItem value="item-2">
-                  <AccordionTrigger className="text-xl font-inter font-normal font-nimbus tracking-[0.2em] leading-[48px] uppercase">
+                  <AccordionTrigger className="text-xl font-avenir font-normal tracking-[0.2em] leading-[48px] uppercase">
                     Contact Information
                   </AccordionTrigger>
                   <AccordionContent>
@@ -260,7 +260,7 @@ const BecomeALenderForm = () => {
                         name="fullName"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel className="text-sm font-normal font-nimbus tracking-[15%] leading-[28px] text-black ">
+                            <FormLabel className="text-sm font-normal font-avenir tracking-[15%] leading-[28px] text-black ">
                               Full Name
                               <sup className="pl-1 text-[#891D33]">*</sup>
                             </FormLabel>
@@ -281,9 +281,9 @@ const BecomeALenderForm = () => {
                         name="email"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel className="text-sm font-normal font-nimbus tracking-[15%] leading-[28px] text-black ">
+                            <FormLabel className="text-sm font-normal font-avenir tracking-[15%] leading-[28px] text-black ">
                               Email Address
-                              <span className="pl-4 md:pl-5 text-lg font-normal tracking-[0%] text-[#595959] font-nimbus leading-[24px] ">
+                              <span className="pl-4 md:pl-5 text-lg font-normal tracking-[0%] text-[#595959] font-avenir leading-[24px] ">
                                 (if available)
                               </span>
                             </FormLabel>
@@ -304,7 +304,7 @@ const BecomeALenderForm = () => {
                         name="phoneNumber"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel className="text-sm font-normal font-nimbus tracking-[15%] leading-[28px] text-black ">
+                            <FormLabel className="text-sm font-normal font-avenir tracking-[15%] leading-[28px] text-black ">
                               Phone Number
                               <sup className="pl-1 text-[#891D33]">*</sup>
                             </FormLabel>
@@ -325,7 +325,7 @@ const BecomeALenderForm = () => {
                         name="businessAddress"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel className="text-sm font-normal font-nimbus tracking-[15%] leading-[28px] text-black ">
+                            <FormLabel className="text-sm font-normal font-avenir tracking-[15%] leading-[28px] text-black ">
                               Business Address
                               <sup className="pl-1 text-[#891D33]">*</sup>
                             </FormLabel>
@@ -344,7 +344,7 @@ const BecomeALenderForm = () => {
                 </AccordionItem>
                 {/* third  */}
                 <AccordionItem value="item-3">
-                  <AccordionTrigger className="text-xl font-inter font-normal font-nimbus tracking-[0.2em] leading-[48px] uppercase">
+                  <AccordionTrigger className="text-xl font-avenir font-normal tracking-[0.2em] leading-[48px] uppercase">
                     Collection Overview
                   </AccordionTrigger>
                   <AccordionContent>
@@ -354,7 +354,7 @@ const BecomeALenderForm = () => {
                         name="numberOfDresses"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel className="text-sm font-normal font-nimbus tracking-[15%] leading-[28px] text-black ">
+                            <FormLabel className="text-sm font-normal font-avenir tracking-[15%] leading-[28px] text-black ">
                               How many dresses do you want to list?
                               <sup className="pl-1 text-[#891D33]">*</sup>
                             </FormLabel>
@@ -367,10 +367,10 @@ const BecomeALenderForm = () => {
                                 <SelectTrigger className="w-[90%] h-[60px] border-t-0 border-l-0 border-r-0 border-b-[1.5px] border-black rounded-none focus-visible:ring-0 focus-visible:ring-offset-0 active-visible:ring-0 active-visible:ring-offset-0 focus:ring-0 focus:ring-none px-2 shadow-none !text-xl !md:text-2xl !tracking-[15%] font-medium leading-normal text-black">
                                   <SelectValue
                                     placeholder="Please Select"
-                                    className="!text-xl !md:text-2xl font-normal font-nimbus !tracking-[15%] leading-[28px] text-black"
+                                    className="!text-xl !md:text-2xl font-normal font-avenir !tracking-[15%] leading-[28px] text-black"
                                   />
                                 </SelectTrigger>
-                                <SelectContent className="!text-xl !md:text-2xl font-normal font-nimbus !tracking-[15%] leading-[28px] text-black">
+                                <SelectContent className="!text-xl !md:text-2xl font-normal font-avenir !tracking-[15%] leading-[28px] text-black">
                                   <SelectItem value="1-5">
                                     1-5 Dresses
                                   </SelectItem>
@@ -397,7 +397,7 @@ const BecomeALenderForm = () => {
                         name="reviewStockMethod"
                         render={() => (
                           <FormItem>
-                            <FormLabel className="text-sm font-normal font-nimbus tracking-[15%] leading-[28px] text-black ">
+                            <FormLabel className="text-sm font-normal font-avenir tracking-[15%] leading-[28px] text-black ">
                               Best way for us to review your stock
                               <sup className="pl-1 text-[#891D33]">*</sup>
                             </FormLabel>
@@ -486,26 +486,26 @@ const BecomeALenderForm = () => {
 
                                               {form.watch('reviewStockMethod')
                                                 ?.keyBrands && (
-                                                <div className=" flex items-center -mt-1">
-                                                  <span className="mr-2 text-sm">
-                                                    :
-                                                  </span>
-                                                  <FormField
-                                                    control={form.control}
-                                                    name="notes"
-                                                    render={({ field }) => (
-                                                      <FormItem className="w-full m-0 p-0 ">
-                                                        <FormControl className="w-full">
-                                                          <Input
-                                                            {...field}
-                                                            className="w-full md:w-[1032px] border-0 border-b border-black rounded-none p-0 h-7 focus-visible:ring-0 focus-visible:ring-offset-0 text-sm"
-                                                          />
-                                                        </FormControl>
-                                                      </FormItem>
-                                                    )}
-                                                  />
-                                                </div>
-                                              )}
+                                                  <div className=" flex items-center -mt-1">
+                                                    <span className="mr-2 text-sm">
+                                                      :
+                                                    </span>
+                                                    <FormField
+                                                      control={form.control}
+                                                      name="notes"
+                                                      render={({ field }) => (
+                                                        <FormItem className="w-full m-0 p-0 ">
+                                                          <FormControl className="w-full">
+                                                            <Input
+                                                              {...field}
+                                                              className="w-full md:w-[1032px] border-0 border-b border-black rounded-none p-0 h-7 focus-visible:ring-0 focus-visible:ring-offset-0 text-sm"
+                                                            />
+                                                          </FormControl>
+                                                        </FormItem>
+                                                      )}
+                                                    />
+                                                  </div>
+                                                )}
                                             </div>
                                           </FormItem>
                                         )}
@@ -524,7 +524,7 @@ const BecomeALenderForm = () => {
                 </AccordionItem>
                 {/* fourth part  */}
                 <AccordionItem value="item-4">
-                  <AccordionTrigger className="text-xl font-inter font-normal font-nimbus tracking-[0.2em] leading-[48px] uppercase">
+                  <AccordionTrigger className="text-xl font-avenir font-normal tracking-[0.2em] leading-[48px] uppercase">
                     Service Questions
                   </AccordionTrigger>
                   <AccordionContent>
@@ -534,7 +534,7 @@ const BecomeALenderForm = () => {
                         name="allowLocalPickup"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel className="text-sm font-normal font-nimbus tracking-[15%] leading-[28px] text-black ">
+                            <FormLabel className="text-sm font-normal font-avenir tracking-[15%] leading-[28px] text-black ">
                               Do you offer local pickup?{' '}
                               <span className="text-red-500">*</span>
                             </FormLabel>
@@ -548,7 +548,7 @@ const BecomeALenderForm = () => {
                                   <FormControl className="mt-3">
                                     <RadioGroupItem value="yes" />
                                   </FormControl>
-                                  <FormLabel className="text-sm font-normal font-nimbus tracking-[15%] leading-[28px] text-black ">
+                                  <FormLabel className="text-sm font-normal font-avenir tracking-[15%] leading-[28px] text-black ">
                                     Yes
                                   </FormLabel>
                                 </FormItem>
@@ -556,7 +556,7 @@ const BecomeALenderForm = () => {
                                   <FormControl className="mt-3">
                                     <RadioGroupItem value="no" />
                                   </FormControl>
-                                  <FormLabel className="text-sm font-normal font-nimbus tracking-[15%] leading-[28px] text-black ">
+                                  <FormLabel className="text-sm font-normal font-avenir tracking-[15%] leading-[28px] text-black ">
                                     No
                                   </FormLabel>
                                 </FormItem>
@@ -606,7 +606,7 @@ const BecomeALenderForm = () => {
                         name="shipAustraliaWide"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel className="text-sm font-normal font-nimbus tracking-[15%] leading-[28px] text-black ">
+                            <FormLabel className="text-sm font-normal font-avenir tracking-[15%] leading-[28px] text-black ">
                               Can you ship Australia-wide?
                               <span className="text-red-500">*</span>
                             </FormLabel>
@@ -620,7 +620,7 @@ const BecomeALenderForm = () => {
                                   <FormControl className="mt-3">
                                     <RadioGroupItem value="yes" />
                                   </FormControl>
-                                  <FormLabel className="text-sm font-normal font-nimbus tracking-[15%] leading-[28px] text-black ">
+                                  <FormLabel className="text-sm font-normal font-avenir tracking-[15%] leading-[28px] text-black ">
                                     Yes
                                   </FormLabel>
                                 </FormItem>
@@ -628,7 +628,7 @@ const BecomeALenderForm = () => {
                                   <FormControl className="mt-3">
                                     <RadioGroupItem value="no" />
                                   </FormControl>
-                                  <FormLabel className="text-sm font-normal font-nimbus tracking-[15%] leading-[28px] text-black ">
+                                  <FormLabel className="text-sm font-normal font-avenir tracking-[15%] leading-[28px] text-black ">
                                     No
                                   </FormLabel>
                                 </FormItem>
@@ -645,7 +645,7 @@ const BecomeALenderForm = () => {
                         name="allowTryOn"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel className="text-sm font-normal font-nimbus tracking-[15%] leading-[28px] text-black ">
+                            <FormLabel className="text-sm font-normal font-avenir tracking-[15%] leading-[28px] text-black ">
                               Do you offer try ons?
                               <span className="text-red-500">*</span>
                             </FormLabel>
@@ -659,7 +659,7 @@ const BecomeALenderForm = () => {
                                   <FormControl className="mt-3">
                                     <RadioGroupItem value="yes" />
                                   </FormControl>
-                                  <FormLabel className="text-sm font-normal font-nimbus tracking-[15%] leading-[28px] text-black ">
+                                  <FormLabel className="text-sm font-normal font-avenir tracking-[15%] leading-[28px] text-black ">
                                     Yes
                                   </FormLabel>
                                 </FormItem>
@@ -667,7 +667,7 @@ const BecomeALenderForm = () => {
                                   <FormControl className="mt-3">
                                     <RadioGroupItem value="no" />
                                   </FormControl>
-                                  <FormLabel className="text-sm font-normal font-nimbus tracking-[15%] leading-[28px] text-black ">
+                                  <FormLabel className="text-sm font-normal font-avenir tracking-[15%] leading-[28px] text-black ">
                                     No
                                   </FormLabel>
                                 </FormItem>
@@ -683,7 +683,7 @@ const BecomeALenderForm = () => {
               </Accordion>
 
               <div className="mt-[40px] md:mt-[70px] lg:mt-[100px]">
-                <h5 className="text-[14px] md:text-xl  text-black tracking-[20%] uppercase leading-[48px] font-nimbus border-b border-black">
+                <h5 className="text-[14px] md:text-xl  text-black tracking-[20%] uppercase leading-[48px] font-avenir border-b border-black">
                   Agreement
                 </h5>
               </div>
@@ -700,7 +700,7 @@ const BecomeALenderForm = () => {
                           className="w-[20px] h-[20px]"
                         />
                       </FormControl>
-                      <FormLabel className="text-base md:text-[14px] font-nimbus font-normal leading-[24px] tracking-[0%] text-black">
+                      <FormLabel className="text-base md:text-[14px] font-avenir font-normal leading-[24px] tracking-[0%] text-black">
                         I confirm that all dresses listed meet Muse Gala&apos;`s
                         curation and quality standards.
                       </FormLabel>
@@ -722,7 +722,7 @@ const BecomeALenderForm = () => {
                           className="w-[20px] h-[20px]"
                         />
                       </FormControl>
-                      <FormLabel className="text-base md:text-[14px] font-nimbus font-normal leading-[24px] tracking-[0%] text-black">
+                      <FormLabel className="text-base md:text-[14px] font-avenir font-normal leading-[24px] tracking-[0%] text-black">
                         I agree to Muse Gala&apos;s{' '}
                         <Link href={'/lender-terms-and-conditions'}>
                           <span className="text-[#891D33] underline">
@@ -739,7 +739,7 @@ const BecomeALenderForm = () => {
                 <button
                   disabled={isPending}
                   className={cn(
-                    'text-base font-normal font-nimbus leading-[20px] tracking-[20%] uppercase text-black border-b border-black py-[10px]',
+                    'text-base font-normal font-avenir leading-[20px] tracking-[20%] uppercase text-black border-b border-black py-[10px]',
                     isPending && 'text-black/60'
                   )}
                   type="submit"

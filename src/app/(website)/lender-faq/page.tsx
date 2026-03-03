@@ -8,7 +8,7 @@ export default function LenderFAQ() {
         <h1 className="text-3xl tracking-[0.35rem] uppercase font-normal text-gray-900">
           Lender FAQ
         </h1>
-        <p className="mt-3 text-gray-600 text-sm md:text-base max-w-2xl mx-auto font-light font-inter tracking-[.1em]">
+        <p className="mt-3 text-gray-600 text-sm md:text-base max-w-2xl mx-auto font-light font-avenir tracking-[.1em]">
           Muse Gala is a curated fashion rental platform that connects boutique
           lenders with style-conscious renters across Australia. Below are
           frequently asked questions from current and prospective lenders.
@@ -16,10 +16,10 @@ export default function LenderFAQ() {
       </div>
 
       {/* FAQ List */}
-      <div className="space-y-10 text-gray-800 font-inter leading-[30px] tracking-[.08em] font-light">
+      <div className="space-y-10 text-gray-800 font-avenir leading-[30px] tracking-[.08em] font-light">
         <ul className="list-decimal ml-6 space-y-8">
           <li>
-            <span className="font-light text-lg tracking-[.1em]">
+            <span className="font-light text-lg tracking-[.1em] font-avenir">
               How do I become a lender?
             </span>
             <p className="ml-6 mt-2 text-gray-600">
@@ -49,7 +49,7 @@ export default function LenderFAQ() {
           </li>
 
           <li>
-            <span className="font-light text-lg tracking-[.1em]">
+            <span className="font-light text-lg tracking-[.1em] font-avenir">
               What is the commission structure?
             </span>
             <p className="ml-6 mt-2 text-gray-600">
@@ -182,7 +182,7 @@ export default function LenderFAQ() {
           </li>
         </ul>
 
-        <p className="font-light font-inter text-sm tracking-[0.1em] text-gray-800 border-t pt-4">
+        <p className="font-light font-avenir text-sm tracking-[0.1em] text-gray-800 border-t pt-4">
           Summary — Muse Gala supports lenders with tools, protection, and
           national reach to grow their rental business confidently.
         </p>
