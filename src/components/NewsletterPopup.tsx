@@ -118,11 +118,11 @@ export default function NewsletterPopup() {
 
                         {/* Content */}
                         <div className="text-center mb-10 space-y-4">
-                            <h2 className="text-xl md:text-2xl font-light tracking-[0.2em] uppercase text-gray-800">
+                            <h2 className="text-xl md:text-2xl  font-light tracking-[0.2em] uppercase text-gray-800">
                                 A LITTLE SOMETHING FOR YOU
                             </h2>
                             <p className="text-sm md:text-base font-light text-gray-600 max-w-sm mx-auto leading-relaxed">
-                                Join for exclusive offers, new dress drops, and your first rental treat.
+                                Join for exclusive offers and your welcome gift.
                             </p>
                         </div>
 

@@ -1,16 +1,47 @@
 'use client'
-import { ArrowRight, Instagram } from 'lucide-react'
+import { ArrowRight, Instagram, Loader2 } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
-// import { useState } from 'react'
-// import { FaTiktok } from 'react-icons/fa6'
-// import CustomerTermsConditionsDialog from '../tmc/customer-terms-conditions-dialog'
-// import LenderTermsConditions from '../tmc/lender -terms-Conditions'
+import { useState } from 'react'
+import { useMutation } from '@tanstack/react-query'
+import { toast } from 'sonner'
 import { Button } from '../ui/button'
 
 const Footer = () => {
-  // const [open, setOpne] = useState(false)
-  // const [open1, setOpne1] = useState(false)
+  const [email, setEmail] = useState('')
+
+  const { mutate, isPending } = useMutation({
+    mutationKey: ['newsletter-subscription-footer'],
+    mutationFn: async () => {
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        throw new Error('Please enter a valid email address')
+      }
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/newsletterSubscription/create`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            firstName: '',
+            lastName: '',
+            email,
+            phoneNumber: '',
+          }),
+        }
+      )
+      const data = await res.json()
+      if (!res.ok || !data.status) throw new Error(data.message || 'Failed to subscribe')
+      return data
+    },
+    onSuccess: () => {
+      toast.success('Thank you for subscribing!')
+      setEmail('')
+    },
+    onError: (err: Error) => {
+      toast.error(err.message)
+    },
+  })
+
   return (
     <footer className="w-full bg-white">
       <div className="max-w-[1800px] mx-auto px-6 md:px-12 lg:px-20">
