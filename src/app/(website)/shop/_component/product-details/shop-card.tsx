@@ -5,7 +5,7 @@ import { Heart } from 'lucide-react'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 
 interface ShopCardProps {
   allImages: string[]
@@ -19,14 +19,14 @@ const ShopCard = ({ thumbnailImage, allImages, isLoading, productdata }: ShopCar
   const [isWishlisted, setIsWishlisted] = useState(false)
   const { data: session } = useSession()
   const router = useRouter()
+  const touchStartX = useRef<number | null>(null)
 
   const images = [thumbnailImage, ...allImages].filter(Boolean)
 
-  // --------------------------------------- CHECK EXISTING WISHLIST ITEM----------------------------------------
+  // --------------------------------------- CHECK EXISTING WISHLIST ITEM ----------------------------------------
   useEffect(() => {
     if (!productdata?._id) return
-
-    const stored = localStorage.getItem("wishlist")
+    const stored = localStorage.getItem('wishlist')
     if (stored) {
       const wishlist = JSON.parse(stored)
       const exists = wishlist.some((p: any) => p._id === productdata._id)
@@ -34,45 +34,58 @@ const ShopCard = ({ thumbnailImage, allImages, isLoading, productdata }: ShopCar
     }
   }, [productdata])
 
-  // -------------- TOGGLE WISHLIST---------------------------
+  // -------------- TOGGLE WISHLIST ---------------------------
   const handleToggleWishlist = () => {
     if (!session) {
-      alert("Please login to add items to your wishlist.")
+      alert('Please login to add items to your wishlist.')
       router.push('/login')
       return
     }
 
-    const stored = localStorage.getItem("wishlist")
+    const stored = localStorage.getItem('wishlist')
     let wishlist = stored ? JSON.parse(stored) : []
-
     const exists = wishlist.some((item: any) => item?._id === productdata?._id)
 
     if (exists) {
-      // 🔥 Remove
       wishlist = wishlist.filter((item: any) => item?._id !== productdata?._id)
       setIsWishlisted(false)
     } else {
-      // 🔥 Add
       wishlist.push(productdata)
       setIsWishlisted(true)
     }
 
-    localStorage.setItem("wishlist", JSON.stringify(wishlist))
+    localStorage.setItem('wishlist', JSON.stringify(wishlist))
   }
 
-  // -------------------------- LOADING UI-------------------------------------------
+  // -------------- SWIPE HANDLERS ---------------------------
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX
+  }
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current === null) return
+    const diff = touchStartX.current - e.changedTouches[0].clientX
+    if (Math.abs(diff) > 40) {
+      if (diff > 0) {
+        // swipe left → next image
+        setCurrentImageIndex((prev) => (prev + 1) % images.length)
+      } else {
+        // swipe right → prev image
+        setCurrentImageIndex((prev) => (prev - 1 + images.length) % images.length)
+      }
+    }
+    touchStartX.current = null
+  }
+
+  // -------------------------- LOADING UI -------------------------------------------
   if (isLoading) {
     return (
       <div className="flex flex-col lg:flex-row gap-3 lg:gap-5 animate-pulse">
         <div className="hidden lg:flex flex-row lg:flex-col gap-5 lg:w-[20%] w-full overflow-x-auto lg:overflow-visible">
           {Array.from({ length: 4 }).map((_, i) => (
-            <div
-              key={i}
-              className="border min-w-[150px] aspect-square bg-gray-300"
-            />
+            <div key={i} className="border min-w-[150px] aspect-square bg-gray-300" />
           ))}
         </div>
-
         <div className="flex-1 aspect-[3/4] lg:aspect-square relative">
           <div className="w-full h-full bg-gray-300" />
           <div className="flex items-center gap-5 absolute right-4 top-4">
@@ -83,10 +96,10 @@ const ShopCard = ({ thumbnailImage, allImages, isLoading, productdata }: ShopCar
     )
   }
 
-  // ------------------------------------------------------ MAIN UI-----------------------------------------------------
+  // ------------------------------------------------------ MAIN UI -----------------------------------------------------
   return (
     <div className="flex flex-col lg:flex-row gap-3 lg:gap-5">
-      {/* Sidebar Thumbnails */}
+      {/* Sidebar Thumbnails — desktop only */}
       <div className="hidden lg:flex flex-row lg:flex-col gap-5 lg:w-[22%] w-full overflow-x-auto lg:overflow-visible">
         {images.map((src, index) => (
           <div
@@ -106,25 +119,46 @@ const ShopCard = ({ thumbnailImage, allImages, isLoading, productdata }: ShopCar
         ))}
       </div>
 
-      {/* Main Image Display */}
-      <div className="flex-1 aspect-[3/4] lg:aspect-square relative">
-        <Image
-          src={images[currentImageIndex] || '/placeholder.jpg'}
-          alt={`main-image-${currentImageIndex}`}
-          fill
-          className="object-cover object-top"
-        />
-
-        {/* ACTION BUTTONS */}
-        <div className="flex items-center gap-5 absolute right-4 top-4 text-white">
-
-          {/* ❤️ WISHLIST TOGGLE */}
-          <Heart
-            onClick={handleToggleWishlist}
-            className={`bg-black/60 p-2 rounded-full w-9 h-9 cursor-pointer transition-all duration-300 
-              ${isWishlisted ? 'fill-[#ff0000] text-[#ff0000]' : 'text-white'}`}
+      {/* Main Image + swipe on mobile */}
+      <div className="flex-1 flex flex-col">
+        <div
+          className="flex-1 aspect-[3/4] lg:aspect-square relative"
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+        >
+          <Image
+            src={images[currentImageIndex] || '/placeholder.jpg'}
+            alt={`main-image-${currentImageIndex}`}
+            fill
+            className="object-cover object-top select-none"
+            draggable={false}
           />
+
+          {/* ACTION BUTTONS */}
+          <div className="flex items-center gap-5 absolute right-4 top-4 text-white">
+            <Heart
+              onClick={handleToggleWishlist}
+              className={`bg-black/60 p-2 rounded-full w-9 h-9 cursor-pointer transition-all duration-300 ${isWishlisted ? 'fill-[#ff0000] text-[#ff0000]' : 'text-white'
+                }`}
+            />
+          </div>
         </div>
+
+        {/* Dot indicators — mobile only, only when > 1 image */}
+        {images.length > 1 && (
+          <div className="flex lg:hidden justify-center gap-1.5 mt-3">
+            {images.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setCurrentImageIndex(i)}
+                className={`rounded-full transition-all duration-300 ${i === currentImageIndex
+                    ? 'w-4 h-1.5 bg-black'
+                    : 'w-1.5 h-1.5 bg-black/25'
+                  }`}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   )

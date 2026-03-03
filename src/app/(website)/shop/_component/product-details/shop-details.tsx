@@ -54,7 +54,7 @@ const ShopDetails: React.FC<ShopDetailsProps> = ({
   singleProduct,
   isLoading,
 }) => {
-  const { rent, setRent } = useShoppingStore()
+  const { rent, setRent, selectedSize, setSelectedSize } = useShoppingStore()
   const pathName = usePathname()
   const data = singleProduct?.data
 
@@ -76,14 +76,48 @@ const ShopDetails: React.FC<ShopDetailsProps> = ({
         </h1>
       ) : (
         <div>
-          <h1 className="font-light opacity-75 tracking-[0.5rem] uppercase">
-            {data.brand && <span className="block mb-2 sub-header">{data.brand}</span>}
-            <span className="brand-body">{data.dressName}</span>
+          {/* Brand */}
+          {data.brand && (
+            <p className="font-light tracking-[0.3rem] uppercase opacity-80 ">
+              {data.brand}
+            </p>
+          )}
+
+          {/* Dress Name */}
+          <h1 className="font-light tracking-[0.25rem] uppercase leading-snug mt-4">
+            {data.dressName}
           </h1>
 
-          <p className="tracking-wider mt-2 opacity-75 uppercase">
+          {/* Price */}
+          <p className="tracking-wider mt-6 opacity-75 uppercase">
             ${displayPrice} RENT
           </p>
+
+          {/* Size Selector */}
+          {data.sizes && data.sizes.length > 0 && (
+            <div className="mt-8">
+              <p className="tracking-[0.25rem] opacity-40 uppercase text-[10px] mb-3 font-avenir">
+                Select Size
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {data.sizes.map((size) => (
+                  <button
+                    key={size}
+                    onClick={() => setSelectedSize(selectedSize === size ? '' : size)}
+                    className={`relative min-w-[48px] px-4 py-2 text-[11px] uppercase tracking-[0.2rem] border transition-all duration-200 font-avenir ${selectedSize === size
+                      ? 'bg-black text-white border-black'
+                      : 'bg-transparent text-black/60 border-black/20 hover:border-black/60 hover:text-black'
+                      }`}
+                  >
+                    {size}
+                    {selectedSize === size && (
+                      <span className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-white" />
+                    )}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       )}
 
@@ -108,6 +142,11 @@ const ShopDetails: React.FC<ShopDetailsProps> = ({
               <p className="tracking-wider mt-2 opacity-75 uppercase text-sm lg:text-lg">
                 ${displayPrice} RENT
               </p>
+              {selectedSize && (
+                <p className="tracking-wider mt-1 opacity-60 uppercase text-sm">
+                  Size: {selectedSize}
+                </p>
+              )}
 
               <p className="tracking-wider mt-2 opacity-75 uppercase text-sm lg:text-base">
                 Dress ID: {data.masterDressId}

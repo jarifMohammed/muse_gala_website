@@ -490,30 +490,7 @@ const PriceBreakDown = ({ singleProduct }: ShopDetailsProps) => {
           </div>
         </div>
 
-        {/* SIZE DROPDOWN */}
-        {data?.sizes && data.sizes.length > 0 && (
-          <div className="mt-8 lg:mt-10">
-            <label className="block text-sm tracking-widest opacity-75 mb-1">
-              Select Size
-            </label>
-            <Select value={selectedSize} onValueChange={setSelectedSize}>
-              <SelectTrigger className="w-full bg-transparent uppercase tracking-widest text-sm focus:ring-1 focus:ring-black h-10 font-avenir">
-                <SelectValue placeholder="Choose a size" />
-              </SelectTrigger>
-              <SelectContent>
-                {data.sizes.map(size => (
-                  <SelectItem
-                    key={size}
-                    value={size}
-                    className="uppercase tracking-widest cursor-pointer"
-                  >
-                    {size}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-        )}
+
       </div>
 
       <div className="text-center border-b-2 border-gray-500 pb-1 mt-10">

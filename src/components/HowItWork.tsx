@@ -2,17 +2,14 @@
 const HowItWork = () => {
   return (
     <div>
-      <div className="max-w-[1800px] mx-auto px-6 md:px-12 lg:px-20 pt-12 text-center font-avenir">
+      <div className="max-w-[1800px] mx-auto px-6 md:px-12 lg:px-20 pt-4 text-center font-avenir">
         <h2 className="headerClass uppercase">How It Works</h2>
-        <p className="sub-title mb-16 uppercase font-light">
-          We made it simple. You make it stylish.
-        </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
+        <div className="grid grid-cols-1 pt-12 md:grid-cols-3 gap-12 text-center">
           <div className="space-y-4">
             <h3 className="text-[20px] tracking-widest font-avenir font-light uppercase">Book</h3>
             <p className="text-[14px] font-avenir font-light">
-              Choose your size and rental dates and what&lsquo;s available instantly.
+              Choose your size and rental dates and see whats available instantly.
             </p>
           </div>
 
