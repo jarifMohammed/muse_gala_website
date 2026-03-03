@@ -7,13 +7,7 @@ import { useSession } from 'next-auth/react'
 import { usePathname, useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { useEffect, useState } from 'react'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
+
 import { Input } from '@/components/ui/input'
 import { useUserStore } from '@/zustand/useUserStore'
 import { useLocationStore } from '@/zustand/useLocationStore'
@@ -408,7 +402,7 @@ const PriceBreakDown = ({ singleProduct }: ShopDetailsProps) => {
   return (
     <div className="font-avenir uppercase mt-10">
       <h1 className="opacity-75 tracking-widest border-b border-black pb-1">
-        Price Breakdown
+        Subtotal
       </h1>
 
       <div className="mt-4">
@@ -422,7 +416,7 @@ const PriceBreakDown = ({ singleProduct }: ShopDetailsProps) => {
           </div>
 
           <div className="flex items-center justify-between opacity-75 tracking-widest">
-            <span>Insurance</span>
+            <span>Care &amp; Protection</span>
             <span>${insurance}</span>
           </div>
 
