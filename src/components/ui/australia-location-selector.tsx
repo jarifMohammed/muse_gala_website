@@ -50,6 +50,7 @@ export default function AustraliaLocationSelector({
   const mapContainer = useRef<HTMLDivElement>(null)
   const map = useRef<mapboxgl.Map | null>(null)
   const marker = useRef<mapboxgl.Marker | null>(null)
+  const searchContainerRef = useRef<HTMLDivElement>(null)
 
   const [searchQuery, setSearchQuery] = useState('')
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -58,6 +59,20 @@ export default function AustraliaLocationSelector({
     useState<PreciseLocationData | null>(initialLocation || null)
   const [showResults, setShowResults] = useState(false)
   const [isGettingLocation, setIsGettingLocation] = useState(false)
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        searchContainerRef.current &&
+        !searchContainerRef.current.contains(event.target as Node)
+      ) {
+        setShowResults(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
 
   const parseAustralianLocation = useCallback(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -343,7 +358,8 @@ export default function AustraliaLocationSelector({
 
   return (
     <div className={`w-full relative space-y-4 ${className}`}>
-      <div className="flex flex-row gap-2 relative">
+      <div ref={searchContainerRef} className="relative">
+        <div className="flex flex-row gap-2 relative">
         <div className="relative flex-1">
           <Input
             type="text"
@@ -418,81 +434,13 @@ export default function AustraliaLocationSelector({
                   <div className="text-xs text-muted-foreground truncate">
                     {result.place_name}
                   </div>
-                  <div className="flex gap-1 mt-1">
-                    {result.place_type?.includes('address') && (
-                      <Badge variant="secondary" className="text-xs">
-                        Exact Address
-                      </Badge>
-                    )}
-                  </div>
                 </div>
               </button>
             ))}
           </CardContent>
         </Card>
       )}
-
-      {/* Selected Location Display */}
-      {selectedLocation && (
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-start justify-between gap-3">
-              <div className="flex items-start gap-3 min-w-0 flex-1">
-                <MapPin className="h-5 w-5 text-red-500 mt-0.5 flex-shrink-0" />
-                <div className="min-w-0 flex-1">
-                  <div className="flex items-center gap-2 mb-1">
-                    <h3 className="font-medium text-sm">
-                      {selectedLocation.placeName}
-                    </h3>
-                    <Badge
-                      className={`text-xs ${getPrecisionColor(
-                        selectedLocation.precision
-                      )}`}
-                    >
-                      {selectedLocation.precision}
-                    </Badge>
-                  </div>
-                  <p className="text-xs text-muted-foreground mb-2">
-                    {selectedLocation.address}
-                  </p>
-
-
-                  <div className="flex flex-wrap gap-1">
-                    {selectedLocation.suburb && (
-                      <Badge variant="secondary" className="text-xs">
-                        {selectedLocation.suburb}
-                      </Badge>
-                    )}
-                    {selectedLocation.city && (
-                      <Badge variant="secondary" className="text-xs">
-                        {selectedLocation.city}
-                      </Badge>
-                    )}
-                    {selectedLocation.state && (
-                      <Badge variant="secondary" className="text-xs">
-                        {selectedLocation.state}
-                      </Badge>
-                    )}
-                    {selectedLocation.postcode && (
-                      <Badge variant="secondary" className="text-xs">
-                        {selectedLocation.postcode}
-                      </Badge>
-                    )}
-                  </div>
-                </div>
-              </div>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={clearSelection}
-                className="h-8 w-8 p-0 flex-shrink-0"
-              >
-                <X className="h-4 w-4" />
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-      )}
+      </div>
 
       {/* Map Container */}
       {/* <div
