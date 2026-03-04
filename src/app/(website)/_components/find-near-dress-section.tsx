@@ -5,7 +5,7 @@ import FindNearMap from "./find-near-map";
 import { useQuery } from "@tanstack/react-query";
 
 const FindNearDressSection = () => {
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['homepage-approved-dresses'],
     queryFn: async () => {
       const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/admin/`)
@@ -39,12 +39,22 @@ const FindNearDressSection = () => {
 
       {/* Map section */}
       <div className="w-full md:w-[65%]">
-        <FindNearMap
-          height={450}
-          products={products}
-          center={[144.9631, -37.8136]} // Default to Melbourne or something sensible for AU
-          zoom={3} // Zoom out to show Australia if showing all
-        />
+        {isLoading ? (
+          <div 
+            className="w-full rounded-lg bg-gray-100 animate-pulse flex items-center justify-center"
+            style={{ height: 450 }}
+          >
+            <span className="text-gray-400 text-sm">Loading map...</span>
+          </div>
+        ) : (
+          <FindNearMap
+            key={products.length > 0 ? 'with-products' : 'no-products'}
+            height={450}
+            products={products}
+            center={[144.9631, -37.8136]} // Default to Melbourne or something sensible for AU
+            zoom={3} // Zoom out to show Australia if showing all
+          />
+        )}
       </div>
     </div>
   );

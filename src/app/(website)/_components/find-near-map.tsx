@@ -184,6 +184,8 @@ const FindNearMap = ({
   const [drawerMarker, setDrawerMarker] = useState<Marker | null>(null)
   const [popoverPosition, setPopoverPosition] = useState({ top: 0, left: 0 })
   const closeTimerRef = useRef<NodeJS.Timeout | null>(null)
+  const [mapReady, setMapReady] = useState(false)
+  const lastCenteredMarkersRef = useRef<string>('')
 
   // Screen size detection
   const [isMobile, setIsMobile] = useState(false)
@@ -277,12 +279,18 @@ const FindNearMap = ({
         if (closeTimerRef.current) clearTimeout(closeTimerRef.current)
         setActiveMarker(null)
       })
+      // Mark map as ready once it's fully loaded and idle
+      map.current.once('idle', () => {
+        setMapReady(true)
+      })
     } catch (err) {
       console.error('Map initialization error:', err)
     }
     return () => {
       map.current?.remove()
       map.current = null
+      setMapReady(false)
+      lastCenteredMarkersRef.current = '' // Reset on unmount
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -343,37 +351,67 @@ const FindNearMap = ({
         .addTo(map.current!)
       markersRef.current.push(newMarker)
     })
-
-    // Trigger resize and center after markers are added - zoomed out view
-    if (map.current && markersData.length > 0) {
-      const centerOnMarkers = () => {
-        if (!map.current) return;
-        
-        map.current.resize();
-        
-        // Calculate bounds to include all markers
-        const bounds = new mapboxgl.LngLatBounds();
-        markersData.forEach((marker: Marker) => bounds.extend([marker.lng, marker.lat]));
-        
-        // Start zoomed out so user can see markers and zoom in manually
-        map.current.fitBounds(bounds, { 
-          padding: 80, 
-          maxZoom: 10, // Zoomed out view - user can zoom in to see exact location
-          duration: 0
-        });
-      };
-      
-      // Check if map is loaded, if so center immediately, else wait
-      if (map.current.loaded()) {
-        setTimeout(centerOnMarkers, 100);
-      } else {
-        map.current.once('load', () => {
-          setTimeout(centerOnMarkers, 100);
-        });
-      }
-    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(markersData), isMobile, activeMarker])
+
+  // Separate effect for centering - runs when markers change or map becomes ready
+  useEffect(() => {
+    if (markersData.length === 0) return;
+    
+    // Create a key for current markers
+    const markersKey = JSON.stringify(markersData.map(m => `${m.lat},${m.lng}`));
+    
+    const centerOnMarkers = () => {
+      if (!map.current) return false;
+      
+      // Check if map is ready for operations
+      try {
+        if (!map.current.loaded() || !map.current.isStyleLoaded()) {
+          return false;
+        }
+      } catch {
+        return false; // Map might be in invalid state
+      }
+      
+      // Skip if we already centered on these exact markers
+      if (lastCenteredMarkersRef.current === markersKey) {
+        return true; // Return true so we don't keep polling
+      }
+      
+      map.current.resize();
+      
+      // Calculate bounds to include all markers
+      const bounds = new mapboxgl.LngLatBounds();
+      markersData.forEach((marker: Marker) => bounds.extend([marker.lng, marker.lat]));
+      
+      // Start zoomed out so user can see markers and zoom in manually
+      map.current.fitBounds(bounds, { 
+        padding: 80, 
+        maxZoom: 10,
+        duration: 0
+      });
+      
+      // Mark as centered for this set of markers
+      lastCenteredMarkersRef.current = markersKey;
+      return true;
+    };
+    
+    // Set up polling - keep checking until map is ready and we can center
+    let attempts = 0;
+    const maxAttempts = 50; // 50 * 100ms = 5 seconds max
+    
+    const checkInterval = setInterval(() => {
+      attempts++;
+      if (centerOnMarkers() || attempts >= maxAttempts) {
+        clearInterval(checkInterval);
+      }
+    }, 100);
+    
+    // Also try immediately
+    centerOnMarkers();
+    
+    return () => clearInterval(checkInterval);
+  }, [markersData, mapReady]) // Re-run when mapReady changes too
 
 
   return (
