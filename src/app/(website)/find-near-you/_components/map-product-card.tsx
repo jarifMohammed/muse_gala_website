@@ -81,8 +81,8 @@ export default function MapProductCard({
 
             <Link href={`/shop/${encodeURIComponent(name ?? '')}`}>
               <div className="hidden md:block">
-                <button className="inline-block border-b border-black brand-button px-6 py-2 hover:bg-black hover:text-white">
-                  BOOK NOW
+                <button className="inline-block brand-button px-6 py-2 hover:bg-black hover:text-white transition-colors duration-300">
+                  <span className="border-b border-black">BOOK NOW</span>
                 </button>
               </div>
             </Link>

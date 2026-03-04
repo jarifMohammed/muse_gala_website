@@ -123,6 +123,19 @@ export default function FindNearYou() {
     refetch()
   }
 
+  const handleClearFilters = () => {
+    setState({
+      size: '',
+      category: '',
+      minPrice: '',
+      maxPrice: '',
+    })
+    resetPage()
+    setAllProducts([])
+    setTimeout(() => refetch(), 0)
+  }
+
+
   // console's for test
   // console.log('map route all products: ', allProducts)
 
@@ -176,10 +189,10 @@ export default function FindNearYou() {
           <Button
             variant="outline"
             onClick={() => setShowFilters(!showFilters)}
-            className="flex items-center gap-1 brand-button px-2 md:px-4 text-[10px] md:text-sm tracking-tighter md:tracking-normal h-8 md:h-10 shrink-0"
+            className="flex items-center gap-1 brand-button px-2 md:px-4 text-xs md:text-sm tracking-tighter md:tracking-normal h-8 md:h-10 shrink-0 uppercase"
           >
             <Filter size={12} className="md:size-4" />
-            Filters{' '}
+            FILTERS{' '}
             {showFilters ? <ChevronUp size={12} className="md:size-4" /> : <ChevronDown size={12} className="md:size-4" />}
           </Button>
           <ViewToggle />
@@ -187,7 +200,7 @@ export default function FindNearYou() {
 
         {/* Radius control in the same row */}
         <div className="flex items-center gap-2 md:gap-4 flex-1 md:flex-none min-w-[120px] md:min-w-[300px]">
-          <span className="brand-body whitespace-nowrap text-[10px] md:text-xs">
+          <span className="brand-body whitespace-nowrap text-xs md:text-sm uppercase">
             Radius: <span className="font-medium">{radius}km</span>
           </span>
           <Slider
@@ -211,7 +224,7 @@ export default function FindNearYou() {
             <div>
               <Label className="brand-body text-black">Size</Label>
               <Select
-                value={size || 'CLEAR'} // default empty value
+                value={size || 'CLEAR'}
                 onValueChange={(val) =>
                   setState({ size: val === 'CLEAR' ? '' : val })
                 }
@@ -220,7 +233,6 @@ export default function FindNearYou() {
                   <SelectValue placeholder="Please Select" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="CLEAR">Clear Filter</SelectItem>
                   <SelectItem value="SM">SM</SelectItem>
                   <SelectItem value="S">S</SelectItem>
                   <SelectItem value="M">M</SelectItem>
@@ -243,7 +255,6 @@ export default function FindNearYou() {
                   <SelectValue placeholder="Please Select" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="Clear">Clear Filter</SelectItem>
                   <SelectItem value="Formal">Formal</SelectItem>
                   <SelectItem value="Evening">Evening</SelectItem>
                   <SelectItem value="Casual">Casual</SelectItem>
@@ -277,13 +288,20 @@ export default function FindNearYou() {
               </div>
             </div>
           </div>
-          <div className="mt-6 text-center">
+          <div className="mt-6 flex items-center justify-center gap-4">
             <Button
               variant="outline"
-              className="inline-block border-b border-black px-6 py-2 brand-button hover:bg-black hover:text-white"
+              className="px-6 py-2 brand-button border border-black hover:bg-black hover:text-white uppercase text-xs md:text-sm"
               onClick={handleApplyFilters}
             >
               Apply Filters
+            </Button>
+            <Button
+              variant="outline"
+              className="px-6 py-2 brand-button border border-gray-300 text-gray-500 hover:bg-gray-100 uppercase text-xs md:text-sm"
+              onClick={handleClearFilters}
+            >
+              Clear Filters
             </Button>
           </div>
         </div>

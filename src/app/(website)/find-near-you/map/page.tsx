@@ -13,11 +13,16 @@ import FindNearMap from '../../_components/find-near-map'
 import { normalizeProducts } from '../utility/normalizeProducts'
 
 export default function MapPage() {
-  const { allProducts } = useFindNearYouStore()
+  const { allProducts, selectedLocation } = useFindNearYouStore()
 
   console.log('All Products:', allProducts)
 
   const hasProducts = allProducts && allProducts.length > 0
+
+  // Convert selectedLocation to [lng, lat] for Mapbox
+  const mapCenter: [number, number] | undefined = selectedLocation
+    ? [selectedLocation.longitude, selectedLocation.latitude]
+    : undefined
 
   return (
     <main className="min-h-screen bg-white pt-[100px]">
@@ -33,6 +38,7 @@ export default function MapPage() {
               {/* <MapView products={allProducts} /> */}
               <FindNearMap
                 products={normalizeProducts(allProducts)}
+                center={mapCenter}
                 height={650}
               />
             </div>

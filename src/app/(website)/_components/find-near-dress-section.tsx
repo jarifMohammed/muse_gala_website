@@ -14,9 +14,11 @@ const FindNearDressSection = () => {
           </p>
           <Link
             href="/find-near-you"
-            className="inline-block border-b border-black py-2 text-[14px] uppercase hover:bg-black hover:text-white transition-all duration-300"
+            className="inline-block text-[14px] uppercase hover:bg-black hover:text-white transition-all duration-300"
           >
-            <button className="opacity-80 font-avenir tracking-[0.3rem]">Explore nearby dresses</button>
+            <button className="opacity-80 font-avenir tracking-[0.3rem] py-2">
+              <span className="border-b border-black">Explore nearby dresses</span>
+            </button>
           </Link>
         </div>
       </div>

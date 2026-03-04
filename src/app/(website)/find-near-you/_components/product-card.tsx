@@ -85,8 +85,8 @@ export default function ProductCard({
             {/* ✅ BOOK NOW (Desktop) */}
             <Link href={`/shop/${encodeURIComponent(name)}`}>
               <div className="hidden md:block mt-3">
-                <button className="inline-block border-b border-black brand-button px-6 py-2 hover:bg-black hover:text-white">
-                  BOOK NOW
+                <button className="inline-block brand-button px-6 py-2 hover:bg-black hover:text-white transition-colors duration-300">
+                  <span className="border-b border-black">BOOK NOW</span>
                 </button>
               </div>
             </Link>
@@ -102,8 +102,8 @@ export default function ProductCard({
       <div className="block md:hidden mt-1">
         <Link href={`/shop/${id}`}>
           <div className="w-full flex items-center justify-center">
-            <button className="inline-block border-b my-4 border-black brand-button px-6 py-2 hover:bg-black hover:text-white">
-              BOOK NOW
+            <button className="inline-block brand-button px-6 py-2 hover:bg-black hover:text-white transition-colors duration-300 transition-all duration-300">
+              <span className="border-b border-black">BOOK NOW</span>
             </button>
           </div>
         </Link>
