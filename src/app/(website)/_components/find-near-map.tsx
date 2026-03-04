@@ -33,16 +33,11 @@ const CustomMarker = ({
 }: {
   active?: boolean
 }) => (
-  <div
-    className="flex flex-col items-center justify-center cursor-pointer"
-    style={{ transform: 'translateY(-2px)' }}
-  >
-    <MapPin
-      size={30}
-      className={`text-[#800000] transition-all ${active ? 'scale-110 fill-white' : 'fill-white'
-        }`}
-    />
-  </div>
+  <MapPin
+    size={24}
+    className={`text-[#800000] transition-all cursor-pointer ${active ? 'scale-110 fill-white' : 'fill-white'
+      }`}
+  />
 )
 
 const ProductPopover = ({
@@ -227,15 +222,7 @@ const FindNearMap = ({
       closeTimerRef.current = null
     }
 
-    // Auto-center map on the marker so it's not "far away" or cut off
-    if (map.current) {
-      const flyHeight = typeof height === 'number' ? height : (map.current.getContainer().offsetHeight || 400)
-      map.current.flyTo({
-        center: [marker.lng, marker.lat],
-        essential: true,
-        padding: { top: flyHeight * 0.4, bottom: 40, left: 40, right: 40 } // Safe padding all around
-      })
-    }
+    // Just show popover without moving the map
     if (map.current) {
       const point = map.current.project([marker.lng, marker.lat])
       setPopoverPosition({ top: point.y - 35, left: point.x })
@@ -266,6 +253,7 @@ const FindNearMap = ({
     if (!mapContainer.current || map.current) return
     try {
       mapboxgl.accessToken = MAPBOX_TOKEN
+      
       map.current = new mapboxgl.Map({
         container: mapContainer.current,
         style: 'mapbox://styles/mapbox/light-v10',
@@ -307,6 +295,9 @@ const FindNearMap = ({
 
     markersData.forEach((marker: Marker) => {
       const markerElement = document.createElement('div')
+      markerElement.style.width = '24px'
+      markerElement.style.height = '24px'
+      markerElement.style.cursor = 'pointer'
       markerElement.innerHTML = ReactDOMServer.renderToString(
         <CustomMarker
           active={
@@ -352,31 +343,37 @@ const FindNearMap = ({
         .addTo(map.current!)
       markersRef.current.push(newMarker)
     })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [JSON.stringify(markersData), isMobile, activeMarker])
 
-  // Camera Control - Only run when searching or data changes, NOT on hover
-  useEffect(() => {
-    if (!map.current) return
-
-    if (markersData.length > 0) {
-      if (markersData.length === 1) {
-        map.current.flyTo({
-          center: [markersData[0].lng, markersData[0].lat],
-          zoom: 14,
-          essential: true,
-          padding: { top: 40, bottom: 40, left: 40, right: 40 }
-        })
+    // Trigger resize and center after markers are added - zoomed out view
+    if (map.current && markersData.length > 0) {
+      const centerOnMarkers = () => {
+        if (!map.current) return;
+        
+        map.current.resize();
+        
+        // Calculate bounds to include all markers
+        const bounds = new mapboxgl.LngLatBounds();
+        markersData.forEach((marker: Marker) => bounds.extend([marker.lng, marker.lat]));
+        
+        // Start zoomed out so user can see markers and zoom in manually
+        map.current.fitBounds(bounds, { 
+          padding: 80, 
+          maxZoom: 10, // Zoomed out view - user can zoom in to see exact location
+          duration: 0
+        });
+      };
+      
+      // Check if map is loaded, if so center immediately, else wait
+      if (map.current.loaded()) {
+        setTimeout(centerOnMarkers, 100);
       } else {
-        const bounds = new mapboxgl.LngLatBounds()
-        markersData.forEach((marker: Marker) => bounds.extend([marker.lng, marker.lat]))
-        map.current.fitBounds(bounds, { padding: 60, maxZoom: 14, essential: true })
+        map.current.once('load', () => {
+          setTimeout(centerOnMarkers, 100);
+        });
       }
-    } else if (center) {
-      map.current.flyTo({ center: center, zoom: zoom, essential: true })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [JSON.stringify(markersData), center.join(','), zoom])
+  }, [JSON.stringify(markersData), isMobile, activeMarker])
 
 
   return (

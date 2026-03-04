@@ -121,6 +121,7 @@ export default function FindNearYou() {
     resetPage()
     setAllProducts([])
     refetch()
+    setShowFilters(false)
   }
 
   const handleClearFilters = () => {
@@ -133,6 +134,7 @@ export default function FindNearYou() {
     resetPage()
     setAllProducts([])
     setTimeout(() => refetch(), 0)
+    setShowFilters(false)
   }
 
 
@@ -288,17 +290,17 @@ export default function FindNearYou() {
               </div>
             </div>
           </div>
-          <div className="mt-6 flex items-center justify-center gap-4">
+          <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4">
             <Button
               variant="outline"
-              className="px-6 py-2 brand-button border border-black hover:bg-black hover:text-white uppercase text-xs md:text-sm"
+              className="w-full sm:w-auto px-4 sm:px-6 py-2 brand-button border border-black hover:bg-black hover:text-white uppercase text-xs md:text-sm"
               onClick={handleApplyFilters}
             >
               Apply Filters
             </Button>
             <Button
               variant="outline"
-              className="px-6 py-2 brand-button border border-gray-300 text-gray-500 hover:bg-gray-100 uppercase text-xs md:text-sm"
+              className="w-full sm:w-auto px-4 sm:px-6 py-2 brand-button border border-gray-300 text-gray-500 hover:bg-gray-100 uppercase text-xs md:text-sm"
               onClick={handleClearFilters}
             >
               Clear Filters
