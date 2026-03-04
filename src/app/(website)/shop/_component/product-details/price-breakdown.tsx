@@ -27,6 +27,7 @@ interface ProductData {
   insuranceFee?: number
   shippingDetails?: ShippingDetails
   sizes?: string[]
+  colors?: string[]
 }
 
 interface ShopDetailsProps {
@@ -45,6 +46,8 @@ const PriceBreakDown = ({ singleProduct }: ShopDetailsProps) => {
     deliveryOption,
     selectedSize,
     setSelectedSize,
+    selectedColor,
+    setSelectedColor,
     fullName,
     email,
     phone,
@@ -84,6 +87,18 @@ const PriceBreakDown = ({ singleProduct }: ShopDetailsProps) => {
       setSelectedSize(data.sizes[0])
     }
   }, [data?.sizes, selectedSize, setSelectedSize, pathName])
+
+  // Auto-select first color if not selected and on shop page
+  useEffect(() => {
+    if (
+      !selectedColor &&
+      data?.colors &&
+      data.colors.length > 0 &&
+      !pathName?.startsWith('/shop/checkout')
+    ) {
+      setSelectedColor(data.colors[0])
+    }
+  }, [data?.colors, selectedColor, setSelectedColor, pathName])
 
   // PRICE CALCULATION
   const basePrice = Number(data?.basePrice ?? 0)
@@ -180,6 +195,7 @@ const PriceBreakDown = ({ singleProduct }: ShopDetailsProps) => {
         rentalEndDate: formatDate(endDate),
         rentalDurationDays: rent === '4' ? 4 : 8,
         size: selectedSize,
+        color: selectedColor,
         deliveryMethod: deliveryOption === 'shipping' ? 'Shipping' : 'Pickup',
       }
 
@@ -241,6 +257,7 @@ const PriceBreakDown = ({ singleProduct }: ShopDetailsProps) => {
         rentalEndDate: formatDate(endDate),
         rentalDurationDays: rent === '4' ? 4 : 8,
         size: selectedSize,
+        color: selectedColor,
         deliveryMethod: deliveryOption === 'shipping' ? 'Shipping' : 'Pickup',
         address: address,
         phone: phone,

@@ -54,7 +54,7 @@ const ShopDetails: React.FC<ShopDetailsProps> = ({
   singleProduct,
   isLoading,
 }) => {
-  const { rent, setRent, selectedSize, setSelectedSize } = useShoppingStore()
+  const { rent, setRent, selectedSize, setSelectedSize, selectedColor, setSelectedColor } = useShoppingStore()
   const pathName = usePathname()
   const data = singleProduct?.data
 
@@ -118,6 +118,32 @@ const ShopDetails: React.FC<ShopDetailsProps> = ({
               </div>
             </div>
           )}
+
+          {/* Color Selector */}
+          {data.colors && data.colors.length > 0 && (
+            <div className="mt-6">
+              <p className="tracking-[0.25rem] opacity-40 uppercase text-[10px] mb-3 font-avenir">
+                Select Color
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {data.colors.map((color) => (
+                  <button
+                    key={color}
+                    onClick={() => setSelectedColor(selectedColor === color ? '' : color)}
+                    className={`relative min-w-[48px] px-4 py-2 text-[11px] uppercase tracking-[0.2rem] border transition-all duration-200 font-avenir ${selectedColor === color
+                      ? 'bg-black text-white border-black'
+                      : 'bg-transparent text-black/60 border-black/20 hover:border-black/60 hover:text-black'
+                      }`}
+                  >
+                    {color}
+                    {selectedColor === color && (
+                      <span className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-white" />
+                    )}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       )}
 
@@ -145,6 +171,11 @@ const ShopDetails: React.FC<ShopDetailsProps> = ({
               {selectedSize && (
                 <p className="tracking-wider mt-1 opacity-60 uppercase text-sm">
                   Size: {selectedSize}
+                </p>
+              )}
+              {selectedColor && (
+                <p className="tracking-wider mt-1 opacity-60 uppercase text-sm">
+                  Color: {selectedColor}
                 </p>
               )}
 

@@ -39,7 +39,7 @@ export default function Home() {
           <header className="text-center mb-12 md:mb-16">
             <h1 className="headerClass uppercase">Muse Gals Say</h1>
             <div className="flex justify-center">
-              <Link href="/shop" className="sub-header !font-avenir !font-light hover:bg-black hover:text-white inline-block border-b border-black uppercase">
+              <Link href="/shop" className="inline-block border-b border-black py-2 text-[14px] uppercase tracking-widest hover:bg-black hover:text-white font-avenir font-light">
                 Browse The Edit
               </Link>
             </div>

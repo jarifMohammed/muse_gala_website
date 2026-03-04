@@ -47,6 +47,9 @@ interface IShoppingStore {
   selectedSize: string
   setSelectedSize: (value: string) => void
 
+  selectedColor: string
+  setSelectedColor: (value: string) => void
+
   bookingSummary: BookingSummary | null
   setBookingSummary: (summary: BookingSummary) => void
   clearBookingSummary: () => void
@@ -75,6 +78,7 @@ const initialState = {
   isConfirm: false,
   deliveryOption: 'shipping' as 'shipping' | 'pickup',
   selectedSize: '',
+  selectedColor: '',
   bookingSummary: null,
   currentBookingId: null,
   promoCode: '',
@@ -106,6 +110,7 @@ export const useShoppingStore = create<IShoppingStore>()(
       setIsConfirm: value => set({ isConfirm: value }),
       setDeliveryOption: value => set({ deliveryOption: value }),
       setSelectedSize: value => set({ selectedSize: value }),
+      setSelectedColor: value => set({ selectedColor: value }),
 
       setBookingSummary: summary => set({ bookingSummary: summary }),
       clearBookingSummary: () => set({ bookingSummary: null }),
@@ -123,6 +128,7 @@ export const useShoppingStore = create<IShoppingStore>()(
         rent: state.rent,
         deliveryOption: state.deliveryOption,
         selectedSize: state.selectedSize,
+        selectedColor: state.selectedColor,
         bookingSummary: state.bookingSummary,
         currentBookingId: state.currentBookingId,
         promoCode: state.promoCode,
