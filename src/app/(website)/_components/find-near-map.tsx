@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 
-import { MapPin, Truck, X } from 'lucide-react'
+import { MapPin, Truck } from 'lucide-react'
 import mapboxgl from 'mapbox-gl'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import ReactDOMServer from 'react-dom/server'
 import Image from 'next/image'
 import {
@@ -199,25 +199,27 @@ const FindNearMap = ({
     return () => window.removeEventListener('resize', checkMobile)
   }, [])
 
-  // normalize and group
-  const normalizedProducts = normalizeProducts(products as any)
-  const markersMap = new Map<string, Marker>()
-  normalizedProducts
-    .filter((p) => p.latitude && p.longitude)
-    .forEach((p) => {
-      const key = `${p.latitude},${p.longitude}`
-      if (!markersMap.has(key)) {
-        markersMap.set(key, {
-          lat: p.latitude,
-          lng: p.longitude,
-          title: p.name,
-          products: [p],
-        })
-      } else {
-        markersMap.get(key)!.products!.push(p)
-      }
-    })
-  const markersData: Marker[] = Array.from(markersMap.values())
+  // normalize and group markers
+  const markersData = useMemo(() => {
+    const normalizedProducts = normalizeProducts(products as any)
+    const markersMap = new Map<string, Marker>()
+    normalizedProducts
+      .filter((p) => p.latitude && p.longitude)
+      .forEach((p) => {
+        const key = `${p.latitude},${p.longitude}`
+        if (!markersMap.has(key)) {
+          markersMap.set(key, {
+            lat: p.latitude,
+            lng: p.longitude,
+            title: p.name,
+            products: [p],
+          })
+        } else {
+          markersMap.get(key)!.products!.push(p)
+        }
+      })
+    return Array.from(markersMap.values())
+  }, [products])
 
   const handleMarkerHover = useCallback((marker: Marker) => {
     if (closeTimerRef.current) {
@@ -274,6 +276,7 @@ const FindNearMap = ({
       map.current?.remove()
       map.current = null
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   // Update Markers and Auto-Focus
@@ -282,7 +285,7 @@ const FindNearMap = ({
     markersRef.current.forEach((m) => m.remove())
     markersRef.current = []
 
-    markersData.forEach((marker) => {
+    markersData.forEach((marker: Marker) => {
       const markerElement = document.createElement('div')
       markerElement.innerHTML = ReactDOMServer.renderToString(
         <CustomMarker
@@ -298,7 +301,7 @@ const FindNearMap = ({
         handleMarkerHover(marker)
       })
 
-      markerElement.addEventListener('mouseleave', (e) => {
+      markerElement.addEventListener('mouseleave', () => {
         closePopover()
       })
 
@@ -327,13 +330,13 @@ const FindNearMap = ({
         })
       } else {
         const bounds = new mapboxgl.LngLatBounds()
-        markersData.forEach((marker) => bounds.extend([marker.lng, marker.lat]))
+        markersData.forEach((marker: Marker) => bounds.extend([marker.lng, marker.lat]))
         map.current.fitBounds(bounds, { padding: 80, maxZoom: 14, essential: true })
       }
     } else if (center) {
       map.current.flyTo({ center: center, zoom: 12, essential: true })
     }
-  }, [markersData.length, center.join(','), handleMarkerHover, closePopover, isMobile, activeMarker])
+  }, [markersData, center, handleMarkerHover, closePopover, isMobile, activeMarker])
 
   return (
     <div
