@@ -1,7 +1,6 @@
 'use client'
 
 // import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -325,15 +324,6 @@ export default function AustraliaLocationSelector({
     )
   }
 
-  const clearSelection = () => {
-    setSelectedLocation(null)
-    setSearchQuery('')
-    if (marker.current) {
-      marker.current.remove()
-      marker.current = null
-    }
-  }
-
   // Debounced search
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -344,17 +334,6 @@ export default function AustraliaLocationSelector({
 
     return () => clearTimeout(timer)
   }, [searchQuery, selectedLocation?.address, searchAustralianLocations])
-
-  const getPrecisionColor = (precision: string) => {
-    switch (precision) {
-      case 'exact':
-        return 'bg-green-100 text-green-800'
-      case 'interpolated':
-        return 'bg-yellow-100 text-yellow-800'
-      default:
-        return 'bg-blue-100 text-blue-800'
-    }
-  }
 
   return (
     <div className={`w-full relative space-y-4 ${className}`}>
