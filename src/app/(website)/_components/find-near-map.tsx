@@ -3,6 +3,7 @@
 
 import { MapPin, Truck } from 'lucide-react'
 import mapboxgl from 'mapbox-gl'
+import 'mapbox-gl/dist/mapbox-gl.css'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import ReactDOMServer from 'react-dom/server'
 import Image from 'next/image'
@@ -315,16 +316,6 @@ const FindNearMap = ({
         />
       )
 
-      markerElement.addEventListener('mouseenter', (e) => {
-        if (isMobile) return // Don't show hover popup on mobile to avoid overlapping with click/tap
-        e.stopPropagation()
-        handleMarkerHover(marker)
-      })
-
-      markerElement.addEventListener('mouseleave', () => {
-        closePopover()
-      })
-
       markerElement.addEventListener('click', (e) => {
         e.stopPropagation()
         if (isMobile) {
@@ -340,6 +331,9 @@ const FindNearMap = ({
               padding: { bottom: flyHeight * 0.45, top: 40, left: 40, right: 40 } // Balanced offset
             })
           }
+        } else {
+          // Desktop: show popover on click
+          handleMarkerHover(marker)
         }
       })
 
