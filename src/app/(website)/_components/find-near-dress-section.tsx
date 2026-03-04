@@ -40,7 +40,7 @@ const FindNearDressSection = () => {
       {/* Map section */}
       <div className="w-full md:w-[65%]">
         <FindNearMap
-          height={300}
+          height={450}
           products={products}
           center={[144.9631, -37.8136]} // Default to Melbourne or something sensible for AU
           zoom={3} // Zoom out to show Australia if showing all

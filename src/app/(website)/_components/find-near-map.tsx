@@ -35,7 +35,7 @@ const CustomMarker = ({
 }) => (
   <div
     className="flex flex-col items-center justify-center cursor-pointer"
-    style={{ transform: 'translateY(-5px)' }}
+    style={{ transform: 'translateY(-2px)' }}
   >
     <MapPin
       size={30}
@@ -226,6 +226,16 @@ const FindNearMap = ({
       clearTimeout(closeTimerRef.current)
       closeTimerRef.current = null
     }
+
+    // Auto-center map on the marker so it's not "far away" or cut off
+    if (map.current) {
+      const flyHeight = typeof height === 'number' ? height : (map.current.getContainer().offsetHeight || 400)
+      map.current.flyTo({
+        center: [marker.lng, marker.lat],
+        essential: true,
+        padding: { top: flyHeight * 0.4, bottom: 40, left: 40, right: 40 } // Safe padding all around
+      })
+    }
     if (map.current) {
       const point = map.current.project([marker.lng, marker.lat])
       setPopoverPosition({ top: point.y - 35, left: point.x })
@@ -265,6 +275,16 @@ const FindNearMap = ({
         attributionControl: false,
       })
       map.current.addControl(new mapboxgl.NavigationControl(), 'top-right')
+      map.current.addControl(
+        new mapboxgl.GeolocateControl({
+          positionOptions: {
+            enableHighAccuracy: true,
+          },
+          trackUserLocation: true,
+          showUserHeading: true,
+        }),
+        'top-right'
+      )
       map.current.on('click', () => {
         if (closeTimerRef.current) clearTimeout(closeTimerRef.current)
         setActiveMarker(null)
@@ -297,6 +317,7 @@ const FindNearMap = ({
       )
 
       markerElement.addEventListener('mouseenter', (e) => {
+        if (isMobile) return // Don't show hover popup on mobile to avoid overlapping with click/tap
         e.stopPropagation()
         handleMarkerHover(marker)
       })
@@ -308,7 +329,18 @@ const FindNearMap = ({
       markerElement.addEventListener('click', (e) => {
         e.stopPropagation()
         if (isMobile) {
-          handleMarkerHover(marker)
+          closePopover() // Ensure popover is closed when opening drawer
+          setDrawerMarker(marker)
+          // Center for mobile - offset towards the top so it's not behind the drawer
+          if (map.current) {
+            const flyHeight = typeof height === 'number' ? height : (map.current.getContainer().offsetHeight || 400)
+            map.current.flyTo({
+              center: [marker.lng, marker.lat],
+              essential: true,
+              zoom: 14,
+              padding: { bottom: flyHeight * 0.45, top: 40, left: 40, right: 40 } // Balanced offset
+            })
+          }
         }
       })
 
@@ -320,6 +352,12 @@ const FindNearMap = ({
         .addTo(map.current!)
       markersRef.current.push(newMarker)
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [JSON.stringify(markersData), isMobile, activeMarker])
+
+  // Camera Control - Only run when searching or data changes, NOT on hover
+  useEffect(() => {
+    if (!map.current) return
 
     if (markersData.length > 0) {
       if (markersData.length === 1) {
@@ -327,17 +365,18 @@ const FindNearMap = ({
           center: [markersData[0].lng, markersData[0].lat],
           zoom: 14,
           essential: true,
+          padding: { top: 40, bottom: 40, left: 40, right: 40 }
         })
       } else {
         const bounds = new mapboxgl.LngLatBounds()
         markersData.forEach((marker: Marker) => bounds.extend([marker.lng, marker.lat]))
-        map.current.fitBounds(bounds, { padding: 80, maxZoom: 14, essential: true })
+        map.current.fitBounds(bounds, { padding: 60, maxZoom: 14, essential: true })
       }
     } else if (center) {
       map.current.flyTo({ center: center, zoom: zoom, essential: true })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [markersData, center.join(','), zoom, handleMarkerHover, closePopover, isMobile, activeMarker])
+  }, [JSON.stringify(markersData), center.join(','), zoom])
 
 
   return (
@@ -350,7 +389,7 @@ const FindNearMap = ({
     >
       <div
         ref={mapContainer}
-        className="w-full h-full rounded-lg shadow-lg bg-gray-200 relative"
+        className="w-full h-full rounded-lg shadow-lg bg-gray-200 relative overflow-hidden"
       />
 
       {activeMarker && (
