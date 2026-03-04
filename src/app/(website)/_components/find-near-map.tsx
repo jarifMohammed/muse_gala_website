@@ -35,7 +35,7 @@ const CustomMarker = ({
 }) => (
   <div
     className="flex flex-col items-center justify-center cursor-pointer"
-    style={{ transform: 'translateY(-100%)' }}
+    style={{ transform: 'translateY(-5px)' }}
   >
     <MapPin
       size={30}
@@ -204,7 +204,7 @@ const FindNearMap = ({
     const normalizedProducts = normalizeProducts(products as any)
     const markersMap = new Map<string, Marker>()
     normalizedProducts
-      .filter((p) => p.latitude && p.longitude)
+      .filter((p) => p.latitude != null && p.longitude != null)
       .forEach((p) => {
         const key = `${p.latitude},${p.longitude}`
         if (!markersMap.has(key)) {
@@ -334,9 +334,11 @@ const FindNearMap = ({
         map.current.fitBounds(bounds, { padding: 80, maxZoom: 14, essential: true })
       }
     } else if (center) {
-      map.current.flyTo({ center: center, zoom: 12, essential: true })
+      map.current.flyTo({ center: center, zoom: zoom, essential: true })
     }
-  }, [markersData, center, handleMarkerHover, closePopover, isMobile, activeMarker])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [markersData, center.join(','), zoom, handleMarkerHover, closePopover, isMobile, activeMarker])
+
 
   return (
     <div
