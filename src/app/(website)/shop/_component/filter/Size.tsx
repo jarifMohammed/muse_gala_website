@@ -56,8 +56,8 @@ const Size = () => {
         <AccordionTrigger className="uppercase font-avenir tracking-widest opacity-75 border-b border-black pb-2">
           Size
         </AccordionTrigger>
-        <AccordionContent className="flex flex-col gap-4 text-balance mt-4">
-          <div className="space-y-4">
+        <AccordionContent className="text-balance mt-4">
+          <div className="grid grid-cols-2 gap-y-4 gap-x-2">
             {labels.map((item) => (
               <div key={item.id} className="flex items-center gap-3">
                 <input

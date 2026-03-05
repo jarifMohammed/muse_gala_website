@@ -27,8 +27,8 @@ export function FilterDrawer() {
         </DrawerTrigger>
       </div>
 
-      <DrawerContent className="container font-avenir">
-        <div className=" space-y-3 mt-3 pb-8 font-avenir">
+      <DrawerContent className="font-avenir h-[90vh]">
+        <div className="container overflow-y-auto font-avenir h-full pt-10 pb-10">
           <SearchProduct />
           <Rental />
           <LocalPickup />
