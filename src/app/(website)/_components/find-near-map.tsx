@@ -83,8 +83,7 @@ const ProductPopover = ({
           onOpenDrawer()
         }
       }}
-      className={`absolute z-[9999] bg-white rounded-xl shadow-2xl border border-gray-200 overflow-y-auto cursor-pointer ${isMobile ? 'w-[340px] max-h-[200px]' : 'w-[540px] max-h-[380px]'
-        }`}
+      className={`absolute z-[9999] bg-white shadow-2xl border border-gray-200 overflow-y-auto cursor-pointer ${isMobile ? 'w-[340px] max-h-[200px]' : 'w-[540px] max-h-[380px]'}`}
       style={{
         top: openDownwards ? `${position.top + 10}px` : `${position.top - 35}px`,
         left: `${position.left}px`,
@@ -103,10 +102,10 @@ const ProductPopover = ({
         {products.map((product) => (
           <Link key={product.id} href={`/shop/${product.name}`}>
             <div
-              className={`flex ${products.length > 1 ? 'flex-col' : 'flex-row'} items-start gap-4 p-3 hover:shadow-md bg-white border border-gray-100 rounded-lg transition-all h-full`}
+              className={`flex ${products.length > 1 ? 'flex-col' : 'flex-row'} items-start gap-4 p-3 hover:shadow-md bg-white border border-gray-100 transition-all h-full`}
             >
               {/* Image */}
-              <div className={`${products.length > 1 ? 'w-full h-48' : 'w-32 h-32'} relative flex-shrink-0 bg-gray-50 rounded-md overflow-hidden`}>
+              <div className={`${products.length > 1 ? 'w-full h-48' : 'w-32 h-32'} relative flex-shrink-0 bg-gray-50 overflow-hidden`}>
                 <Image
                   src={
                     product?.image ||
@@ -256,7 +255,7 @@ const FindNearMap = ({
     if (!mapContainer.current || map.current) return
     try {
       mapboxgl.accessToken = MAPBOX_TOKEN
-      
+
       map.current = new mapboxgl.Map({
         container: mapContainer.current,
         style: 'mapbox://styles/mapbox/light-v10',
@@ -351,13 +350,13 @@ const FindNearMap = ({
   // Separate effect for centering - runs when markers change or map becomes ready
   useEffect(() => {
     if (markersData.length === 0) return;
-    
+
     // Create a key for current markers
     const markersKey = JSON.stringify(markersData.map(m => `${m.lat},${m.lng}`));
-    
+
     const centerOnMarkers = () => {
       if (!map.current) return false;
-      
+
       // Check if map is ready for operations
       try {
         if (!map.current.loaded() || !map.current.isStyleLoaded()) {
@@ -366,44 +365,44 @@ const FindNearMap = ({
       } catch {
         return false; // Map might be in invalid state
       }
-      
+
       // Skip if we already centered on these exact markers
       if (lastCenteredMarkersRef.current === markersKey) {
         return true; // Return true so we don't keep polling
       }
-      
+
       map.current.resize();
-      
+
       // Calculate bounds to include all markers
       const bounds = new mapboxgl.LngLatBounds();
       markersData.forEach((marker: Marker) => bounds.extend([marker.lng, marker.lat]));
-      
+
       // Start zoomed out so user can see markers and zoom in manually
-      map.current.fitBounds(bounds, { 
-        padding: 80, 
+      map.current.fitBounds(bounds, {
+        padding: 80,
         maxZoom: 10,
         duration: 0
       });
-      
+
       // Mark as centered for this set of markers
       lastCenteredMarkersRef.current = markersKey;
       return true;
     };
-    
+
     // Set up polling - keep checking until map is ready and we can center
     let attempts = 0;
     const maxAttempts = 50; // 50 * 100ms = 5 seconds max
-    
+
     const checkInterval = setInterval(() => {
       attempts++;
       if (centerOnMarkers() || attempts >= maxAttempts) {
         clearInterval(checkInterval);
       }
     }, 100);
-    
+
     // Also try immediately
     centerOnMarkers();
-    
+
     return () => clearInterval(checkInterval);
   }, [markersData, mapReady]) // Re-run when mapReady changes too
 
@@ -418,7 +417,7 @@ const FindNearMap = ({
     >
       <div
         ref={mapContainer}
-        className="w-full h-full rounded-lg shadow-lg bg-gray-200 relative overflow-hidden"
+        className="w-full h-full shadow-lg bg-gray-200 relative overflow-hidden"
       />
 
       {activeMarker && (
@@ -457,7 +456,7 @@ const FindNearMap = ({
                         src={product?.image || (product as any)?.media?.[0] || '/images/dress.png'}
                         alt={product?.name || 'Dress'}
                         fill
-                        className="object-cover rounded-md"
+                        className="object-cover"
                       />
                     </div>
                     <div className="flex-1 uppercase tracking-wider">

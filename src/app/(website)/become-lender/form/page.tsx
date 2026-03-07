@@ -51,7 +51,7 @@ import { useMutation } from '@tanstack/react-query'
 import { CheckCircle, ChevronDown } from 'lucide-react'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import { useForm } from 'react-hook-form'
+import { useForm, FieldErrors } from 'react-hook-form'
 import { toast } from 'sonner'
 
 const mapboxtoken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN!
@@ -59,6 +59,7 @@ const mapboxtoken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN!
 const BecomeALenderForm = () => {
   const [showSuccessDialog, setShowSuccessDialog] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
+  const [openAccordions, setOpenAccordions] = useState<string[]>(['item-1'])
 
   const form = useForm<BecomeLenderFormType>({
     resolver: zodResolver(becomeLenderForm),
@@ -135,6 +136,42 @@ const BecomeALenderForm = () => {
     // console.log(values, values.numberOfDresses);
     mutate(values)
   }
+
+  // Handle scrolling to the first error when validation fails
+  function onError(errors: FieldErrors<BecomeLenderFormType>) {
+    // 1. Figure out which accordion sections contain errors
+    const errorKeys = Object.keys(errors)
+    const sectionsToOpen = new Set(openAccordions)
+
+    const mapFieldToSection = (field: string) => {
+      if (['businessName', 'abnNumber', 'instagramHandle', 'businessWebsite'].includes(field)) return 'item-1'
+      if (['fullName', 'email', 'phoneNumber', 'businessAddress'].includes(field)) return 'item-2'
+      if (['numberOfDresses', 'reviewStockMethod', 'notes'].includes(field)) return 'item-3'
+      if (['allowLocalPickup', 'shipAustraliaWide', 'allowTryOn'].includes(field)) return 'item-4'
+      return null
+    }
+
+    // Add all erroneous sections to open
+    errorKeys.forEach((key) => {
+      const section = mapFieldToSection(key)
+      if (section) sectionsToOpen.add(section)
+    })
+
+    // 2. Open those sections
+    setOpenAccordions(Array.from(sectionsToOpen))
+
+    // 3. Wait for DOM to expand the accordions before scrolling
+    setTimeout(() => {
+      const firstError = errorKeys[0]
+      if (firstError) {
+        const errorElement = document.querySelector(`[name="${firstError}"]`) as HTMLElement
+        if (errorElement) {
+          errorElement.scrollIntoView({ behavior: 'smooth', block: 'center' })
+          errorElement.focus?.()
+        }
+      }
+    }, 150) // Short delay to allow Accordion to render its contents
+  }
   return (
     <>
       <div className="my-20 container mx-auto">
@@ -150,8 +187,12 @@ const BecomeALenderForm = () => {
         </div>
         <div className="">
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="">
-              <Accordion type="single" collapsible defaultValue="item-1">
+            <form onSubmit={form.handleSubmit(onSubmit, onError)} className="">
+              <Accordion
+                type="multiple"
+                value={openAccordions}
+                onValueChange={setOpenAccordions}
+              >
                 {/* first  */}
                 <AccordionItem value="item-1">
                   <AccordionTrigger className="text-xl font-avenir font-normal tracking-[0.2em] leading-[48px] uppercase">
@@ -283,9 +324,7 @@ const BecomeALenderForm = () => {
                           <FormItem>
                             <FormLabel className="text-sm font-normal font-avenir tracking-[15%] leading-[28px] text-black ">
                               Email Address
-                              <span className="pl-4 md:pl-5 text-lg font-normal tracking-[0%] text-[#595959] font-avenir leading-[24px] ">
-                                (if available)
-                              </span>
+                              <sup className="pl-1 text-[#891D33]">*</sup>
                             </FormLabel>
                             <FormControl>
                               <Input

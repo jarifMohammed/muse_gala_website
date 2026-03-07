@@ -34,17 +34,19 @@ interface AustraliaLocationSelectorProps {
   mapHeight?: string
   showCurrentLocation?: boolean
   onSearch?: () => void
+  secondaryAction?: React.ReactNode
 }
 
 export default function AustraliaLocationSelector({
   accessToken,
   onLocationSelect,
   initialLocation,
-  placeholder = 'Search for exact locations in Australia...',
+  placeholder = 'Search for exact locations in Australia',
   className = '',
   // mapHeight = '500px',
   showCurrentLocation = true,
   onSearch,
+  secondaryAction,
 }: AustraliaLocationSelectorProps) {
   const mapContainer = useRef<HTMLDivElement>(null)
   const map = useRef<mapboxgl.Map | null>(null)
@@ -110,7 +112,9 @@ export default function AustraliaLocationSelector({
           context.find((c: any) => c.id.includes('place'))?.text || undefined,
         suburb: suburb,
         state: state,
-        country: 'Australia',
+        country:
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          context.find((c: any) => c.id.includes('country'))?.text || '',
         postcode:
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           context.find((c: any) => c.id.includes('postcode'))?.text ||
@@ -282,7 +286,7 @@ export default function AustraliaLocationSelector({
 
   const getCurrentLocation = () => {
     if (!navigator.geolocation) {
-      toast.error('Your current location appears to be outside Australia.')
+      toast.error('Could not get your current location.')
       return
     }
 
@@ -338,93 +342,99 @@ export default function AustraliaLocationSelector({
   return (
     <div className={`w-full relative space-y-4 ${className}`}>
       <div ref={searchContainerRef} className="relative">
-        <div className="flex flex-row gap-2 relative">
-        <div className="relative flex-1">
-          <Input
-            type="text"
-            placeholder={placeholder}
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            onFocus={() => searchResults.length > 0 && setShowResults(true)}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') {
+        <div className="flex flex-row gap-1 relative">
+          <div className="relative flex-1 min-w-0">
+            <Input
+              type="text"
+              placeholder={placeholder}
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onFocus={() => searchResults.length > 0 && setShowResults(true)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault()
+                  onSearch?.()
+                }
+              }}
+              className="pl-8 pr-10 text-[11px] md:text-[13px] h-9 md:h-10 border-black/20 focus:border-black transition-all rounded-none shadow-none placeholder:text-[10px] md:placeholder:text-[13px]"
+            />
+            <button
+              type="button"
+              onClick={(e) => {
                 e.preventDefault()
                 onSearch?.()
-              }
-            }}
-            className="pl-8 pr-10 text-[13px] h-9 md:h-10 border-black/20 focus:border-black transition-all rounded-none shadow-none"
-          />
-          <button
-            type="button"
-            onClick={(e) => {
-              e.preventDefault()
-              onSearch?.()
-            }}
-            className="absolute left-2.5 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-black transition-colors"
-          >
-            <Search className="h-3.5 w-3.5" />
-          </button>
-
-
-          {searchQuery && (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => {
-                setSearchQuery('')
-                setShowResults(false)
               }}
-              className="absolute right-1 top-1/2 transform -translate-y-1/2 h-7 w-7 p-0 hover:bg-transparent"
+              className="absolute left-2.5 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-black transition-colors"
             >
-              <X className="h-3.5 w-3.5" />
+              <Search className="h-3.5 w-3.5" />
+            </button>
+
+
+            {searchQuery && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => {
+                  setSearchQuery('')
+                  setShowResults(false)
+                }}
+                className="absolute right-1 top-1/2 transform -translate-y-1/2 h-7 w-7 p-0 hover:bg-transparent"
+              >
+                <X className="h-3.5 w-3.5" />
+              </Button>
+            )}
+          </div>
+
+          {secondaryAction && (
+            <div className="flex-1 min-w-0">
+              {secondaryAction}
+            </div>
+          )}
+
+          {showCurrentLocation && (
+            <Button
+              variant="outline"
+              size="default"
+              onClick={getCurrentLocation}
+              disabled={isGettingLocation}
+              className="flex items-center justify-center gap-2 bg-transparent brand-button whitespace-nowrap h-9 md:h-10 px-3 border-black/20 hover:border-black rounded-none transition-all text-[13px]"
+            >
+              <Navigation className="h-3.5 w-3.5" />
+              <span className="hidden md:inline">{isGettingLocation ? 'Locating' : 'My Location'}</span>
             </Button>
           )}
         </div>
 
-        {showCurrentLocation && (
-          <Button
-            variant="outline"
-            size="default"
-            onClick={getCurrentLocation}
-            disabled={isGettingLocation}
-            className="flex items-center justify-center gap-2 bg-transparent brand-button whitespace-nowrap h-9 md:h-10 px-3 border-black/20 hover:border-black rounded-none transition-all text-[13px]"
-          >
-            <Navigation className="h-3.5 w-3.5" />
-            <span className="hidden md:inline">{isGettingLocation ? 'Getting...' : 'My Location'}</span>
-          </Button>
+        {/* Search Results */}
+        {showResults && searchResults.length > 0 && (
+          <Card className="absolute top-10 left-0 right-0 z-50 mt-1 max-h-80 overflow-y-auto">
+            <CardContent className="p-0">
+              {searchResults.map((result, index) => (
+                <button
+                  key={index}
+                  onClick={() => selectSearchResult(result)}
+                  className="w-full text-left p-3 hover:bg-muted transition-colors border-b last:border-b-0 flex items-start gap-2"
+                >
+                  <MapPin className="h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
+                  <div className="min-w-0 flex-1">
+                    <div className="font-medium text-sm truncate">
+                      {result.text}
+                    </div>
+                    <div className="text-xs text-muted-foreground truncate">
+                      {result.place_name}
+                    </div>
+                  </div>
+                </button>
+              ))}
+            </CardContent>
+          </Card>
         )}
-      </div>
-
-      {/* Search Results */}
-      {showResults && searchResults.length > 0 && (
-        <Card className="absolute top-10 left-0 right-0 z-50 mt-1 max-h-80 overflow-y-auto">
-          <CardContent className="p-0">
-            {searchResults.map((result, index) => (
-              <button
-                key={index}
-                onClick={() => selectSearchResult(result)}
-                className="w-full text-left p-3 hover:bg-muted transition-colors border-b last:border-b-0 flex items-start gap-2"
-              >
-                <MapPin className="h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
-                <div className="min-w-0 flex-1">
-                  <div className="font-medium text-sm truncate">
-                    {result.text}
-                  </div>
-                  <div className="text-xs text-muted-foreground truncate">
-                    {result.place_name}
-                  </div>
-                </div>
-              </button>
-            ))}
-          </CardContent>
-        </Card>
-      )}
       </div>
 
       {/* Map Container */}
       {/* <div
         ref={mapContainer}
-        className="w-full rounded-lg border overflow-hidden"
+        className="w-full border overflow-hidden"
         style={{ height: mapHeight }}
       />
 
@@ -433,7 +443,7 @@ export default function AustraliaLocationSelector({
         <AlertDescription className="text-xs">
           Click anywhere on the map for precise coordinates (±1.1mm accuracy).
           Drag the marker to fine-tune position. Red marker shows exact selected
-          location within Australia.
+          location.
         </AlertDescription>
       </Alert> */}
     </div>

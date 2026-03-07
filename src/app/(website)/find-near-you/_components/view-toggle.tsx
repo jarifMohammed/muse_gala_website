@@ -9,24 +9,27 @@ export default function ViewToggle() {
   const isMapView = pathname === "/find-near-you/map";
 
   return (
-    <div className="flex justify-center brand-body text-black uppercase">
-      {isMapView ? (
-        <Link
-          href="/find-near-you"
-          className="flex items-center gap-1 px-3 md:px-4 py-1.5 md:py-2 brand-button text-xs md:text-sm tracking-tighter md:tracking-normal whitespace-nowrap h-8 md:h-10 uppercase"
-        >
-          <List size={14} className="md:size-4" />
-          LIST / MAP
-        </Link>
-      ) : (
-        <Link
-          href="/find-near-you/map"
-          className="flex items-center gap-1 px-3 md:px-4 py-1.5 md:py-2 brand-button text-xs md:text-sm tracking-tighter md:tracking-normal whitespace-nowrap h-8 md:h-10 uppercase"
-        >
-          <Map size={14} className="md:size-4" />
-          LIST / MAP
-        </Link>
-      )}
+    <div className="flex justify-center gap-1.5 md:gap-2 brand-body text-black uppercase">
+      <Link
+        href="/find-near-you"
+        className={`flex items-center gap-1.5 md:gap-2 px-2.5 md:px-5 py-1.5 md:py-2 border transition-all text-[10px] md:text-sm tracking-widest h-7 md:h-10 uppercase ${!isMapView
+          ? "bg-black text-white border-black"
+          : "bg-transparent text-black border-black/20 hover:border-black"
+          }`}
+      >
+        <List size={12} className="md:size-4" />
+        LIST
+      </Link>
+      <Link
+        href="/find-near-you/map"
+        className={`flex items-center gap-1.5 md:gap-2 px-2.5 md:px-5 py-1.5 md:py-2 border transition-all text-[10px] md:text-sm tracking-widest h-7 md:h-10 uppercase ${isMapView
+          ? "bg-black text-white border-black"
+          : "bg-transparent text-black border-black/20 hover:border-black"
+          }`}
+      >
+        <Map size={12} className="md:size-4" />
+        MAP
+      </Link>
     </div>
   );
 }

@@ -85,27 +85,22 @@
 
 import { useEffect, useRef, useState } from 'react'
 import mapboxgl from 'mapbox-gl'
+import 'mapbox-gl/dist/mapbox-gl.css' // Import Mapbox CSS for proper marker rendering
 import ReactDOMServer from 'react-dom/server'
 import { MapPin } from 'lucide-react'
 import { useLocationStore } from '@/zustand/useLocationStore'
 
 const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN!
 
-const MarkerBig = ({ label }: { label: string }) => (
+const MarkerBig = () => (
   <div className="flex flex-col items-center">
     <MapPin size={45} className="text-red-700 fill-white" />
-    <div className="bg-white px-2 py-1 rounded text-xs font-medium text-red-700 shadow mt-1">
-      {label}
-    </div>
   </div>
 )
 
-const MarkerSmall = ({ label }: { label: string }) => (
+const MarkerSmall = () => (
   <div className="flex flex-col items-center">
     <MapPin size={30} className="text-red-700 fill-white" />
-    <div className="bg-white px-1 py-0.5 rounded text-[10px] font-medium text-red-700 shadow mt-1">
-      {label}
-    </div>
   </div>
 )
 
@@ -157,9 +152,9 @@ const ShoppinghMap = () => {
 
         const MarkerComp =
           index === 0 ? (
-            <MarkerBig label="Nearest Lender" />
+            <MarkerBig />
           ) : (
-            <MarkerSmall label="Nearby Lender" />
+            <MarkerSmall />
           )
 
         const el = document.createElement('div')
@@ -197,7 +192,7 @@ const ShoppinghMap = () => {
       {!loading && lenders.length === 0 && (
         <div className="absolute inset-0 flex items-center justify-center bg-white/70 backdrop-blur-sm z-20">
           <span className="text-gray-600 text-sm">
-            No nearby lenders found.
+            No nearby lenders found for this dress.
           </span>
         </div>
       )}

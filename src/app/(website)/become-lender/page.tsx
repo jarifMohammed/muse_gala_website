@@ -3,7 +3,7 @@ import BecomeLender from './_components/BecomeLender'
 
 const page = () => {
   return (
-    <div className="pt-[100px]">
+    <div className="overflow-x-hidden">
       <BecomeLender />
     </div>
   )

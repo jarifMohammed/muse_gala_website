@@ -42,7 +42,7 @@ const DocumentVerification = ({ user }: DocumentVerificationProps) => {
           Authorization: `Bearer ${user?.accessToken}`,
         },
       })
-      if (!res.ok) throw new Error('KYC verification failed')
+      if (!res.ok) throw new Error('ID verification failed')
       return res.json()
     },
     enabled: false,
@@ -86,9 +86,9 @@ const DocumentVerification = ({ user }: DocumentVerificationProps) => {
         <div className="flex items-start gap-x-2">
           <AlertCircleIcon className="w-5 h-5 mt-0.5" />
           <div>
-            <AlertTitle>Document verification required</AlertTitle>
+            <AlertTitle>ID verification required</AlertTitle>
             <AlertDescription>
-              Please upload your documents to continue using all features.
+              Almost there. Before you rent, we just need a quick ID verification.
             </AlertDescription>
           </div>
         </div>

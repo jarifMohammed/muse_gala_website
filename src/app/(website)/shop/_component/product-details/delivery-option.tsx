@@ -13,9 +13,20 @@ const DeliveryOption = ({ masterDressId }: DeliveryOptionProps) => {
   const { deliveryOption, setDeliveryOption } = useShoppingStore()
   const { setLocation, setLenders, setLoading } = useLocationStore()
 
+  React.useEffect(() => {
+    // If the persisted state already has 'pickup', we need to fetch the nearby lenders
+    // automatically rather than waiting for the user to click the button again.
+    if (deliveryOption === 'pickup') {
+      handleLocalPickup()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   const handleLocalPickup = () => {
+    console.log('📍 handleLocalPickup triggered')
     navigator.geolocation.getCurrentPosition(
       async (pos) => {
+        console.log('📍 geolocation accessed successfully', pos.coords)
         setLoading(true)
 
         const lat = pos.coords.latitude
@@ -25,9 +36,11 @@ const DeliveryOption = ({ masterDressId }: DeliveryOptionProps) => {
 
         try {
           const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/admin/lenders/nearby/${masterDressId}?latitude=${lat}&longitude=${lng}`
+          console.log('📍 Fetching URL:', url)
 
           const res = await fetch(url)
           const result = await res.json()
+          console.log('📍 Fetch Result:', result)
 
           if (result.success) {
             setLenders(result.data)
@@ -41,8 +54,18 @@ const DeliveryOption = ({ masterDressId }: DeliveryOptionProps) => {
 
         setLoading(false)
       },
-      () => {
-        alert('Please allow location access for Local Pickup.')
+      (error) => {
+        console.error('📍 geolocation error:', error)
+
+        // Prevent alert if we somehow already got the location 
+        // (Sometimes browsers fire both callbacks erroneously or due to cached permissions)
+        const { latitude, longitude } = useLocationStore.getState()
+        if (latitude && longitude) {
+          console.log('📍 Ignored error because we already have the location coordinates.')
+          return
+        }
+
+        // alert('Please allow location access for Local Pickup.')
         setDeliveryOption('shipping')
       }
     )

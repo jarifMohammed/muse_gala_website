@@ -249,7 +249,7 @@ export function ShopFilters({ filters, onFilterChange }: ShopFiltersProps) {
 
       <div className="w-full space-y-5   mb-10 mt-9">
         <DualRangeSlider
-          label={(value) => <span>{value}$</span>}
+          label={(value) => `${value}$`}
           value={values}
           onValueChange={setValues}
           min={0}

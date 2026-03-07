@@ -28,18 +28,18 @@ const DualRangeSlider = React.forwardRef<
       )}
       {...props}
     >
-      <SliderPrimitive.Track className="relative h-2 w-full grow overflow-hidden rounded-full bg-secondary">
-        <SliderPrimitive.Range className="absolute h-full bg-blue-400" />
+      <SliderPrimitive.Track className="relative h-1 w-full grow overflow-hidden rounded-full bg-gray-200">
+        <SliderPrimitive.Range className="absolute h-full bg-black" />
       </SliderPrimitive.Track>
       {initialValue.map((value, index) => (
         <React.Fragment key={index}>
-          <SliderPrimitive.Thumb className="relative focus-visible:ring-offset-blue-400  block h-4 w-4 rounded-full border-2 border-primary bg-blue-500 ring-offset-blue-500   transition-colors focus-visible:outline-none   border-blue-500  disabled:pointer-events-none disabled:opacity-50">
+          <SliderPrimitive.Thumb className="relative block h-4 w-4 rounded-full border border-black bg-white ring-offset-white transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:scale-110 active:scale-95 cursor-grab active:cursor-grabbing">
             {label && (
               <span
                 className={cn(
-                  "absolute flex w-full justify-center",
-                  labelPosition === "top" && "-top-7",
-                  labelPosition === "bottom" && "top-4"
+                  "absolute flex w-full justify-center text-[10px] font-avenir font-medium text-black whitespace-nowrap",
+                  labelPosition === "top" && "-top-6",
+                  labelPosition === "bottom" && "top-5"
                 )}
               >
                 {label(value)}

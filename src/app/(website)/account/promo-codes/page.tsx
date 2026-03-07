@@ -47,11 +47,11 @@ export default function UserPromoCodesPage() {
   const totalSavings = data?.totalDiscountGiven || 0
 
   return (
-    <div className="container mx-auto px-8 py-5 mt-10">
+    <div className="container mx-auto px-8 py-5">
       <div className="space-y-8">
         {/* Header */}
         <div className="space-y-2 px-6">
-          <h1 className="text-3xl font-light tracking-wider">My Promo Codes</h1>
+          <h1 className="text-3xl font-light tracking-wider uppercase">MY PROMO CODES</h1>
           <p className="text-gray-600 font-light text-sm tracking-wider">
             View and manage your available promotional codes
           </p>
@@ -106,12 +106,11 @@ export default function UserPromoCodesPage() {
                 <span className="text-3xl">🎟️</span>
               </div>
               <div>
-                <h3 className="text-lg font-semibold mb-2">
-                  No Promo Codes Available
+                <h3 className="text-lg font-semibold mb-2 uppercase tracking-wider">
+                  NO OFFERS YET
                 </h3>
-                <p className="text-gray-600">
-                  You don&apos;t have any promo codes yet. Check back later for
-                  special offers!
+                <p className="text-gray-600 font-light tracking-wide">
+                  Your offers will appear here when available.
                 </p>
               </div>
             </div>

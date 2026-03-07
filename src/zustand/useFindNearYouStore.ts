@@ -23,7 +23,9 @@ interface FindNearYouState {
   maxPrice: string
   page: number
   allProducts: ApiProduct[]
+  searchTerm: string
   pagination: Pagination | null
+  isLoading: boolean
 
   // Actions
   setState: (partial: Partial<FindNearYouState>) => void
@@ -41,14 +43,16 @@ export const useFindNearYouStore = create<FindNearYouState>()(
   persist(
     (set) => ({
       selectedLocation: null,
-      radius: 10,
+      radius: 50,
       size: '',
       category: '',
       minPrice: '',
       maxPrice: '',
       page: 1,
       allProducts: [],
+      searchTerm: '',
       pagination: null,
+      isLoading: false,
 
       // Actions
       setState: (partial) => set((state) => ({ ...state, ...partial })),
@@ -67,14 +71,16 @@ export const useFindNearYouStore = create<FindNearYouState>()(
       resetAll: () =>
         set({
           selectedLocation: null,
-          radius: 10,
+          radius: 50,
           size: '',
           category: '',
           minPrice: '',
           maxPrice: '',
           page: 1,
           allProducts: [],
+          searchTerm: '',
           pagination: null,
+          isLoading: false,
         }),
     }),
     {

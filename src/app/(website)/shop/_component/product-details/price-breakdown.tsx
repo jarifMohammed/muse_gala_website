@@ -6,7 +6,8 @@ import { useMutation } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
 import { usePathname, useRouter } from 'next/navigation'
 import { toast } from 'sonner'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
+import IDVerificationModal from './IDVerificationModal'
 
 import { Input } from '@/components/ui/input'
 import { useUserStore } from '@/zustand/useUserStore'
@@ -45,9 +46,7 @@ const PriceBreakDown = ({ singleProduct }: ShopDetailsProps) => {
     endDate,
     deliveryOption,
     selectedSize,
-    setSelectedSize,
     selectedColor,
-    setSelectedColor,
     fullName,
     email,
     phone,
@@ -75,30 +74,9 @@ const PriceBreakDown = ({ singleProduct }: ShopDetailsProps) => {
   const { lenders } = useLocationStore()
 
   const [isApplyingPromo, setIsApplyingPromo] = useState(false)
+  const [isVerificationModalOpen, setIsVerificationModalOpen] = useState(false)
 
-  // Auto-select first size if not selected and on shop page
-  useEffect(() => {
-    if (
-      !selectedSize &&
-      data?.sizes &&
-      data.sizes.length > 0 &&
-      !pathName?.startsWith('/shop/checkout')
-    ) {
-      setSelectedSize(data.sizes[0])
-    }
-  }, [data?.sizes, selectedSize, setSelectedSize, pathName])
 
-  // Auto-select first color if not selected and on shop page
-  useEffect(() => {
-    if (
-      !selectedColor &&
-      data?.colors &&
-      data.colors.length > 0 &&
-      !pathName?.startsWith('/shop/checkout')
-    ) {
-      setSelectedColor(data.colors[0])
-    }
-  }, [data?.colors, selectedColor, setSelectedColor, pathName])
 
   // PRICE CALCULATION
   const basePrice = Number(data?.basePrice ?? 0)
@@ -340,9 +318,7 @@ const PriceBreakDown = ({ singleProduct }: ShopDetailsProps) => {
     }
 
     if (!isKycVerified) {
-      toast.error('KYC verification is required before renting.', {
-        position: 'bottom-right',
-      })
+      setIsVerificationModalOpen(true)
       return
     }
 
@@ -391,9 +367,7 @@ const PriceBreakDown = ({ singleProduct }: ShopDetailsProps) => {
     }
 
     if (!isKycVerified) {
-      toast.error('KYC verification is required before renting.', {
-        position: 'bottom-right',
-      })
+      setIsVerificationModalOpen(true)
       return
     }
 
@@ -539,6 +513,12 @@ const PriceBreakDown = ({ singleProduct }: ShopDetailsProps) => {
           </button>
         )}
       </div>
+
+      <IDVerificationModal
+        isOpen={isVerificationModalOpen}
+        onClose={() => setIsVerificationModalOpen(false)}
+        user={user}
+      />
     </div>
   )
 }

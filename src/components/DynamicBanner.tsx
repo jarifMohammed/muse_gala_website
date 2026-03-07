@@ -70,10 +70,10 @@ export default function DynamicBanner() {
       {/* Content */}
       <div className="absolute inset-0 flex flex-col items-center justify-end pb-20">
         <Link
-          href="/shop"
+          href="/find-near-you"
           className="text-white text-sm md:text-base lg:text-lg font-avenir font-light !tracking-[0.5em] hover:opacity-70 transition-opacity uppercase"
         >
-          View Collection
+          FIND NEAR YOU
         </Link>
       </div>
     </div>

@@ -96,7 +96,7 @@ const ShopDetails: React.FC<ShopDetailsProps> = ({
           {/* Size Selector */}
           {data.sizes && data.sizes.length > 0 && (
             <div className="mt-8">
-              <p className="tracking-[0.25rem] opacity-40 uppercase text-[10px] mb-3 font-avenir">
+              <p className="tracking-[0.25rem] opacity-80 font-semibold uppercase text-[10px] mb-3 font-avenir">
                 Select Size
               </p>
               <div className="flex flex-wrap gap-2">
@@ -122,7 +122,7 @@ const ShopDetails: React.FC<ShopDetailsProps> = ({
           {/* Color Selector */}
           {data.colors && data.colors.length > 0 && (
             <div className="mt-6">
-              <p className="tracking-[0.25rem] opacity-40 uppercase text-[10px] mb-3 font-avenir">
+              <p className="tracking-[0.25rem] opacity-80 font-semibold uppercase text-[10px] mb-3 font-avenir">
                 Select Color
               </p>
               <div className="flex flex-wrap gap-2">

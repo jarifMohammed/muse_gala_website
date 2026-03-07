@@ -16,28 +16,36 @@ import { cn } from '@/lib/utils'
 const RentalDates = () => {
   const { rent, startDate, setStartDate, setEndDate } = useShoppingStore()
   const [selectedRange, setSelectedRange] = useState<DateRange | undefined>()
+  // Track event day for visual distinction
+  const [eventDay, setEventDay] = useState<Date | null>(null)
 
   // 🧭 Handle user click on calendar with smart logic
   const handleSelect = (clickedDate: Date | undefined) => {
     if (!clickedDate) return
-
     const today = new Date()
     today.setHours(0, 0, 0, 0)
-
-    // Ensure no past date is chosen
     if (clickedDate < today) return
-
-    // Reset করার জন্য: যদি same date এ আবার click করা হয়
-    if (startDate && isSameDay(clickedDate, startDate)) {
+    // Reset if same date clicked
+    if (eventDay && isSameDay(clickedDate, eventDay)) {
       resetDates()
       return
     }
-
-    // Calculate new range
-    const newEnd = addDays(clickedDate, Number(rent) - 1)
-    setStartDate(clickedDate)
-    setEndDate(newEnd)
-    setSelectedRange({ from: clickedDate, to: newEnd })
+    // Calculate rental window
+    let from, to
+    if (Number(rent) === 4) {
+      from = addDays(clickedDate, -2)
+      to = addDays(clickedDate, 1)
+    } else if (Number(rent) === 8) {
+      from = addDays(clickedDate, -6)
+      to = addDays(clickedDate, 1)
+    } else {
+      from = clickedDate
+      to = addDays(clickedDate, Number(rent) - 1)
+    }
+    setStartDate(from)
+    setEndDate(to)
+    setSelectedRange({ from, to })
+    setEventDay(clickedDate)
   }
 
   // Reset function
@@ -45,51 +53,71 @@ const RentalDates = () => {
     setStartDate(null)
     setEndDate(null)
     setSelectedRange(undefined)
+    setEventDay(null)
   }
 
   // 🧹 Sync when rent duration changes
   useEffect(() => {
-    if (startDate) {
-      const newEnd = addDays(startDate, Number(rent) - 1)
-      setEndDate(newEnd)
-      setSelectedRange({ from: startDate, to: newEnd })
+    if (eventDay) {
+      let from, to
+      if (Number(rent) === 4) {
+        from = addDays(eventDay, -2)
+        to = addDays(eventDay, 1)
+      } else if (Number(rent) === 8) {
+        from = addDays(eventDay, -6)
+        to = addDays(eventDay, 1)
+      } else {
+        from = eventDay
+        to = addDays(eventDay, Number(rent) - 1)
+      }
+      setStartDate(from)
+      setEndDate(to)
+      setSelectedRange({ from, to })
     }
-  }, [rent, startDate, setEndDate])
+  }, [rent, eventDay, setStartDate, setEndDate])
 
   // 🧹 Cleanup if startDate reset elsewhere
   useEffect(() => {
-    if (!startDate) setSelectedRange(undefined)
+    if (!startDate) {
+      setSelectedRange(undefined)
+      setEventDay(null)
+    }
   }, [startDate])
 
   // 🖥️ Display text in button
   const displayDate =
-    selectedRange?.from && selectedRange?.to
-      ? `${format(selectedRange.from, 'dd/MM/yyyy')} - ${format(
-        selectedRange.to,
-        'dd/MM/yyyy'
-      )}`
-      : ''
+    eventDay && selectedRange?.from && selectedRange?.to
+      ? (
+        <div className="flex flex-col items-start gap-0.5 whitespace-normal text-left">
+          <span>Event Day: {format(eventDay, 'MMM dd, yyyy')}</span>
+          <span className="text-[10px] sm:text-xs opacity-70">
+            Rental: {format(selectedRange.from, 'MMM dd')} - {format(selectedRange.to, 'MMM dd')}
+          </span>
+        </div>
+      )
+      : null
 
   return (
-    <div className="mt-3 w-full">
+    <div className="mt-3 w-full max-w-full overflow-hidden">
       <Popover>
         <PopoverTrigger asChild>
           <Button
             variant="outline"
             className={cn(
-              'w-full justify-start text-left tracking-widest text-gray-600 font-light border rounded-md h-10 relative',
-              !displayDate && 'text-muted-foreground'
+              'w-full justify-between tracking-widest text-gray-600 font-light border rounded-md h-auto min-h-[40px] py-1.5 px-3',
+              !displayDate && 'text-muted-foreground items-center'
             )}
           >
-            {displayDate || 'DD/MM/YYYY'}
-            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+            <div className="flex-1 text-left whitespace-normal">
+              {displayDate || 'Select Event Day'}
+            </div>
+            <CalendarIcon className="h-4 w-4 opacity-50 shrink-0 ml-2" />
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-auto p-0" align="start">
+        <PopoverContent className="w-auto p-0 max-w-[95vw] sm:max-w-none" align="start">
           {/* Reset Button */}
           {displayDate && (
             <div className="p-3 border-b flex items-center justify-between">
-              <span className="text-sm text-gray-600">Selected Range</span>
               <Button
                 variant="ghost"
                 size="sm"
@@ -103,37 +131,32 @@ const RentalDates = () => {
           )}
 
           <Calendar
-            mode="range"
-            selected={selectedRange}
-            onSelect={(range) => {
-              if (range?.from) handleSelect(range.from)
-            }}
+            mode="single"
+            selected={eventDay || undefined}
+            onSelect={handleSelect}
             numberOfMonths={1}
-            // 🚫 Disable dates before today
             disabled={(date) => {
               const today = new Date()
               today.setHours(0, 0, 0, 0)
               return date < today
             }}
             modifiers={{
-              selected: (date) =>
-                !!(
-                  selectedRange?.from &&
-                  selectedRange?.to &&
+              rentalPeriod: (date) =>
+                !!(selectedRange?.from && selectedRange?.to &&
                   (isSameDay(date, selectedRange.from) ||
                     isSameDay(date, selectedRange.to) ||
                     (isAfter(date, selectedRange.from) &&
-                      isBefore(date, selectedRange.to)))
-                ),
+                      isBefore(date, selectedRange.to)))),
+              eventDay: (date) => !!(eventDay && isSameDay(date, eventDay)),
             }}
-            modifiersStyles={{
-              selected: { backgroundColor: 'black', color: 'white' },
+            modifiersClassNames={{
+              rentalPeriod: 'bg-gray-200 text-gray-800',
+              eventDay: '!bg-black !text-white font-medium shadow-sm scale-90 ring-1 ring-black/10',
             }}
           />
 
-          {/* Helpful hint */}
-          <div className="p-3 text-xs text-gray-500 border-t text-center pt-1 font-light tracking-wide font-avenir">
-            Book Now
+          <div className="p-3 text-xs text-gray-500 border-t text-center pt-1 font-light tracking-wide font-avenir leading-relaxed">
+            Select your event day. <br /> Rental period will be shown automatically.
           </div>
         </PopoverContent>
       </Popover>

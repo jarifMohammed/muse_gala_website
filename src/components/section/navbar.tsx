@@ -58,8 +58,8 @@ const Navbar = ({ isLoggedin, session }: Props) => {
     { id: 2, href: '/shop', linkText: 'RENT' },
     // { id: 3, href: "/about", linkText: "ABOUT" },
     { id: 4, href: '/how-it-works', linkText: 'HOW IT WORKS' },
-    { id: 5, href: '/become-lender', linkText: 'BECOME A LENDER' },
-    { id: 6, href: '/find-near-you', linkText: 'FIND NEAR YOU' },
+    // { id: 5, href: '/become-lender', linkText: 'BECOME A LENDER' },
+    { id: 6, href: '/find-near-you/map', linkText: 'FIND NEAR YOU' },
   ]
 
   useEffect(() => {
@@ -139,11 +139,11 @@ const Navbar = ({ isLoggedin, session }: Props) => {
 
   const getTextColor = () => {
     return scrolling ||
-      pathname.startsWith('/become-lender') ||
       pathname.startsWith('/product/') ||
       pathname.startsWith('/shop/') ||
       pathname === '/shop' ||
-      pathname === '/account' ||
+      pathname.startsWith('/account') ||
+      pathname.startsWith('/become-lender/form') ||
       pathname === '/about' ||
       pathname === '/how-it-works' ||
       pathname.startsWith('/find-near-you') ||
@@ -159,12 +159,12 @@ const Navbar = ({ isLoggedin, session }: Props) => {
 
   const getBorderColor = () => {
     return scrolling ||
-      pathname.startsWith('/become-lender') ||
       pathname.startsWith('/product/') ||
       pathname.startsWith('/shop/') ||
       pathname === '/checkout' ||
       pathname === '/shop' ||
-      pathname === '/account' ||
+      pathname.startsWith('/account') ||
+      pathname.startsWith('/become-lender/form') ||
       pathname === '/about' ||
       pathname === '/how-it-works' ||
       pathname.startsWith('/find-near-you') ||
@@ -251,7 +251,8 @@ const Navbar = ({ isLoggedin, session }: Props) => {
             <div className="flex justify-center">
               <Link href="/" className="flex-shrink-0">
                 {scrolling ||
-                  pathname === '/account' ||
+                  pathname.startsWith('/account') ||
+                  pathname.startsWith('/become-lender/form') ||
                   pathname.startsWith('/product/') ||
                   pathname.startsWith('/shop/') ||
                   pathname === '/login' ||
@@ -260,7 +261,6 @@ const Navbar = ({ isLoggedin, session }: Props) => {
                   pathname === '/reset-password' ||
                   pathname === '/otp' ||
                   pathname === '/checkout' ||
-                  pathname.startsWith('/become-lender') ||
                   pathname === '/shop' ||
                   pathname === '/about' ||
                   pathname === '/how-it-works' ||
@@ -280,12 +280,12 @@ const Navbar = ({ isLoggedin, session }: Props) => {
 
             {/* Right: Actions (Search, Account, Become a Lender) */}
             <div className={`${getTextColor()} flex gap-[15px] md:gap-[30px] items-center justify-end`}>
-              <Link
+              {/* <Link
                 href="/become-lender"
                 className="brand-button text-[14px] !tracking-[2px] hover:opacity-70 transition-opacity whitespace-nowrap hidden lg:block"
               >
                 BECOME A LENDER
-              </Link>
+              </Link> */}
               <div className="relative" ref={searchRef}>
                 <Search
                   className="cursor-pointer hover:opacity-70 transition-opacity"

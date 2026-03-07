@@ -12,7 +12,9 @@ export const becomeLenderForm = z.object({
   fullName: z.string().min(5, {
     message: "Full name must be at least 5 characters.",
   }),
-  email: z.string().optional(),
+  email: z.string().min(1, { message: "Email is required." }).email({
+    message: "Must be a valid email address.",
+  }),
   phoneNumber: z.string().min(5, {
     message: "Phone number must be at least 5 characters.",
   }),

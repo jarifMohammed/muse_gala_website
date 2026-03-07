@@ -68,17 +68,19 @@ const ForgotPasswordForm = () => {
         {/* left side image part */}
         <div className="md:col-span-3">
           <Image
-            src="/images/auth.jpg"
+            src="/pages/alreadyPartofMuse.webp"
             alt="forgot-password"
-            width={500}
-            height={500}
-            className="w-full h-[400px] md:h-[496px] object-cover"
+            width={1000}
+            height={1000}
+            quality={100}
+            priority
+            className="w-full h-[500px] md:h-[794px] object-cover"
           />
         </div>
         {/* form part */}
         <div className="md:col-span-2 md:pr-[50px] lg:pr-[100px]">
           <h2 className="text-2xl md:text-[27px] lg:text-3xl font-normal text-black leading-[36px] pb-[25px] md:pb-[35px] lg:pb-[45px] text-right">
-            Forgot your password?
+            Forgot Your Password?
           </h2>
           <p className="text-base font-normal text-black mb-6 text-right">
             Enter your email address and we&apos;ll send you a link to reset

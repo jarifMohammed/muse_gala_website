@@ -25,13 +25,17 @@ export default function AccountLayout({ children }: LayoutProps) {
 
   // Route navigation based on selected tab
   useEffect(() => {
-    if (tab === 'Chats' && user?.kycVerified) router.push('/account/chats')
-    else if (tab === 'Dispute' && user?.kycVerified)
+    // Only push if we are not already on the correct path to prevent infinite loops
+    if (tab === 'Chats' && user?.kycVerified && !pathname.includes('/account/chats')) {
+      router.push('/account/chats')
+    } else if (tab === 'Dispute' && user?.kycVerified && !pathname.includes('/account/dispute')) {
       router.push('/account/dispute')
-    else if (tab === 'Promo Codes' && user?.kycVerified)
+    } else if (tab === 'Promo Codes' && !pathname.includes('/account/promo-codes')) {
       router.push('/account/promo-codes')
-    else if (tab === 'Account Info') router.push('/account')
-  }, [tab, router, user?.kycVerified])
+    } else if (tab === 'Account Info' && pathname !== '/account') {
+      router.push('/account')
+    }
+  }, [tab, router, user?.kycVerified, pathname])
 
   return (
     <div className="w-full pt-12 md:pt-16 lg:pt-20">
