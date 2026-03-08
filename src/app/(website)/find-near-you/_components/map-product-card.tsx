@@ -97,7 +97,7 @@ export default function MapProductCard({
         </div>
       </div>
       <div className="block md:hidden pb-[25px]">
-        <Link href={`/shop/${id}`}>
+        <Link href={`/shop/${encodeURIComponent(name ?? '')}`}>
           <div className="w-full flex items-center justify-center">
             <button className="w-full my-4 rounded-md bg-black brand-button text-white py-2">
               BOOK NOW
