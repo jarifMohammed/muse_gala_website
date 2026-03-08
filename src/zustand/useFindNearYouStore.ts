@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { persist } from 'zustand/middleware'
+import { persist, createJSONStorage } from 'zustand/middleware'
 import type { ApiProduct } from '@/app/(website)/find-near-you/utility/normalizeProducts'
 
 interface Pagination {
@@ -84,9 +84,14 @@ export const useFindNearYouStore = create<FindNearYouState>()(
         }),
     }),
     {
-      name: 'find-near-you-storage', // localStorage key
+      name: 'find-near-you-storage', // sessionStorage key
+      storage: createJSONStorage(() => sessionStorage),
       partialize: (state) => ({
-        selectedLocation: state.selectedLocation,
+        radius: state.radius,
+        size: state.size,
+        category: state.category,
+        minPrice: state.minPrice,
+        maxPrice: state.maxPrice,
       }),
     }
   )
