@@ -17,7 +17,6 @@ interface ProductCardProps {
 }
 
 export default function MapProductCard({
-  id,
   name,
   // brand,
   size,
