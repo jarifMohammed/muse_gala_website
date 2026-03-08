@@ -14,8 +14,9 @@ const DeliveryOption = ({ masterDressId }: DeliveryOptionProps) => {
   const { setLocation, setLenders, setLoading } = useLocationStore()
 
   React.useEffect(() => {
-    // If the persisted state already has 'pickup', we need to fetch the nearby lenders
-    // automatically rather than waiting for the user to click the button again.
+    // Always reset location to null on page load
+    setLocation(null, null)
+    // Always request fresh location access
     if (deliveryOption === 'pickup') {
       handleLocalPickup()
     }
@@ -57,13 +58,7 @@ const DeliveryOption = ({ masterDressId }: DeliveryOptionProps) => {
       (error) => {
         console.error('📍 geolocation error:', error)
 
-        // Prevent alert if we somehow already got the location 
-        // (Sometimes browsers fire both callbacks erroneously or due to cached permissions)
-        const { latitude, longitude } = useLocationStore.getState()
-        if (latitude && longitude) {
-          console.log('📍 Ignored error because we already have the location coordinates.')
-          return
-        }
+        // Always fallback to shipping if location fails
 
         // alert('Please allow location access for Local Pickup.')
         setDeliveryOption('shipping')

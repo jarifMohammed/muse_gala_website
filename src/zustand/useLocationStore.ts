@@ -17,7 +17,7 @@ interface LocationStore {
   lenders: Lender[]
   loading: boolean
 
-  setLocation: (lat: number, lng: number) => void
+  setLocation: (lat: number | null, lng: number | null) => void
   setLenders: (data: Lender[]) => void
   setLoading: (value: boolean) => void
 }

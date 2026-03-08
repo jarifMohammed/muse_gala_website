@@ -1,14 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 
-import {
-  AlertCircle,
-  ChevronDown,
-  ChevronUp,
-  Search,
-  Loader2,
-  Filter,
-} from 'lucide-react'
+import { Filter, ChevronDown, ChevronUp, AlertCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Slider } from '@/components/ui/slider'
 import { Label } from '@/components/ui/label'
@@ -21,13 +14,11 @@ import {
   SelectItem,
 } from '@/components/ui/select'
 import AustraliaLocationSelector from '@/components/ui/australia-location-selector'
-import { DualRangeSlider } from '@/components/ui/DualRangeSlider'
 import ProductList from './product-list'
 import { usePathname } from 'next/navigation'
-import { toast } from 'sonner'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { useFindNearYouStore } from '@/zustand/useFindNearYouStore'
-import { useEffect, useState, useRef, useCallback } from 'react'
+import { useEffect, useState } from 'react'
 import type { ApiProduct } from '@/app/(website)/find-near-you/utility/normalizeProducts'
 import ViewToggle from './view-toggle'
 
@@ -45,7 +36,6 @@ export default function FindNearYou() {
     maxPrice,
     page,
     allProducts,
-    searchTerm,
     pagination,
     setState,
     resetPage,
@@ -56,34 +46,27 @@ export default function FindNearYou() {
 
   // UI
   const [showFilters, setShowFilters] = useState(false)
-  const [isAutoLocating, setIsAutoLocating] = useState(false)
   const mapboxtoken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN
 
   // Fetcher
   const fetchProducts = async (): Promise<ApiProduct[]> => {
-    const queryParams = new URLSearchParams()
+    if (!selectedLocation) return []
 
-    // Only add location/radius if we have a location AND we are not searching by dress name
-    // (Dress name search is always global per user requirements)
-    if (selectedLocation && !searchTerm) {
-      queryParams.append('latitude', String(selectedLocation.latitude))
-      queryParams.append('longitude', String(selectedLocation.longitude))
-      queryParams.append('radius', String(radius * 1000))
-    }
-
-    queryParams.append('page', String(page))
+    const queryParams = new URLSearchParams({
+      latitude: String(selectedLocation.latitude),
+      longitude: String(selectedLocation.longitude),
+      radius: String(radius * 1000),
+      page: String(page),
+    })
     if (size) queryParams.append('size', size)
     if (category) queryParams.append('category', category)
     if (minPrice) queryParams.append('minPrice', minPrice)
     if (maxPrice) queryParams.append('maxPrice', maxPrice)
-    if (searchTerm) queryParams.append('search', searchTerm)
 
-    const baseUrl = (process.env.NEXT_PUBLIC_BACKEND_URL || '').replace(/\/$/, '')
-    const apiUrl = `${baseUrl}/api/v1/admin/?${queryParams.toString()}`
-
-    console.log('Fetching Products with URL:', apiUrl)
-
-    const res = await fetch(apiUrl)
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL
+      }/api/v1/admin/?${queryParams.toString()}`
+    )
     if (!res.ok) throw new Error('Failed to fetch products')
 
     const data = await res.json()
@@ -101,32 +84,18 @@ export default function FindNearYou() {
       category,
       minPrice,
       maxPrice,
-      searchTerm,
       page,
-      isMapPage, // Refetch on toggle
     ],
     queryFn: fetchProducts,
-    enabled: true,
+    enabled: false,
     placeholderData: keepPreviousData,
     staleTime: 1000 * 60 * 5,
   })
 
 
-  // Sync fetching status to store for MapPage
-  useEffect(() => {
-    setState({ isLoading: isFetching || isLoading })
-  }, [isFetching, isLoading, setState])
-
   // Merge fetched products into Zustand
   useEffect(() => {
     if (!data) return
-
-    if (data.length === 0 && selectedLocation && !isFetching) {
-      toast.error('No dress found near your radius', {
-        description: 'Please increase your radius to see more results.',
-        position: 'bottom-right',
-      })
-    }
 
     if (page === 1) {
       setAllProducts(data) // reset list
@@ -137,86 +106,7 @@ export default function FindNearYou() {
         return [...prev, ...newOnes]
       })
     }
-  }, [data, page, setAllProducts, isFetching, selectedLocation])
-
-  // Infinite Scroll Observer for List View
-  const listObserver = useRef<IntersectionObserver | null>(null)
-  const lastListElementRef = useCallback(
-    (node: HTMLDivElement | null) => {
-      if (isFetching || isMapPage) return
-      if (listObserver.current) listObserver.current.disconnect()
-
-      listObserver.current = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting && pagination && page < pagination.totalPages) {
-          nextPage()
-        }
-      })
-
-      if (node) listObserver.current.observe(node)
-    },
-    [isFetching, isMapPage, pagination, page, nextPage]
-  )
-
-  // Auto-location on mount
-  useEffect(() => {
-    // Only auto-locate if no location is selected and we haven't already started
-    if (selectedLocation || isAutoLocating) return
-
-    if (!navigator.geolocation) return
-
-    setIsAutoLocating(true)
-    navigator.geolocation.getCurrentPosition(
-      async (position) => {
-        const { longitude, latitude } = position.coords
-
-        // Check if location is within Australia bounds (rough check)
-        const isOutsideAustralia =
-          latitude < -44 ||
-          latitude > -10 ||
-          longitude < 113 ||
-          longitude > 154
-
-        if (isOutsideAustralia) {
-          setIsAutoLocating(false)
-          return
-        }
-
-        try {
-          toast.loading('Locating and searching for dresses...', { id: 'search-toast' })
-          const res = await fetch(
-            `https://api.mapbox.com/geocoding/v5/mapbox.places/${longitude},${latitude}.json?access_token=${mapboxtoken}&types=address,poi,place&country=AU&limit=1&language=en`
-          )
-          const geoData = await res.json()
-          const placeName = geoData.features?.[0]?.place_name || `${latitude.toFixed(4)}, ${longitude.toFixed(4)}`
-
-          setState({
-            selectedLocation: {
-              latitude,
-              longitude,
-              placeName,
-            },
-          })
-          resetPage()
-          setAllProducts([])
-          setTimeout(() => {
-            refetch()
-            toast.dismiss('search-toast')
-          }, 0)
-        } catch (err) {
-          console.error('Auto-location geocoding error:', err)
-          toast.error('Could not determine your address.', { id: 'search-toast' })
-        } finally {
-          setIsAutoLocating(false)
-        }
-      },
-      (err) => {
-        console.error('Auto-location error:', err)
-        setIsAutoLocating(false)
-      },
-      { timeout: 10000 }
-    )
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []) // run once on mount
+  }, [data, page, setAllProducts])
 
   // Manual trigger functions
   const handleSearchNearYou = () => {
@@ -226,6 +116,13 @@ export default function FindNearYou() {
     refetch()
   }
 
+  const handleApplyFilters = () => {
+    if (!selectedLocation) return
+    resetPage()
+    setAllProducts([])
+    refetch()
+    setShowFilters(false)
+  }
 
   const handleClearFilters = () => {
     setState({
@@ -241,24 +138,15 @@ export default function FindNearYou() {
   }
 
 
-  // Prevent resetting results on initial mount (when switching views)
-  const isFirstMount = useRef(true)
-  useEffect(() => {
-    if (isFirstMount.current) {
-      isFirstMount.current = false
-      return
-    }
-    resetPage()
-    setAllProducts([])
-    // refetch()
-  }, [selectedLocation, radius, size, category, minPrice, maxPrice, searchTerm, resetPage, setAllProducts])
+  // console's for test
+  // console.log('map route all products: ', allProducts)
 
   return (
     <section className="container mx-auto pt-1 pb-12">
       <h1 className="brand-header mb-4">
         Find Near You
       </h1>
-
+     
 
       {/* Search Bar / Location Selector */}
       <div className="mb-8">
@@ -284,22 +172,13 @@ export default function FindNearYou() {
                 placeName: data.placeName,
               },
             })
+            resetPage()
+            setAllProducts([])
+            refetch()
           }}
           onSearch={handleSearchNearYou}
-          placeholder="Search for your location"
+          placeholder="Search for your location..."
           mapHeight="300px"
-          secondaryAction={
-            <div className="relative w-full">
-              <Input
-                type="text"
-                placeholder="Search by dress name"
-                value={searchTerm}
-                onChange={(e) => setState({ searchTerm: e.target.value })}
-                className="pl-10 h-9 md:h-10 border-black/20 focus:border-black transition-all rounded-none shadow-none text-[11px] md:text-[13px] placeholder:text-[10px] md:placeholder:text-[13px]"
-              />
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            </div>
-          }
         />
       </div>
 
@@ -353,14 +232,11 @@ export default function FindNearYou() {
                   <SelectValue placeholder="Please Select" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="CLEAR">All Sizes</SelectItem>
-                  <SelectItem value="XXS">XXS</SelectItem>
-                  <SelectItem value="XS">XS</SelectItem>
+                  <SelectItem value="SM">SM</SelectItem>
                   <SelectItem value="S">S</SelectItem>
                   <SelectItem value="M">M</SelectItem>
                   <SelectItem value="L">L</SelectItem>
                   <SelectItem value="XL">XL</SelectItem>
-                  <SelectItem value="XXL">XXL</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -371,60 +247,43 @@ export default function FindNearYou() {
               <Select
                 value={category}
                 onValueChange={(val) =>
-                  setState({ category: val === 'CLEAR' ? '' : val })
+                  setState({ category: val === 'Clear' ? '' : val })
                 }
               >
                 <SelectTrigger className="w-full border-b shadow-none rounded-none pt-5 pb-3 h-auto">
                   <SelectValue placeholder="Please Select" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="CLEAR">All Categories</SelectItem>
                   <SelectItem value="Formal">Formal</SelectItem>
-                  <SelectItem value="Cocktail">Cocktail</SelectItem>
-                  <SelectItem value="Wedding">Wedding</SelectItem>
-                  <SelectItem value="Casual">Casual</SelectItem>
                   <SelectItem value="Evening">Evening</SelectItem>
-                  <SelectItem value="Party">Party</SelectItem>
+                  <SelectItem value="Casual">Casual</SelectItem>
+                  <SelectItem value="Wedding">Wedding</SelectItem>
+                  <SelectItem value="Cocktail">Cocktail</SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
-            <div className="w-full">
-              <Label className="brand-body text-black">Price Range</Label>
-              <div className="pt-8 pb-10 px-2 min-h-[80px]">
-                <DualRangeSlider
-                  label={(value) => `$${value}`}
-                  value={[
-                    minPrice ? parseInt(minPrice) : 0,
-                    maxPrice ? parseInt(maxPrice) : 2000,
-                  ]}
-                  onValueChange={(vals) => {
-                    setState({
-                      minPrice: vals[0].toString(),
-                      maxPrice: vals[1].toString(),
-                    })
-                  }}
-                  min={0}
-                  max={2000}
-                  step={10}
-                />
-              </div>
-              <div className="flex items-center gap-2 border-b border-black pb-4">
-                <Input
-                  type="number"
-                  placeholder="Min"
-                  className="border-none shadow-none p-0 focus-visible:ring-0 h-8 font-avenir"
-                  value={minPrice}
-                  onChange={(e) => setState({ minPrice: e.target.value })}
-                />
-                <span className="text-xl text-black px-1">—</span>
-                <Input
-                  type="number"
-                  placeholder="Max"
-                  className="border-none shadow-none p-0 focus-visible:ring-0 h-8 font-avenir text-right"
-                  value={maxPrice}
-                  onChange={(e) => setState({ maxPrice: e.target.value })}
-                />
+            {/* Price Range */}
+            <div className="w-full flex items-end gap-4">
+              <div className="w-full">
+                <Label className="brand-body text-black">
+                  Price Range
+                </Label>
+                <div className="flex items-center gap-2 border-b border-black pb-4">
+                  <Input
+                    type="number"
+                    placeholder="Min"
+                    value={minPrice}
+                    onChange={(e) => setState({ minPrice: e.target.value })}
+                  />
+                  <span className="text-2xl text-black px-2">—</span>
+                  <Input
+                    type="number"
+                    placeholder="Max"
+                    value={maxPrice}
+                    onChange={(e) => setState({ maxPrice: e.target.value })}
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -432,9 +291,9 @@ export default function FindNearYou() {
             <Button
               variant="outline"
               className="w-full sm:w-auto px-4 sm:px-6 py-2 brand-button border border-black hover:bg-black hover:text-white uppercase text-xs md:text-sm"
-              onClick={() => setShowFilters(false)}
+              onClick={handleApplyFilters}
             >
-              Close
+              Apply Filters
             </Button>
             <Button
               variant="outline"
@@ -449,27 +308,26 @@ export default function FindNearYou() {
 
 
       {/* Products */}
-      {!isMapPage && (
+      {!isMapPage && allProducts.length > 0 && (
         <div className="mt-10">
-          {allProducts.length > 0 && <ProductList products={allProducts} />}
-
-          {/* Infinite Scroll Sentinel for List View */}
-          <div ref={lastListElementRef} className="h-20 flex flex-col items-center justify-center py-4">
-            {isFetching && page > 1 ? (
-              <Loader2 className="h-6 w-6 animate-spin text-gray-400" />
-            ) : (
-              pagination && page >= pagination.totalPages && allProducts.length > 0 && (
-                <span className="text-[10px] tracking-[4px] text-gray-400 uppercase">
-                  No more dresses
-                </span>
-              )
-            )}
-          </div>
+          <ProductList products={allProducts} />
+          {pagination && page < pagination.totalPages && (
+            <div className="text-center mt-6">
+              <Button
+                variant="outline"
+                onClick={nextPage}
+                disabled={isFetching}
+                className="brand-button"
+              >
+                {isFetching ? 'Loading...' : 'Load More'}
+              </Button>
+            </div>
+          )}
         </div>
       )}
 
       {/* Loading */}
-      {!isMapPage && (isLoading || isFetching) && allProducts.length === 0 && (
+      {!isMapPage && (isLoading || isFetching) && (
         <div className="mt-10 space-y-4">
           {[...Array(3)].map((_, i) => (
             <div
@@ -488,34 +346,33 @@ export default function FindNearYou() {
         </div>
       )}
 
-      {/* Initial state while auto-locating - only if list is empty */}
-      {!isMapPage && !isFetching && !isError && allProducts.length === 0 && isAutoLocating && (
+      {/* Initial Empty State (before selecting location) */}
+      {!isMapPage && !isFetching && !isError && !selectedLocation && (
         <div className="mt-16 text-center space-y-5">
           <AlertCircle className="mx-auto mb-3 text-gray-400 size-24" />
           <h3 className="brand-subheader text-gray-700">
-            Detecting your location
+            Start by Selecting a Location
           </h3>
           <p className="brand-body text-gray-500 mt-1">
-            Please allow location access to find dresses near you automatically.
+            Use the map above to choose a location and search for dresses near
+            you.
           </p>
         </div>
       )}
 
-      {/* No Results State (when database is empty or filters are too restrictive) */}
+      {/* No Results State (location selected but no products) */}
       {!isMapPage &&
         !isFetching &&
         allProducts.length === 0 &&
         !isError &&
-        !isAutoLocating && (
+        selectedLocation && (
           <div className="mt-16 text-center space-y-5">
             <AlertCircle className="mx-auto mb-3 text-gray-400 size-24" />
             <h3 className="brand-subheader text-gray-700">
-              No results found
+              No Dresses Found
             </h3>
             <p className="brand-body text-gray-500 mt-1">
-              {selectedLocation && !searchTerm
-                ? 'Try increasing your search radius or choosing a different location.'
-                : 'Try adjusting your filters or search term to see more results.'}
+              Try adjusting your filters or increasing the radius.
             </p>
           </div>
         )}
