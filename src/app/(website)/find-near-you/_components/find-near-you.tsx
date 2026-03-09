@@ -254,14 +254,14 @@ export default function FindNearYou() {
   }, [selectedLocation, radius, size, category, minPrice, maxPrice, searchTerm, resetPage, setAllProducts])
 
   return (
-    <section className="container mx-auto pt-1 pb-12">
-      <h1 className="brand-header mb-4">
+    <section className="container mx-auto pt-0.5 pb-2">
+      <h1 className="brand-header mb-1">
         Find Near You
       </h1>
 
 
       {/* Search Bar / Location Selector */}
-      <div className="mb-8">
+      <div className="mb-4">
         <AustraliaLocationSelector
           accessToken={mapboxtoken || ''}
           initialLocation={
@@ -304,8 +304,8 @@ export default function FindNearYou() {
       </div>
 
       {/* Controls Row: Filters, View Toggle, and Radius */}
-      <div className="flex flex-nowrap items-center justify-center gap-2 md:gap-8 mb-10 px-2 md:px-4 overflow-x-auto no-scrollbar">
-        <div className="flex items-center gap-2 md:gap-4 shrink-0">
+      <div className="flex flex-nowrap items-center justify-start md:justify-center gap-1 md:gap-8 mb-4 px-4 md:px-4 overflow-x-auto no-scrollbar">
+        <div className="flex items-center gap-1 md:gap-4 shrink-0">
           <Button
             variant="outline"
             onClick={() => setShowFilters(!showFilters)}
@@ -318,10 +318,9 @@ export default function FindNearYou() {
           <ViewToggle />
         </div>
 
-        {/* Radius control in the same row */}
-        <div className="flex items-center gap-2 md:gap-4 flex-1 md:flex-none min-w-[120px] md:min-w-[300px]">
-          <span className="brand-body whitespace-nowrap text-xs md:text-sm uppercase">
-            Radius: <span className="font-medium">{radius}km</span>
+        <div className="flex items-center gap-1 md:gap-4 flex-1 md:flex-none min-w-[120px] max-w-[140px] md:min-w-[300px] md:max-w-none">
+          <span className="brand-body whitespace-nowrap text-[10px] md:text-sm uppercase shrink-0">
+            <span className="hidden md:inline">Radius: </span><span className="font-medium">{radius}km</span>
           </span>
           <Slider
             value={[radius]}
@@ -396,7 +395,7 @@ export default function FindNearYou() {
                   label={(value) => `$${value}`}
                   value={[
                     minPrice ? parseInt(minPrice) : 0,
-                    maxPrice ? parseInt(maxPrice) : 2000,
+                    maxPrice ? parseInt(maxPrice) : 500,
                   ]}
                   onValueChange={(vals) => {
                     setState({
@@ -405,7 +404,7 @@ export default function FindNearYou() {
                     })
                   }}
                   min={0}
-                  max={2000}
+                  max={500}
                   step={10}
                 />
               </div>
@@ -448,9 +447,8 @@ export default function FindNearYou() {
       )}
 
 
-      {/* Products */}
       {!isMapPage && (
-        <div className="mt-10">
+        <div className="mt-0">
           {allProducts.length > 0 && <ProductList products={allProducts} />}
 
           {/* Infinite Scroll Sentinel for List View */}
@@ -470,7 +468,7 @@ export default function FindNearYou() {
 
       {/* Loading */}
       {!isMapPage && (isLoading || isFetching) && allProducts.length === 0 && (
-        <div className="mt-10 space-y-4">
+        <div className="mt-0 space-y-4">
           {[...Array(3)].map((_, i) => (
             <div
               key={i}
