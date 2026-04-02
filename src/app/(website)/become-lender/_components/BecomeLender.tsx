@@ -181,7 +181,7 @@ const BecomeLender = () => {
               </p>
               <div className="relative w-full aspect-square overflow-hidden border-t border-b border-gray-100">
                 <Image
-                  src="/pages/alreadyPartofMuse.webp"
+                  src="/pages/lender dash.webp"
                   alt="Lender Dashboard Mockup"
                   fill
                   className="object-cover"
