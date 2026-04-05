@@ -66,7 +66,7 @@ const TrendingNow = () => {
           <div className="sm:hidden flex-shrink-0 w-[80vw] snap-center flex items-center justify-center p-4">
             <Link
               href="/shop"
-              className="w-full aspect-[3/5] flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-lg hover:border-black transition-colors space-y-4"
+              className="w-full aspect-[3/5] flex flex-col items-center justify-center rounded-none hover:border-black transition-colors space-y-4"
             >
               <span className="text-sm font-light tracking-[0.2rem] uppercase text-center px-4 font-avenir">
                 Explore the Edit

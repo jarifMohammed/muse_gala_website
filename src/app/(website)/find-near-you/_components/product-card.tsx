@@ -10,7 +10,6 @@ export interface ProductCardProps {
   description?: string
   shipping?: boolean
   pickup?: boolean
-  location?: { lat: number; lng: number }
 }
 
 export default function ProductCard({
@@ -18,7 +17,6 @@ export default function ProductCard({
   name,
   size,
   image,
-  description = '',
   shipping,
   pickup,
 }: ProductCardProps) {
@@ -26,88 +24,61 @@ export default function ProductCard({
   const displaySize = Array.isArray(size) ? size.join(', ') : size || 'N/A'
 
   return (
-    <div key={id}>
-      <div className="flex items-center justify-between gap-[15px] md:gap-[25px] lg:gap-[30px]">
-        {/* ✅ Product Image */}
-        <div>
-          <Image
-            src={image || '/images/dress.png'}
-            alt={name}
-            width={300}
-            height={300}
-            className="w-full aspect-[2/3] object-cover object-top flex-shrink-0"
-          />
-        </div>
+    <Link href={`/shop/${encodeURIComponent(name)}`}>
+      <div key={id} className="group cursor-pointer">
+        <div className="flex items-center justify-between gap-[15px] md:gap-[25px] lg:gap-[30px] transition-all duration-300">
+          {/* ✅ Product Image */}
+          <div className="overflow-hidden">
+            <Image
+              src={image || '/images/dress.png'}
+              alt={name}
+              width={300}
+              height={300}
+              className="w-full aspect-[2/3] object-cover object-top flex-shrink-0 transition-transform duration-500 group-hover:scale-105"
+            />
+          </div>
 
-        {/* ✅ Product Info */}
-        <div className="w-full relative ">
-          <div className="w-full flex flex-col md:flex-row lg:flex-col items-center lg:items-start space-y-5">
-            <div className="flex-1">
-              {/* Title */}
-              <h3 className="brand-subheader text-black leading-[35px] md:leading-[40px]">
-                {name}
-              </h3>
+          {/* ✅ Product Info */}
+          <div className="w-full relative">
+            <div className="w-full flex flex-col md:flex-row lg:flex-col items-center lg:items-start space-y-5">
+              <div className="flex-1">
+                {/* Title */}
+                <h3 className="brand-subheader text-black leading-[35px] md:leading-[40px] group-hover:text-gray-600 transition-colors">
+                  {name}
+                </h3>
 
-              {/* ✅ Size */}
-              <p className="brand-body text-black leading-[24px] md:leading-[32px] lg:leading-[40px]">
-                Size: {displaySize}
-              </p>
+                {/* ✅ Size */}
+                <p className="brand-body text-black leading-[24px] md:leading-[32px] lg:leading-[40px]">
+                  Size: {displaySize}
+                </p>
 
-              {/* ✅ Shipping & Pickup Info */}
-              {(shipping || pickup) && (
-                <div className="flex flex-wrap items-center gap-[10px] py-3">
-                  {shipping && (
-                    <div className="flex items-center gap-[8px]">
-                      <Truck className="size-5" />
-                      <span className="brand-body text-black leading-[24px]">
-                        SHIPPING
-                      </span>
-                    </div>
-                  )}
+                {/* ✅ Shipping & Pickup Info */}
+                {(shipping || pickup) && (
+                  <div className="flex flex-wrap items-center gap-[10px] py-3">
+                    {shipping && (
+                      <div className="flex items-center gap-[8px]">
+                        <Truck className="size-5" />
+                        <span className="brand-body text-black leading-[24px]">
+                          SHIPPING
+                        </span>
+                      </div>
+                    )}
 
-                  {pickup && (
-                    <div className="flex items-center gap-[8px]">
-                      <MapPin className="size-5" />
-                      <span className="brand-body text-black leading-[24px]">
-                        PICKUP
-                      </span>
-                    </div>
-                  )}
-                </div>
-              )}
-
-              {/* ✅ Description */}
-              <p className="brand-body text-gray-700">
-                {description}
-              </p>
-            </div>
-
-            {/* ✅ BOOK NOW (Desktop) */}
-            <Link href={`/shop/${encodeURIComponent(name)}`}>
-              <div className="hidden md:block mt-3">
-                <button className="inline-block brand-button px-6 py-2 hover:bg-black hover:text-white transition-colors duration-300">
-                  <span className="border-b border-black">BOOK NOW</span>
-                </button>
+                    {pickup && (
+                      <div className="flex items-center gap-[8px]">
+                        <MapPin className="size-5" />
+                        <span className="brand-body text-black leading-[24px]">
+                          PICKUP
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
-            </Link>
+            </div>
           </div>
-
-          {/* ✅ Borders */}
-          <div className="hidden md:block lg:hidden w-full absolute -bottom-8 border-b border-black" />
-          <div className="block md:hidden w-full absolute border-b border-black -bottom-3" />
         </div>
       </div>
-
-      {/* ✅ Mobile BOOK NOW */}
-      <div className="block md:hidden mt-1">
-        <Link href={`/shop/${encodeURIComponent(name)}`}>
-          <div className="w-full flex items-center justify-center">
-            <button className="inline-block brand-button px-6 py-2 hover:bg-black hover:text-white transition-colors duration-300 transition-all duration-300">
-              <span className="border-b border-black">BOOK NOW</span>
-            </button>
-          </div>
-        </Link>
-      </div>
-    </div>
+    </Link>
   )
 }

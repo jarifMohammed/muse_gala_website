@@ -34,7 +34,7 @@ const Footer = () => {
       return data
     },
     onSuccess: () => {
-      toast.success('Thank you for subscribing!')
+      toast.success('Thank you for subscribing')
       setEmail('')
     },
     onError: (err: Error) => {

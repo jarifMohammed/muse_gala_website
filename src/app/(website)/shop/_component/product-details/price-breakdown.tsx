@@ -478,7 +478,7 @@ const PriceBreakDown = ({ singleProduct }: ShopDetailsProps) => {
 
       </div>
 
-      <div className="text-center border-b-2 border-gray-500 pb-1 mt-10">
+      <div className="mt-10">
         {pathName?.startsWith('/shop/checkout') &&
           !pathName.includes('/confirmation') ? (
           <div>
@@ -488,7 +488,7 @@ const PriceBreakDown = ({ singleProduct }: ShopDetailsProps) => {
                 disabled={
                   updateBookingForPayment.isPending || createCheckout.isPending
                 }
-                className="opacity-75 tracking-widest uppercase disabled:opacity-50 font-avenir"
+                className="bg-black text-white hover:bg-black/80 uppercase tracking-widest text-sm h-12 w-full transition-colors disabled:opacity-50 font-avenir rounded-none"
               >
                 {updateBookingForPayment.isPending || createCheckout.isPending
                   ? 'Processing...'
@@ -497,7 +497,7 @@ const PriceBreakDown = ({ singleProduct }: ShopDetailsProps) => {
             ) : (
               <button
                 onClick={handleCheckout}
-                className="opacity-75 tracking-widest uppercase font-avenir"
+                className="bg-black text-white hover:bg-black/80 uppercase tracking-widest text-sm h-12 w-full transition-colors font-avenir rounded-none"
               >
                 Confirm & Pay
               </button>
@@ -507,7 +507,7 @@ const PriceBreakDown = ({ singleProduct }: ShopDetailsProps) => {
           <button
             onClick={handleRentNow}
             disabled={createBookingForRentNow.isPending}
-            className="opacity-75 tracking-widest uppercase disabled:opacity-50 font-avenir"
+            className="bg-black text-white hover:bg-black/80 uppercase tracking-widest text-sm h-12 w-full transition-colors disabled:opacity-50 font-avenir rounded-none"
           >
             {createBookingForRentNow.isPending ? 'Processing...' : 'Rent Now'}
           </button>

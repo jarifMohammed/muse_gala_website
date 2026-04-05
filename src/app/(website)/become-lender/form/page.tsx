@@ -7,13 +7,12 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion'
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from '@/components/ui/alert-dialog'
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
 import AustraliaLocationSelector from '@/components/ui/australia-location-selector'
 import {
   Card,
@@ -179,7 +178,7 @@ const BecomeALenderForm = () => {
           <h2 className="headerClass text-center">
             APPLY TO LEND WITH MUSE GALA
           </h2>
-          <p className="sub-title text-center pt-[10px] md:pt-[13px] lg:pt-[15px]">
+          <p className="brand-body text-center pt-[10px] md:pt-[13px] lg:pt-[15px]">
             Join Australia’s curated fashion rental platform. Showcase your
             collection, <br className="block md:hidden" /> expand your reach,
             and grow with us.
@@ -740,7 +739,7 @@ const BecomeALenderForm = () => {
                         />
                       </FormControl>
                       <FormLabel className="text-base md:text-[14px] font-avenir font-normal leading-[24px] tracking-[0%] text-black">
-                        I confirm that all dresses listed meet Muse Gala&apos;`s
+                        I confirm that all dresses listed meet Muse Gala&apos;s
                         curation and quality standards.
                       </FormLabel>
                     </FormItem>
@@ -791,32 +790,38 @@ const BecomeALenderForm = () => {
         </div>
       </div>
 
-      <AlertDialog open={showSuccessDialog} onOpenChange={setShowSuccessDialog}>
-        <AlertDialogContent className="sm:max-w-md">
-          <AlertDialogHeader className="text-center">
-            <div className="mx-auto mb-4">
-              <CheckCircle
-                className="h-16 w-16 text-green-500 animate-bounce"
-                style={{
-                  animation: 'checkBounce 0.6s ease-in-out',
-                }}
-              />
+      <Dialog open={showSuccessDialog} onOpenChange={setShowSuccessDialog}>
+        <DialogContent className="sm:max-w-md border-none shadow-2xl p-0 overflow-hidden">
+          <div className="bg-white p-8 text-center">
+            <div className="flex justify-center mb-6">
+              <div className="h-20 w-20 bg-green-50 rounded-full flex items-center justify-center">
+                <CheckCircle
+                  className="h-10 w-10 text-green-600 animate-in zoom-in duration-500"
+                  style={{
+                    animation: 'checkBounce 0.6s ease-in-out',
+                  }}
+                />
+              </div>
             </div>
-            <AlertDialogTitle className="text-xl text-center">
-              Submission Received!
-            </AlertDialogTitle>
-            <AlertDialogDescription className="text-center pt-2">
-              We have received your submission. You&apos;ll get notified via
-              email once admin will approve.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <div className="flex justify-center pt-4">
-            <AlertDialogAction onClick={() => setShowSuccessDialog(false)}>
-              Close
-            </AlertDialogAction>
+            <DialogHeader className="p-0 space-y-3">
+              <DialogTitle className="text-2xl font-avenir font-medium tracking-tight text-center">
+                Thank you for your submission.
+              </DialogTitle>
+              <DialogDescription className="text-lg font-avenir font-normal text-gray-500 text-center leading-relaxed">
+                Your submission will be reviewed within 48 hours.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="mt-8 flex flex-col gap-3">
+              <button
+                onClick={() => setShowSuccessDialog(false)}
+                className="w-full py-4 bg-black text-white font-avenir tracking-widest uppercase text-xs hover:bg-black/90 transition-colors rounded-none"
+              >
+                Close
+              </button>
+            </div>
           </div>
-        </AlertDialogContent>
-      </AlertDialog>
+        </DialogContent>
+      </Dialog>
 
       <style jsx>{`
         @keyframes checkBounce {

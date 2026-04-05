@@ -88,7 +88,7 @@ export default function NewsletterPopup() {
             return data
         },
         onSuccess: () => {
-            toast.success("Thank you for subscribing!")
+            toast.success("Thank you for subscribing")
             handleClose()
         },
         onError: (error: Error) => {

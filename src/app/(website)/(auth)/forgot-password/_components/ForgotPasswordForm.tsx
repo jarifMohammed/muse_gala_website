@@ -20,7 +20,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 const formSchema = z.object({
-  email: z.string().email("Invalid email address"),
+  email: z.string().email("Invalid email address").toLowerCase(),
 });
 
 const ForgotPasswordForm = () => {

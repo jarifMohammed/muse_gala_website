@@ -26,7 +26,7 @@ export default function SuccessPage() {
     <div className="max-h-[60vh] flex items-center justify-center mt-12 md:mt-32 lg:mt-40 font-avenir">
       <div className="text-center mt-8 px-4">
         <h1 className="text-3xl md:text-5xl font-avenir tracking-[10px] uppercase">
-          Thank you for your booking!
+          Thank you for your booking
         </h1>
         <p className="font-avenir tracking-[4px] uppercase mt-5 opacity-75 text-sm md:text-base">
           Your rental has been confirmed. You&apos;ll receive an email shortly

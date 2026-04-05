@@ -10,9 +10,9 @@ import {
     AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
-import { Loader2 } from 'lucide-react'
+import { Loader2, X } from 'lucide-react'
 import { useQuery } from '@tanstack/react-query'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { User } from '@/zustand/useUserStore'
 
 interface IDVerificationModalProps {
@@ -31,6 +31,7 @@ interface GetApiRes {
 
 const IDVerificationModal = ({ isOpen, onClose, user }: IDVerificationModalProps) => {
     const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL
+    const [countdown, setCountdown] = useState(10)
 
     const {
         data: kycRes,
@@ -57,9 +58,36 @@ const IDVerificationModal = ({ isOpen, onClose, user }: IDVerificationModalProps
         }
     }, [kycRes, onClose])
 
+    useEffect(() => {
+        if (!isOpen) {
+            setCountdown(10)
+            return
+        }
+
+        if (isFetching) return
+
+        if (countdown <= 0) {
+            onClose()
+            return
+        }
+
+        const timer = setInterval(() => {
+            setCountdown((prev) => prev - 1)
+        }, 1000)
+
+        return () => clearInterval(timer)
+    }, [isOpen, countdown, onClose, isFetching])
+
     return (
         <AlertDialog open={isOpen} onOpenChange={onClose}>
             <AlertDialogContent className="sm:max-w-[425px] font-avenir">
+                <button
+                    onClick={onClose}
+                    className="absolute right-4 top-4 rounded-none opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground"
+                >
+                    <X className="h-4 w-4" />
+                    <span className="sr-only">Close</span>
+                </button>
                 <AlertDialogHeader>
                     <AlertDialogTitle className="text-xl tracking-widest uppercase">ID Verification Required</AlertDialogTitle>
                     <AlertDialogDescription className="text-base py-4">
@@ -67,11 +95,16 @@ const IDVerificationModal = ({ isOpen, onClose, user }: IDVerificationModalProps
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter className="flex-col sm:flex-row gap-2">
-                    <AlertDialogCancel className="uppercase tracking-widest text-xs border-black">Close</AlertDialogCancel>
+                    <AlertDialogCancel
+                        onClick={onClose}
+                        className="uppercase tracking-widest text-xs border-black rounded-none"
+                    >
+                        Close {countdown > 0 && `(${countdown}s)`}
+                    </AlertDialogCancel>
                     <Button
                         onClick={() => fetchKyc()}
                         disabled={isFetching}
-                        className="bg-black text-white hover:bg-black/80 uppercase tracking-widest text-xs h-10"
+                        className="bg-black text-white hover:bg-black/80 uppercase tracking-widest text-xs h-10 rounded-none"
                     >
                         {isFetching ? (
                             <>
