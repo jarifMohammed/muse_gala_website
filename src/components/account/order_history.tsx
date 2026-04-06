@@ -9,7 +9,8 @@ import { useQuery, keepPreviousData, useMutation, useQueryClient } from '@tansta
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
-
+import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
+import { MessageCircle, Truck } from 'lucide-react'
 
 // Types
 interface Order {
@@ -22,6 +23,8 @@ interface Order {
   paymentStatus: string
   createdAt: string
   chatRoom: string | null
+  shippingMethod?: string
+  trackingNumber?: string
 }
 
 interface PaginationInfo {
@@ -300,18 +303,47 @@ const OrderRow = ({
       </td>
 
       <td className="py-6 px-4 sm:px-6 lg:px-10 text-base text-gray-900 font-light tracking-wide flex flex-col items-start gap-2">
+        <div className="flex items-center gap-4">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="p-1 h-auto text-blue-600 hover:text-blue-800 hover:bg-blue-50 transition-colors"
+            title="Chat with Lender"
+            onClick={() => onTrackOrder(order)}
+          >
+            <MessageCircle className="w-5 h-5" />
+          </Button>
+          
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="p-1 h-auto text-green-600 hover:text-green-800 hover:bg-green-50 transition-colors"
+                title="Track Order"
+              >
+                <Truck className="w-5 h-5" />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-64">
+              <div className="flex flex-col space-y-2">
+                <h4 className="font-semibold text-sm border-b pb-2 mb-1">Tracking Details</h4>
+                <div className="text-sm flex justify-between">
+                  <span className="text-gray-500">Method:</span>
+                  <span className="font-medium">{order.shippingMethod || ''}</span>
+                </div>
+                <div className="text-sm flex justify-between">
+                  <span className="text-gray-500">Tracking No:</span>
+                  <span className="font-medium">{order.trackingNumber || ''}</span>
+                </div>
+              </div>
+            </PopoverContent>
+          </Popover>
+        </div>
         <Button
           variant="link"
           size="sm"
-          className="text-xs p-0 h-auto text-blue-600 font-light tracking-wide uppercase"
-          onClick={() => onTrackOrder(order)}
-        >
-          TRACK ORDER
-        </Button>
-        <Button
-          variant="link"
-          size="sm"
-          className="text-xs p-0 h-auto text-red-600 font-light tracking-wide uppercase"
+          className="text-xs p-0 h-auto text-red-600 font-light tracking-wide uppercase mt-1"
           onClick={() => onCancelBooking(order._id)}
           disabled={isCancelling}
         >
