@@ -17,7 +17,7 @@ const OtpForm = () => {
   const searchParams = useSearchParams();
 
   const email = searchParams.get("email") || "";
-  const decodeEmail = decodeURIComponent(email);
+  const decodeEmail = decodeURIComponent(email).toLowerCase();
 
   // Initialize refs array
   useEffect(() => {

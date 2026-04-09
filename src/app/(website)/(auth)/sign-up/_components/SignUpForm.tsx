@@ -2,7 +2,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-import { z } from 'zod'
+import { signUpSchema, SignUpValues } from '@/schemas/auth'
 
 import {
   Form,
@@ -21,17 +21,11 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 
-const formSchema = z.object({
-  firstName: z.string().min(1, 'First name is required'),
-  lastName: z.string().min(1, 'Last name is required'),
-  email: z.string().email('Invalid email address').toLowerCase(),
-  password: z.string().min(6, 'Password must be at least 6 characters'),
-})
 
 const SignUpForm = () => {
   const router = useRouter()
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<SignUpValues>({
+    resolver: zodResolver(signUpSchema),
     defaultValues: {
       firstName: '',
       lastName: '',
@@ -42,7 +36,7 @@ const SignUpForm = () => {
 
   const { mutate, isPending } = useMutation({
     mutationKey: ['sign-up'],
-    mutationFn: (values: z.infer<typeof formSchema>) =>
+    mutationFn: (values: SignUpValues) =>
       fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/auth/register`, {
         method: 'POST',
         headers: {
@@ -61,7 +55,7 @@ const SignUpForm = () => {
   })
 
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  function onSubmit(values: SignUpValues) {
     mutate(values)
   }
   return (
@@ -139,6 +133,7 @@ const SignUpForm = () => {
                         <Input
                           placeholder=""
                           {...field}
+                          onChange={(e) => field.onChange(e.target.value.toLowerCase())}
                           className="border-t-0 border-l-0 border-r-0 border-b border-black rounded-none focus-visible:ring-0 focus-visible:ring-offset-0 px-0 shadow-none"
                         />
                       </FormControl>

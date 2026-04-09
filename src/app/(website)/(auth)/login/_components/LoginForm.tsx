@@ -70,6 +70,7 @@ const LoginForm = () => {
                   <Input
                     placeholder=""
                     {...field}
+                    onChange={(e) => field.onChange(e.target.value.toLowerCase())}
                     className="border-t-0 border-l-0 border-r-0 border-b border-black rounded-none focus-visible:ring-0 focus-visible:ring-offset-0 px-0 shadow-none"
                   />
                 </FormControl>

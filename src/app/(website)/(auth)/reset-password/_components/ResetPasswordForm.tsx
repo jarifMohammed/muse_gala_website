@@ -35,7 +35,7 @@ const ResetPasswordForm = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const email = searchParams.get("email") || "";
-  const decodeEmail = decodeURIComponent(email);
+  const decodeEmail = decodeURIComponent(email).toLowerCase();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),

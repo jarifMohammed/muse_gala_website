@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { forgotPasswordSchema, ForgotPasswordValues } from "@/schemas/auth";
 
 import {
   Form,
@@ -19,15 +19,12 @@ import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
-const formSchema = z.object({
-  email: z.string().email("Invalid email address").toLowerCase(),
-});
 
 const ForgotPasswordForm = () => {
   const router = useRouter();
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<ForgotPasswordValues>({
+    resolver: zodResolver(forgotPasswordSchema),
     defaultValues: {
       email: "",
     },
@@ -57,7 +54,7 @@ const ForgotPasswordForm = () => {
     },
   });
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: ForgotPasswordValues) {
     console.log(values);
     mutate(values.email);
   }
@@ -101,6 +98,7 @@ const ForgotPasswordForm = () => {
                         <Input
                           placeholder=""
                           {...field}
+                          onChange={(e) => field.onChange(e.target.value.toLowerCase())}
                           className="border-t-0 border-l-0 border-r-0 border-b border-black rounded-none focus-visible:ring-0 focus-visible:ring-offset-0 px-0 shadow-none"
                         />
                       </FormControl>
