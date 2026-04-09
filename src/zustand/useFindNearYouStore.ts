@@ -14,6 +14,26 @@ interface Location {
   placeName: string
 }
 
+export interface MapMarkerProduct {
+  id?: string
+  name?: string
+  image?: string
+  brand?: string
+  basePrice?: number
+  sizes?: string[]
+  shipping?: boolean
+  pickup?: boolean
+}
+
+export interface MapMarker {
+  latitude: number
+  longitude: number
+  lenderId?: string
+  lenderName?: string
+  masterDressCount?: number
+  products?: MapMarkerProduct[]
+}
+
 interface FindNearYouState {
   selectedLocation: Location | null
   radius: number
@@ -23,6 +43,7 @@ interface FindNearYouState {
   maxPrice: string
   page: number
   allProducts: ApiProduct[]
+  mapMarkers: MapMarker[]
   searchTerm: string
   pagination: Pagination | null
   isLoading: boolean
@@ -50,6 +71,7 @@ export const useFindNearYouStore = create<FindNearYouState>()(
       maxPrice: '',
       page: 1,
       allProducts: [],
+      mapMarkers: [],
       searchTerm: '',
       pagination: null,
       isLoading: false,
@@ -78,6 +100,7 @@ export const useFindNearYouStore = create<FindNearYouState>()(
           maxPrice: '',
           page: 1,
           allProducts: [],
+          mapMarkers: [],
           searchTerm: '',
           pagination: null,
           isLoading: false,

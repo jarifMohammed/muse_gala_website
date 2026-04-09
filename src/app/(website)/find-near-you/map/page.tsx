@@ -12,7 +12,7 @@ import { normalizeProducts } from '../utility/normalizeProducts'
 import { useRef, useCallback } from 'react'
 
 export default function MapPage() {
-  const { allProducts, selectedLocation, isLoading, nextPage, pagination, page } = useFindNearYouStore()
+  const { allProducts, mapMarkers, selectedLocation, isLoading, nextPage, pagination, page } = useFindNearYouStore()
 
   const observer = useRef<IntersectionObserver | null>(null)
   const scrollContainerRef = useRef<HTMLDivElement>(null)
@@ -63,7 +63,7 @@ export default function MapPage() {
             {/* Left → Map */}
             <div className="relative w-full min-h-[500px] bg-gray-100 overflow-hidden">
               <FindNearMap
-                products={normalizeProducts(allProducts)}
+                markers={mapMarkers || []}
                 center={mapCenter}
                 height={650}
               />
@@ -74,53 +74,18 @@ export default function MapPage() {
               ref={scrollContainerRef}
               className="grid-cols-1 gap-6 px-2 pr-2 overflow-y-auto max-h-[650px] hidden md:grid border-l border-gray-100 no-scrollbar"
             >
-              {allProducts.map((p, idx) => {
-                const id = (p as any)?._id ?? (p as any)?.dressId ?? idx
-                const name = (p as any)?.dressName ?? 'No Name'
-
-                // ✅ size array handling
-                const sizeRaw = (p as any)?.size
-                const size = Array.isArray(sizeRaw)
-                  ? sizeRaw.join(', ')
-                  : sizeRaw ?? 'N/A'
-
-                // ✅ image fallback
-                const image =
-                  Array.isArray((p as any)?.media) &&
-                    (p as any).media.length > 0
-                    ? (p as any).media[0]
-                    : '/placeholder.svg'
-
-                // ✅ brand
-                const brand = (p as any)?.brand ?? 'Unknown'
-
-                // ✅ category
-                const category = (p as any)?.category ?? 'N/A'
-
-                // ✅ pickupOption normalizer
-                const pickupOption = (
-                  (p as any)?.pickupOption || ''
-                ).toLowerCase()
-
-                const pickup =
-                  pickupOption.includes('pickup') || pickupOption === 'both'
-
-                const shipping =
-                  pickupOption.includes('shipping') ||
-                  pickupOption.includes('australia') ||
-                  pickupOption === 'both'
-
+              {normalizeProducts(allProducts).map((product) => {
                 return (
                   <MapProductCard
-                    key={id}
-                    id={id}
-                    name={name}
-                    size={size}
-                    image={image}
-                    brand={brand}
-                    category={category}
-                    shipping={shipping}
-                    pickup={pickup}
+                    key={product.id}
+                    id={String(product.id)}
+                    name={product.name}
+                    size={product.size}
+                    image={product.image}
+                    brand={product.brand}
+                    category={product.category}
+                    shipping={product.shipping}
+                    pickup={product.pickup}
                   />
                 )
               })}

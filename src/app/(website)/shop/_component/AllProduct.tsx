@@ -57,6 +57,9 @@ const AllProduct = () => {
   const buildQuery = useCallback((currentPage: number) => {
     const params = new URLSearchParams()
 
+    // 🔒 Only fetch active master dresses on public shop page
+    params.append('isActive', 'true')
+
     if (search) params.append('search', search)
     if (brand) params.append('brand', brand)
     if (size) params.append('size', size)

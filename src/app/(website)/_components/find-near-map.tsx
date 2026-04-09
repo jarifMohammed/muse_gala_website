@@ -7,10 +7,7 @@ import 'mapbox-gl/dist/mapbox-gl.css'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import ReactDOMServer from 'react-dom/server'
 import Image from 'next/image'
-import {
-  ProductCardData,
-  normalizeProducts,
-} from '../find-near-you/utility/normalizeProducts'
+// Imports removed
 import Link from 'next/link'
 import {
   Drawer,
@@ -19,14 +16,17 @@ import {
   DrawerTitle,
 } from '@/components/ui/drawer'
 
+import type { MapMarker, MapMarkerProduct } from '@/zustand/useFindNearYouStore'
+
 const MAPBOX_TOKEN =
   process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN || 'your-mapbox-token-here'
 
-interface Marker {
+// Local alias to safely reuse old marker typing inline for the component state
+interface LocalMarker {
   lat: number
   lng: number
   title?: string
-  products?: ProductCardData[]
+  products?: MapMarkerProduct[]
 }
 
 const CustomMarker = ({
@@ -48,7 +48,7 @@ const ProductPopover = ({
   isMobile,
   onOpenDrawer,
 }: {
-  products?: ProductCardData[]
+  products?: MapMarkerProduct[]
   position: { top: number; left: number }
   onClose: () => void
   isMobile?: boolean
@@ -126,14 +126,15 @@ const ProductPopover = ({
               <div className="flex-1 flex flex-col justify-between uppercase tracking-[.05em] w-full">
                 <div className="space-y-3">
                   <div className="text-sm font-medium text-gray-900 line-clamp-2">
+                    {product?.brand && <span className="text-[10px] opacity-70 block mb-1 tracking-widest">{product.brand}</span>}
                     {product?.name ?? (product as any)?.dressName ?? 'Untitled'}
                   </div>
 
                   <div className="text-xs text-gray-500">
                     Size:{' '}
-                    {Array.isArray(product?.size)
-                      ? product.size.join(', ')
-                      : product?.size || 'N/A'}
+                    {Array.isArray(product?.sizes)
+                      ? product.sizes.join(', ')
+                      : 'N/A'}
                   </div>
 
                   {/* Shipping & Pickup */}
@@ -163,7 +164,7 @@ const ProductPopover = ({
 }
 
 interface FindNearMapProps {
-  products?: ProductCardData[]
+  markers?: MapMarker[]
   center?: [number, number]
   zoom?: number
   width?: string | number
@@ -171,17 +172,17 @@ interface FindNearMapProps {
 }
 
 const FindNearMap = ({
-  products = [],
-  center = [151.2093, -33.8688],
-  zoom = 12,
+  markers = [],
+  center = [133.7751, -25.2744],
+  zoom = 4,
   width = '100%',
   height = 400,
 }: FindNearMapProps) => {
   const mapContainer = useRef<HTMLDivElement>(null)
   const map = useRef<mapboxgl.Map | null>(null)
   const markersRef = useRef<mapboxgl.Marker[]>([])
-  const [activeMarker, setActiveMarker] = useState<Marker | null>(null)
-  const [drawerMarker, setDrawerMarker] = useState<Marker | null>(null)
+  const [activeMarker, setActiveMarker] = useState<LocalMarker | null>(null)
+  const [drawerMarker, setDrawerMarker] = useState<LocalMarker | null>(null)
   const [popoverPosition, setPopoverPosition] = useState({ top: 0, left: 0 })
   const closeTimerRef = useRef<NodeJS.Timeout | null>(null)
   const [mapReady, setMapReady] = useState(false)
@@ -196,29 +197,17 @@ const FindNearMap = ({
     return () => window.removeEventListener('resize', checkMobile)
   }, [])
 
-  // normalize and group markers
-  const markersData = useMemo(() => {
-    const normalizedProducts = normalizeProducts(products as any)
-    const markersMap = new Map<string, Marker>()
-    normalizedProducts
-      .filter((p) => p.latitude != null && p.longitude != null)
-      .forEach((p) => {
-        const key = `${p.latitude},${p.longitude}`
-        if (!markersMap.has(key)) {
-          markersMap.set(key, {
-            lat: p.latitude,
-            lng: p.longitude,
-            title: p.name,
-            products: [p],
-          })
-        } else {
-          markersMap.get(key)!.products!.push(p)
-        }
-      })
-    return Array.from(markersMap.values())
-  }, [products])
+  // normalize and group markers directly from native API structure
+  const markersData: LocalMarker[] = useMemo(() => {
+    return markers.map((m) => ({
+      lat: m.latitude,
+      lng: m.longitude,
+      title: m.lenderName || 'Lender',
+      products: m.products || [],
+    }))
+  }, [markers])
 
-  const handleMarkerHover = useCallback((marker: Marker) => {
+  const handleMarkerHover = useCallback((marker: LocalMarker) => {
     if (closeTimerRef.current) {
       clearTimeout(closeTimerRef.current)
       closeTimerRef.current = null
@@ -301,7 +290,7 @@ const FindNearMap = ({
     markersRef.current.forEach((m) => m.remove())
     markersRef.current = []
 
-    markersData.forEach((marker: Marker) => {
+    markersData.forEach((marker: LocalMarker) => {
       const markerElement = document.createElement('div')
       markerElement.style.width = '24px'
       markerElement.style.height = '24px'
@@ -375,7 +364,7 @@ const FindNearMap = ({
 
       // Calculate bounds to include all markers
       const bounds = new mapboxgl.LngLatBounds();
-      markersData.forEach((marker: Marker) => bounds.extend([marker.lng, marker.lat]));
+      markersData.forEach((marker: LocalMarker) => bounds.extend([marker.lng, marker.lat]));
 
       // Start zoomed out so user can see markers and zoom in manually
       map.current.fitBounds(bounds, {
@@ -460,8 +449,11 @@ const FindNearMap = ({
                       />
                     </div>
                     <div className="flex-1 uppercase tracking-wider">
+                      {product?.brand && <div className="text-[10px] opacity-70 tracking-widest mb-1">{product.brand}</div>}
                       <div className="text-sm font-light text-gray-800 line-clamp-1">{product.name}</div>
-                      <div className="text-[10px] text-gray-500 mt-1">Size: {product.size}</div>
+                      <div className="text-[10px] text-gray-500 mt-1">
+                        Size: {Array.isArray(product?.sizes) ? product.sizes.join(', ') : 'N/A'}
+                      </div>
                       <div className="flex items-center gap-3 mt-2 text-[10px]">
                         {product.shipping && <div className="flex items-center gap-1.5"><Truck size={14} /><span>SHIPPING</span></div>}
                         {product.pickup && <div className="flex items-center gap-1.5"><MapPin size={14} /><span>PICKUP</span></div>}

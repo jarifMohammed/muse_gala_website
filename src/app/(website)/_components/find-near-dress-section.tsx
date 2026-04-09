@@ -6,16 +6,16 @@ import { useQuery } from "@tanstack/react-query";
 
 const FindNearDressSection = () => {
   const { data, isLoading } = useQuery({
-    queryKey: ['homepage-approved-dresses'],
+    queryKey: ['homepage-map-markers'],
     queryFn: async () => {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/admin/`)
-      if (!res.ok) throw new Error('Failed to fetch approved dresses')
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/admin/map-markers`)
+      if (!res.ok) throw new Error('Failed to fetch map markers')
       return res.json()
     },
     staleTime: 1000 * 60 * 10, // 10 minutes
   })
 
-  const products = data?.data || []
+  const markers = data?.data || []
 
   return (
     <div className="flex flex-col md:flex-row w-full max-w-[1800px] mx-auto px-6 md:px-12 lg:px-20">
@@ -48,11 +48,11 @@ const FindNearDressSection = () => {
           </div>
         ) : (
           <FindNearMap
-            key={products.length > 0 ? 'with-products' : 'no-products'}
+            key={markers.length > 0 ? 'with-markers' : 'no-markers'}
             height={450}
-            products={products}
-            center={[144.9631, -37.8136]} // Default to Melbourne or something sensible for AU
-            zoom={3} // Zoom out to show Australia if showing all
+            markers={markers}
+            center={[133.7751, -25.2744]} // Default Australia center
+            zoom={3} // Zoom out to show Australia
           />
         )}
       </div>

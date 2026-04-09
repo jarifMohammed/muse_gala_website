@@ -10,6 +10,7 @@ export interface ProductCardProps {
   description?: string
   shipping?: boolean
   pickup?: boolean
+  lenders?: Record<string, unknown>[]
 }
 
 export default function ProductCard({
@@ -19,6 +20,7 @@ export default function ProductCard({
   image,
   shipping,
   pickup,
+  lenders,
 }: ProductCardProps) {
   // ✅ Size handling (array or string or null)
   const displaySize = Array.isArray(size) ? size.join(', ') : size || 'N/A'
@@ -46,6 +48,13 @@ export default function ProductCard({
                 <h3 className="brand-subheader text-black leading-[35px] md:leading-[40px] group-hover:text-gray-600 transition-colors">
                   {name}
                 </h3>
+
+                {/* ✅ Lenders info */}
+                {lenders && lenders.length > 1 && (
+                  <p className="text-xs text-green-600 font-medium mb-1">
+                    Available from {lenders.length} lenders nearby
+                  </p>
+                )}
 
                 {/* ✅ Size */}
                 <p className="brand-body text-black leading-[24px] md:leading-[32px] lg:leading-[40px]">

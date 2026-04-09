@@ -103,7 +103,6 @@ export default function FindNearYou() {
       maxPrice,
       searchTerm,
       page,
-      isMapPage, // Refetch on toggle
     ],
     queryFn: fetchProducts,
     enabled: true,
@@ -111,11 +110,54 @@ export default function FindNearYou() {
     staleTime: 1000 * 60 * 5,
   })
 
+  // 🌍 Map Markers Query (Un-paginated)
+  const mapMarkersQuery = useQuery({
+    queryKey: [
+      'map-markers',
+      selectedLocation,
+      radius,
+      size,
+      category,
+      minPrice,
+      maxPrice,
+      searchTerm,
+    ],
+    queryFn: async () => {
+      const queryParams = new URLSearchParams()
+      if (selectedLocation && !searchTerm) {
+        queryParams.append('latitude', String(selectedLocation.latitude))
+        queryParams.append('longitude', String(selectedLocation.longitude))
+        queryParams.append('radius', String(radius * 1000))
+      }
+      if (size) queryParams.append('size', size)
+      if (category) queryParams.append('category', category)
+      if (minPrice) queryParams.append('minPrice', minPrice)
+      if (maxPrice) queryParams.append('maxPrice', maxPrice)
+      if (searchTerm) queryParams.append('search', searchTerm)
+
+      const baseUrl = (process.env.NEXT_PUBLIC_BACKEND_URL || '').replace(/\/$/, '')
+      const apiUrl = `${baseUrl}/api/v1/admin/map-markers?${queryParams.toString()}`
+
+      const res = await fetch(apiUrl)
+      if (!res.ok) throw new Error('Failed to fetch map markers')
+      const data = await res.json()
+      return data?.data || []
+    },
+    enabled: true,
+    staleTime: 1000 * 60 * 5,
+  })
 
   // Sync fetching status to store for MapPage
   useEffect(() => {
-    setState({ isLoading: isFetching || isLoading })
-  }, [isFetching, isLoading, setState])
+    setState({ isLoading: isFetching || isLoading || mapMarkersQuery.isFetching || mapMarkersQuery.isLoading })
+  }, [isFetching, isLoading, mapMarkersQuery.isFetching, mapMarkersQuery.isLoading, setState])
+
+  // Merge map markers into Zustand
+  useEffect(() => {
+    if (mapMarkersQuery.data) {
+      setState({ mapMarkers: mapMarkersQuery.data })
+    }
+  }, [mapMarkersQuery.data, setState])
 
   // Merge fetched products into Zustand
   useEffect(() => {
@@ -196,10 +238,11 @@ export default function FindNearYou() {
               placeName,
             },
           })
+          // Let React Query handle the cache naturally, just force page 1
           resetPage()
-          setAllProducts([])
           setTimeout(() => {
             refetch()
+            mapMarkersQuery.refetch()
             toast.dismiss('search-toast')
           }, 0)
         } catch (err) {
@@ -222,8 +265,8 @@ export default function FindNearYou() {
   const handleSearchNearYou = () => {
     if (!selectedLocation) return
     resetPage()
-    setAllProducts([])
     refetch()
+    mapMarkersQuery.refetch()
   }
 
 
@@ -235,8 +278,10 @@ export default function FindNearYou() {
       maxPrice: '',
     })
     resetPage()
-    setAllProducts([])
-    setTimeout(() => refetch(), 0)
+    setTimeout(() => {
+      refetch()
+      mapMarkersQuery.refetch()
+    }, 0)
     setShowFilters(false)
   }
 
@@ -248,10 +293,9 @@ export default function FindNearYou() {
       isFirstMount.current = false
       return
     }
+    // Only reset pagination, let TanStack overwrite the products via cache naturally
     resetPage()
-    setAllProducts([])
-    // refetch()
-  }, [selectedLocation, radius, size, category, minPrice, maxPrice, searchTerm, resetPage, setAllProducts])
+  }, [selectedLocation, radius, size, category, minPrice, maxPrice, searchTerm, resetPage])
 
   return (
     <section className="container mx-auto pt-0.5 pb-2">
