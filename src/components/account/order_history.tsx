@@ -2,15 +2,13 @@
 'use client'
 
 import clsx from 'clsx'
-import { Button } from '../ui/button'
-// import Link from 'next/link'
 import { useSession } from 'next-auth/react'
 import { useQuery, keepPreviousData, useMutation, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
-import { MessageCircle, Truck } from 'lucide-react'
+import { MessageCircle, Loader2 } from 'lucide-react'
 
 // Types
 interface Order {
@@ -39,6 +37,7 @@ const OrderHistory = () => {
   const { data: session } = useSession()
   const router = useRouter()
   const [page, setPage] = useState(1)
+  const [loadingChatId, setLoadingChatId] = useState<string | null>(null)
 
   const queryClient = useQueryClient()
 
@@ -97,15 +96,16 @@ const OrderHistory = () => {
     cancelBookingMutation.mutate(id)
   }
 
-  // Handle Track Order
-  const handleTrackOrder = async (order: Order) => {
-    // If chatRoom exists, navigate directly
+  // Handle Chat with Lender
+  const handleChat = async (order: Order) => {
+    // If chatRoom exists, navigate immediately without setting loading state
     if (order.chatRoom) {
-      router.push('/account/chats')
+      router.push(`/account/chats?id=${order.chatRoom}`)
       return
     }
 
-    // Create chatRoom first
+    setLoadingChatId(order._id)
+    // Create chatRoom
     try {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/message/chatrooms/create-for-booking`,
@@ -119,13 +119,20 @@ const OrderHistory = () => {
         },
       )
 
-      if (!res.ok) throw new Error('Failed to create chat room')
+      const json = await res.json()
+      if (!res.ok) throw new Error(json.message || 'Failed to create chat room')
 
       toast.success('Chat room created successfully')
-      router.push('/account/chats')
+      const roomId = typeof json.data === 'string' ? json.data : json.data?._id
+      if (roomId) {
+        router.push(`/account/chats?id=${roomId}`)
+      } else {
+        router.push('/account/chats')
+      }
     } catch (error) {
       toast.error('Failed to create chat room')
       console.error(error)
+      setLoadingChatId(null)
     }
   }
 
@@ -147,7 +154,8 @@ const OrderHistory = () => {
                 <OrderRow
                   key={order._id}
                   order={order}
-                  onTrackOrder={handleTrackOrder}
+                  onChat={handleChat}
+                  isChatLoading={loadingChatId === order._id}
                   onCancelBooking={handleCancelBooking}
                   isCancelling={
                     cancelBookingMutation.isPending &&
@@ -196,6 +204,7 @@ const TableHeader = () => (
         'Delivery Status',
         'Total Cost',
         'Tracking',
+        'Actions',
       ].map((header, index) => (
         <th
           key={index}
@@ -210,7 +219,7 @@ const TableHeader = () => (
 
 const LoadingRow = () => (
   <tr>
-    <td colSpan={8} className="text-center py-10 text-gray-500">
+    <td colSpan={9} className="text-center py-10 text-gray-500">
       Loading orders...
     </td>
   </tr>
@@ -218,7 +227,7 @@ const LoadingRow = () => (
 
 const EmptyRow = () => (
   <tr>
-    <td colSpan={8} className="text-center py-10 text-gray-500">
+    <td colSpan={9} className="text-center py-10 text-gray-500">
       No bookings found.
     </td>
   </tr>
@@ -226,14 +235,16 @@ const EmptyRow = () => (
 
 interface OrderRowProps {
   order: Order
-  onTrackOrder: (order: Order) => void
+  onChat: (order: Order) => void
+  isChatLoading: boolean
   onCancelBooking: (id: string) => void
   isCancelling: boolean
 }
 
 const OrderRow = ({
   order,
-  onTrackOrder,
+  onChat,
+  isChatLoading,
   onCancelBooking,
   isCancelling,
 }: OrderRowProps) => {
@@ -279,7 +290,21 @@ const OrderRow = ({
       </td>
 
       <td className="py-6 px-4 sm:px-6 lg:px-10 font-light tracking-wide text-base text-gray-900 border-r border-gray-300">
-        {order.dressName || 'N/A'}
+        <div className="flex items-center justify-between gap-2">
+          <span>{order.dressName || 'N/A'}</span>
+          <button
+            className="p-1.5 h-auto text-black hover:bg-black/5 rounded-md transition-all flex items-center justify-center shrink-0 disabled:opacity-50"
+            title="Chat with Lender"
+            onClick={() => onChat(order)}
+            disabled={isChatLoading}
+          >
+            {isChatLoading ? (
+              <Loader2 className="w-4 h-4 animate-spin" />
+            ) : (
+              <MessageCircle className="w-4 h-4" />
+            )}
+          </button>
+        </div>
       </td>
 
       <td className="py-6 px-4 sm:px-6 lg:px-10 font-light tracking-wide text-base text-gray-900 border-r border-gray-300">
@@ -302,53 +327,49 @@ const OrderRow = ({
         ${order.totalAmount}
       </td>
 
-      <td className="py-6 px-4 sm:px-6 lg:px-10 text-base text-gray-900 font-light tracking-wide flex flex-col items-start gap-2">
-        <div className="flex items-center gap-4">
-          <Button
-            variant="ghost"
-            size="sm"
-            className="p-1 h-auto text-blue-600 hover:text-blue-800 hover:bg-blue-50 transition-colors"
-            title="Chat with Lender"
-            onClick={() => onTrackOrder(order)}
-          >
-            <MessageCircle className="w-5 h-5" />
-          </Button>
-          
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="p-1 h-auto text-green-600 hover:text-green-800 hover:bg-green-50 transition-colors"
-                title="Track Order"
-              >
-                <Truck className="w-5 h-5" />
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-64">
-              <div className="flex flex-col space-y-2">
-                <h4 className="font-semibold text-sm border-b pb-2 mb-1">Tracking Details</h4>
-                <div className="text-sm flex justify-between">
-                  <span className="text-gray-500">Method:</span>
-                  <span className="font-medium">{order.shippingMethod || ''}</span>
-                </div>
-                <div className="text-sm flex justify-between">
-                  <span className="text-gray-500">Tracking No:</span>
-                  <span className="font-medium">{order.trackingNumber || ''}</span>
-                </div>
+      <td className="py-6 px-4 sm:px-6 lg:px-10 text-base text-gray-900 border-r border-gray-300 font-light tracking-wide">
+        <Popover>
+          <PopoverTrigger asChild>
+            <button
+              className="px-0 h-auto text-black underline hover:opacity-60 transition-all font-light whitespace-nowrap"
+              title="Track Order"
+            >
+              Track Order
+            </button>
+          </PopoverTrigger>
+          <PopoverContent className="w-64">
+            <div className="flex flex-col space-y-2">
+              <h4 className="font-semibold text-sm border-b pb-2 mb-1">Tracking Details</h4>
+              <div className="text-sm flex justify-between">
+                <span className="text-gray-500">Method:</span>
+                <span className="font-medium">{order.shippingMethod || 'N/A'}</span>
               </div>
-            </PopoverContent>
-          </Popover>
-        </div>
-        <Button
-          variant="link"
-          size="sm"
-          className="text-xs p-0 h-auto text-red-600 font-light tracking-wide uppercase mt-1"
-          onClick={() => onCancelBooking(order._id)}
+              <div className="text-sm flex justify-between">
+                <span className="text-gray-500">Tracking No:</span>
+                <span className="font-medium">{order.trackingNumber || 'N/A'}</span>
+              </div>
+            </div>
+          </PopoverContent>
+        </Popover>
+      </td>
+
+      <td className="py-6 px-4 sm:px-6 lg:px-10 text-base text-gray-900 font-light tracking-wide text-center">
+        {/* Cancel Booking */}
+        <button
+          className={clsx('mx-auto px-0 h-auto transition-all uppercase text-xs tracking-widest', {
+            'text-red-500 hover:text-red-700': !isCancelling,
+            'text-gray-400 cursor-not-allowed animate-pulse': isCancelling,
+          })}
+          title={isCancelling ? 'Cancelling...' : 'Cancel Booking'}
+          onClick={() => {
+            if (window.confirm('Are you sure you want to cancel this booking?')) {
+              onCancelBooking(order._id)
+            }
+          }}
           disabled={isCancelling}
         >
-          {isCancelling ? 'CANCELLING...' : 'CANCEL BOOKING'}
-        </Button>
+          {isCancelling ? 'CANCELLING...' : 'CANCEL'}
+        </button>
       </td>
 
     </tr>

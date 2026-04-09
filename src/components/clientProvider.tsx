@@ -24,6 +24,7 @@ interface UserResponse {
     phoneNumber?: string
     bio?: string
     kycVerified?: boolean
+    kycStatus?: string
   }
 }
 
@@ -63,7 +64,7 @@ export default function ClientProvider({ session }: Props) {
   })
 
   useEffect(() => {
-    if (isSuccess && userRes?.data && !initializedRef.current) {
+    if (isSuccess && userRes?.data) {
       const u = userRes.data
       setUser({
         id: u._id,
@@ -75,12 +76,15 @@ export default function ClientProvider({ session }: Props) {
         phoneNumber: u.phoneNumber || '',
         bio: u.bio || '',
         kycVerified: u.kycVerified ?? false,
+        kycStatus: u.kycStatus || '',
         accessToken: accessToken || '',
       })
 
-      connectSocket(u._id)
-      initializedRef.current = true
-      console.log('✅ User initialized & socket connected:', u._id)
+      if (!initializedRef.current) {
+        connectSocket(u._id)
+        initializedRef.current = true
+        console.log('✅ User initialized & socket connected:', u._id)
+      }
     }
 
     if ((!userId || isError) && initializedRef.current) {

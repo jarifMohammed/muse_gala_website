@@ -11,6 +11,7 @@ export interface User {
   phoneNumber?: string
   bio?: string
   kycVerified?: boolean
+  kycStatus?: string
 }
 
 interface UserState {

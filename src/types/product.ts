@@ -1,5 +1,6 @@
 export interface Product {
   _id: string
+  brand?: string
   dressName: string
   sizes: string[]
   colors: string[]

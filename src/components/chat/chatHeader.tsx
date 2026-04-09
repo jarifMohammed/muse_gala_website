@@ -1,10 +1,10 @@
 import { User } from 'lucide-react'
 
 export default function ChatHeader({
-  orderId,
+  dressName,
   name,
 }: {
-  orderId?: string
+  dressName?: string
   name?: string
 }) {
   return (
@@ -14,8 +14,7 @@ export default function ChatHeader({
       </div>
       <div>
         <p className="font-normal text-lg sm:text-2xl">{name}</p>
-        {/* <span className="text-[12px]">{`{${orderId}}`}</span> */}
-        <span className="text-[12px] text-gray-500">{orderId}</span>
+        <span className="text-[12px] text-gray-500">{dressName}</span>
       </div>
     </div>
   )

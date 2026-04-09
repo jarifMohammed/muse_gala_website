@@ -2,18 +2,27 @@
 'use client'
 
 import { useShoppingStore } from '@/zustand/shopingStore'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
 import { usePathname, useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { useState } from 'react'
-import IDVerificationModal from './IDVerificationModal'
-
 import { Input } from '@/components/ui/input'
 import { useUserStore } from '@/zustand/useUserStore'
 import { useLocationStore } from '@/zustand/useLocationStore'
 import { bookingApi } from '@/lib/bookingApiService'
 import { paymentApi } from '@/lib/paymentApi'
+import { useEffect, useRef } from 'react'
+import { Loader2, ShieldCheck, X } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+
+interface KycApiRes {
+  status: boolean
+  message: {
+    url: string
+    message: string
+  }
+}
 
 interface ShippingDetails {
   isLocalPickup?: boolean
@@ -69,14 +78,42 @@ const PriceBreakDown = ({ singleProduct }: ShopDetailsProps) => {
   const data = singleProduct?.data
 
   const { user } = useUserStore()
-  const isKycVerified = user?.kycVerified
+  const isKycVerified =
+    user?.kycVerified === true &&
+    user?.kycStatus?.toLowerCase() === 'verified'
 
   const { lenders } = useLocationStore()
 
   const [isApplyingPromo, setIsApplyingPromo] = useState(false)
-  const [isVerificationModalOpen, setIsVerificationModalOpen] = useState(false)
+  const [showKycSection, setShowKycSection] = useState(false)
+  const hasOpenedKycRef = useRef(false)
+  const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL
 
+  const {
+    data: kycRes,
+    refetch: fetchKyc,
+    isFetching: isFetchingKyc,
+  } = useQuery<KycApiRes>({
+    queryKey: ['kyc-check-inline'],
+    queryFn: async () => {
+      const res = await fetch(`${baseUrl}/api/v1/user/kyc/verify`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      if (!res.ok) throw new Error('ID verification failed')
+      return res.json()
+    },
+    enabled: false,
+  })
 
+  useEffect(() => {
+    if (kycRes?.status && kycRes.message?.url && !hasOpenedKycRef.current) {
+      hasOpenedKycRef.current = true
+      window.open(kycRes.message.url, '_blank')
+      setShowKycSection(false)
+    }
+  }, [kycRes])
 
   // PRICE CALCULATION
   const basePrice = Number(data?.basePrice ?? 0)
@@ -210,10 +247,6 @@ const PriceBreakDown = ({ singleProduct }: ShopDetailsProps) => {
 
       setCurrentBookingId(bookingId)
 
-      toast.success(res?.message || 'Booking created successfully!', {
-        position: 'bottom-right',
-      })
-
       setTimeout(() => {
         router.push(`/shop/checkout/${data?._id}`)
       }, 1000)
@@ -317,8 +350,8 @@ const PriceBreakDown = ({ singleProduct }: ShopDetailsProps) => {
       return
     }
 
-    if (!isKycVerified) {
-      setIsVerificationModalOpen(true)
+    if (user && !isKycVerified) {
+      setShowKycSection(true)
       return
     }
 
@@ -346,6 +379,8 @@ const PriceBreakDown = ({ singleProduct }: ShopDetailsProps) => {
   }
 
   const handleConfirmPay = () => {
+    if (updateBookingForPayment.isPending || createCheckout.isPending) return
+
     if (!currentBookingId) {
       toast.error('No booking ID found. Please try again.')
       return
@@ -366,8 +401,8 @@ const PriceBreakDown = ({ singleProduct }: ShopDetailsProps) => {
       return
     }
 
-    if (!isKycVerified) {
-      setIsVerificationModalOpen(true)
+    if (user && !isKycVerified) {
+      setShowKycSection(true)
       return
     }
 
@@ -385,6 +420,8 @@ const PriceBreakDown = ({ singleProduct }: ShopDetailsProps) => {
       toast.error('No nearby lenders found. Please choose shipping instead.')
       return
     }
+
+    if (createBookingForRentNow.isPending) return
 
     createBookingForRentNow.mutate()
   }
@@ -491,7 +528,7 @@ const PriceBreakDown = ({ singleProduct }: ShopDetailsProps) => {
                 className="bg-black text-white hover:bg-black/80 uppercase tracking-widest text-sm h-12 w-full transition-colors disabled:opacity-50 font-avenir rounded-none"
               >
                 {updateBookingForPayment.isPending || createCheckout.isPending
-                  ? 'Processing...'
+                  ? 'Processing'
                   : 'Confirm & Pay'}
               </button>
             ) : (
@@ -509,16 +546,46 @@ const PriceBreakDown = ({ singleProduct }: ShopDetailsProps) => {
             disabled={createBookingForRentNow.isPending}
             className="bg-black text-white hover:bg-black/80 uppercase tracking-widest text-sm h-12 w-full transition-colors disabled:opacity-50 font-avenir rounded-none"
           >
-            {createBookingForRentNow.isPending ? 'Processing...' : 'Rent Now'}
+            {createBookingForRentNow.isPending ? 'Processing' : 'Rent Now'}
           </button>
         )}
       </div>
 
-      <IDVerificationModal
-        isOpen={isVerificationModalOpen}
-        onClose={() => setIsVerificationModalOpen(false)}
-        user={user}
-      />
+      {showKycSection && user && isKycVerified === false && (
+        <div className="mt-8 p-6 border border-black/10 bg-gray-50/50 space-y-4 animate-in fade-in slide-in-from-top-4 duration-500 relative">
+          <button
+            onClick={() => setShowKycSection(false)}
+            className="absolute right-4 top-4 opacity-40 hover:opacity-100 transition-opacity"
+          >
+            <X className="w-4 h-4" />
+          </button>
+
+          <div className="flex items-start gap-3">
+            <ShieldCheck className="w-5 h-5 mt-0.5 text-black/60" />
+            <div className="space-y-1">
+              <h3 className="text-sm font-semibold tracking-wider uppercase">ID Verification Required</h3>
+              <p className="text-xs normal-case opacity-70 leading-relaxed font-light">
+                Almost there. Before you rent, we just need a quick ID verification to ensure a safe community.
+              </p>
+            </div>
+          </div>
+
+          <Button
+            onClick={() => fetchKyc()}
+            disabled={isFetchingKyc}
+            className="w-full bg-black text-white hover:bg-black/90 uppercase tracking-widest text-xs h-12 rounded-none transition-all"
+          >
+            {isFetchingKyc ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Processing
+              </>
+            ) : (
+              'Verify Now'
+            )}
+          </Button>
+        </div>
+      )}
     </div>
   )
 }

@@ -126,7 +126,7 @@ export default function ChatLayout({
 
         {/* Main Chat */}
         <div className="w-full md:w-2/3 flex flex-col border border-[#E6E6E6] rounded-xl bg-white shadow-sm">
-          <ChatHeader name={activeChat?.name} orderId={activeChat?.orderId} />
+          <ChatHeader name={activeChat?.name} dressName={activeChat?.dressName} />
 
           <div className="flex-1 flex flex-col overflow-hidden h-[60vh] md:h-auto">
             {(isLoading || localLoading) && (

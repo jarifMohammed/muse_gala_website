@@ -27,8 +27,10 @@ interface IShoppingStore {
 
   startDate: Date | null
   endDate: Date | null
+  eventDay: Date | null
   setStartDate: (date: Date | null) => void
   setEndDate: (date: Date | null) => void
+  setEventDay: (date: Date | null) => void
 
   fullName: string
   email: string
@@ -69,6 +71,7 @@ const initialState = {
   rent: '4',
   startDate: null,
   endDate: null,
+  eventDay: null,
   fullName: '',
   email: '',
   phone: '',
@@ -94,6 +97,7 @@ export const useShoppingStore = create<IShoppingStore>()(
 
       setStartDate: date => set({ startDate: date }),
       setEndDate: date => set({ endDate: date }),
+      setEventDay: date => set({ eventDay: date }),
 
       setField: (field, value) =>
         set(state => {
@@ -133,7 +137,19 @@ export const useShoppingStore = create<IShoppingStore>()(
         currentBookingId: state.currentBookingId,
         promoCode: state.promoCode,
         appliedPromo: state.appliedPromo,
+        startDate: state.startDate,
+        endDate: state.endDate,
+        eventDay: state.eventDay,
+        address: state.address,
+        isConfirm: state.isConfirm,
       }),
+      onRehydrateStorage: () => state => {
+        if (state) {
+          if (state.startDate) state.startDate = new Date(state.startDate)
+          if (state.endDate) state.endDate = new Date(state.endDate)
+          if (state.eventDay) state.eventDay = new Date(state.eventDay)
+        }
+      },
     },
   ),
 )

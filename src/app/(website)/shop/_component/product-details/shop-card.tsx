@@ -105,7 +105,7 @@ const ShopCard = ({ thumbnailImage, allImages, isLoading, productdata }: ShopCar
           <div
             key={index}
             onClick={() => setCurrentImageIndex(index)}
-            className={`min-w-[100px] cursor-pointer overflow-hidden border-[2px] ${currentImageIndex === index ? 'border-gray-500' : 'border-transparent'
+            className={`min-w-[100px] aspect-[4/5] cursor-pointer overflow-hidden border-[2px] ${currentImageIndex === index ? 'border-gray-500' : 'border-transparent'
               }`}
           >
             <Image
@@ -122,7 +122,7 @@ const ShopCard = ({ thumbnailImage, allImages, isLoading, productdata }: ShopCar
       {/* Main Image + swipe on mobile */}
       <div className="flex-1 flex flex-col">
         <div
-          className="flex-1 aspect-[3/4] lg:aspect-square relative"
+          className="flex-1 aspect-[3/4] lg:aspect-[4/5] lg:max-h-[800px] overflow-hidden relative"
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
         >

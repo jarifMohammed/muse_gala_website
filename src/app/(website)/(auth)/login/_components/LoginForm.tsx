@@ -119,7 +119,7 @@ const LoginForm = () => {
               )}
               type="submit"
             >
-              {isPending ? 'Signing in...' : 'Sign In'}
+              {isPending ? 'Signing in' : 'Sign In'}
             </button>
           </div>
         </form>

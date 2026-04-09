@@ -18,7 +18,6 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
 
 import { ProfileFormSchemaValues, profileSchema } from '@/schemas/account'
 import { useUserStore } from '@/zustand/useUserStore'
@@ -61,7 +60,6 @@ const AccountInfo = () => {
       lastName: '',
       email: '',
       phoneNumber: '',
-      bio: '',
     },
   })
 
@@ -73,7 +71,6 @@ const AccountInfo = () => {
         lastName: currentUser.lastName || '',
         email: currentUser.email || '',
         phoneNumber: currentUser.phoneNumber || '',
-        bio: currentUser.bio || '',
       })
     }
   }, [currentUser, form])
@@ -194,31 +191,6 @@ const AccountInfo = () => {
                 )}
               />
 
-              {/* Bio */}
-              <FormField
-                control={form.control}
-                name="bio"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-sm font-light tracking-wider">
-                      Bio
-                    </FormLabel>
-                    {isEditing ? (
-                      <FormControl>
-                        <Textarea
-                          {...field}
-                          className="border-b border-gray-300 rounded-none px-2 py-1 text-sm"
-                        />
-                      </FormControl>
-                    ) : (
-                      <p className="text-base text-gray-700 mt-1 tracking-wide mb-6">
-                        {field.value || 'N/A'}
-                      </p>
-                    )}
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
             </div>
 
             {/* Right Column */}

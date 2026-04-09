@@ -12,7 +12,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { Loader2, X } from 'lucide-react'
 import { useQuery } from '@tanstack/react-query'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import { User } from '@/zustand/useUserStore'
 
 interface IDVerificationModalProps {
@@ -31,7 +31,7 @@ interface GetApiRes {
 
 const IDVerificationModal = ({ isOpen, onClose, user }: IDVerificationModalProps) => {
     const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL
-    const [countdown, setCountdown] = useState(10)
+    const hasOpenedRef = useRef(false)
 
     const {
         data: kycRes,
@@ -52,7 +52,8 @@ const IDVerificationModal = ({ isOpen, onClose, user }: IDVerificationModalProps
     })
 
     useEffect(() => {
-        if (kycRes?.status && kycRes.message?.url) {
+        if (kycRes?.status && kycRes.message?.url && !hasOpenedRef.current) {
+            hasOpenedRef.current = true
             window.open(kycRes.message.url, '_blank')
             onClose()
         }
@@ -60,23 +61,10 @@ const IDVerificationModal = ({ isOpen, onClose, user }: IDVerificationModalProps
 
     useEffect(() => {
         if (!isOpen) {
-            setCountdown(10)
-            return
+            hasOpenedRef.current = false
         }
+    }, [isOpen])
 
-        if (isFetching) return
-
-        if (countdown <= 0) {
-            onClose()
-            return
-        }
-
-        const timer = setInterval(() => {
-            setCountdown((prev) => prev - 1)
-        }, 1000)
-
-        return () => clearInterval(timer)
-    }, [isOpen, countdown, onClose, isFetching])
 
     return (
         <AlertDialog open={isOpen} onOpenChange={onClose}>
@@ -99,7 +87,7 @@ const IDVerificationModal = ({ isOpen, onClose, user }: IDVerificationModalProps
                         onClick={onClose}
                         className="uppercase tracking-widest text-xs border-black rounded-none"
                     >
-                        Close {countdown > 0 && `(${countdown}s)`}
+                        Close
                     </AlertDialogCancel>
                     <Button
                         onClick={() => fetchKyc()}

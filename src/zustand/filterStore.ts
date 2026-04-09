@@ -22,6 +22,9 @@ interface IFilter {
 
   size: string
   setSize: (value: string) => void
+ 
+  brand: string
+  setBrand: (value: string) => void
 
   page: number
   resetPage: () => void
@@ -41,6 +44,7 @@ const initialState = {
   minPrice: '',
   maxPrice: '',
   size: '',
+  brand: '',
   page: 1,
 }
 
@@ -67,6 +71,7 @@ export const useFilterStore = create<IFilter>((set) => ({
   setMinPrice: (value) => set({ minPrice: value, page: 1 }),
   setMaxPrice: (value) => set({ maxPrice: value, page: 1 }),
   setSize: (value) => set({ size: value, page: 1 }),
+  setBrand: (value) => set({ brand: value, page: 1 }),
 
   resetPage: () => set({ page: 1 }),
   nextPage: () => set((state) => ({ page: state.page + 1 })),

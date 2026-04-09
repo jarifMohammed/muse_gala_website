@@ -7,6 +7,7 @@ import { LocalPickup } from './filter/LocalPickup'
 // import EventDate from './filter/EventDate'
 import Price from './filter/Price'
 import Size from './filter/Size'
+import Brand from './filter/Brand'
 
 import { useFilterStore } from '@/zustand/filterStore'
 
@@ -16,6 +17,7 @@ const FilterProduct = () => {
   return (
     <div className=" space-y-5 font-avenir">
       <SearchProduct />
+      <Brand />
       <Rental />
       <LocalPickup />
       {/* <EventDate /> */}

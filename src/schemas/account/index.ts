@@ -6,7 +6,6 @@ export const profileSchema = z.object({
   email: z.string().email("Invalid email").toLowerCase(),
   phoneNumber: z.string().min(10, "Phone must be at least 10 digits"),
 
-  bio: z.string().optional(),
 });
 
 export type ProfileFormSchemaValues = z.infer<typeof profileSchema>;

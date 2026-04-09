@@ -179,9 +179,7 @@ const ShopDetails: React.FC<ShopDetailsProps> = ({
                 </p>
               )}
 
-              <p className="tracking-wider mt-2 opacity-75 uppercase text-sm lg:text-base">
-                Dress ID: {data.masterDressId}
-              </p>
+
             </div>
           </div>
         )}

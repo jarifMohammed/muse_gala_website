@@ -88,7 +88,12 @@ export function ProductCard({ product }: ProductCardProps) {
           </motion.div>
         </div>
 
-        <div className="text-center space-y-3 mt-auto">
+        <div className="text-center space-y-1 mt-auto">
+          {product.brand && (
+            <p className="text-[11px] opacity-70 uppercase tracking-widest font-avenir">
+              {product.brand}
+            </p>
+          )}
           <h3 className="text-[14px] font-light tracking-[0.1rem] transition-colors duration-300 group-hover:text-gray-700 font-avenir">
             {product.dressName}
           </h3>

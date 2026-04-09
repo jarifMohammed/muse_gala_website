@@ -24,7 +24,12 @@ export const SearchProductCard = ({ product, onClick }: SearchProductCardProps) 
                     className="object-cover object-top group-hover:scale-105 transition-transform duration-300"
                 />
             </div>
-            <div className="flex flex-col gap-1 overflow-hidden">
+            <div className="flex flex-col gap-0.5 overflow-hidden">
+                {product.brand && (
+                    <p className="text-[10px] opacity-60 uppercase tracking-widest truncate">
+                        {product.brand}
+                    </p>
+                )}
                 <h4 className="text-sm font-avenir uppercase tracking-wider truncate">
                     {product.dressName}
                 </h4>

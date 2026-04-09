@@ -1,5 +1,6 @@
 export type TrendingProduct = {
   _id: string
+  brand?: string
   dressName: string
   listingIds: string[]
   lenderIds: string[]

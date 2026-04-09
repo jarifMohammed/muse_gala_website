@@ -14,10 +14,8 @@ import { useShoppingStore } from '@/zustand/shopingStore'
 import { cn } from '@/lib/utils'
 
 const RentalDates = () => {
-  const { rent, startDate, setStartDate, setEndDate } = useShoppingStore()
+  const { rent, startDate, setStartDate, endDate, setEndDate, eventDay, setEventDay } = useShoppingStore()
   const [selectedRange, setSelectedRange] = useState<DateRange | undefined>()
-  // Track event day for visual distinction
-  const [eventDay, setEventDay] = useState<Date | null>(null)
 
   // 🧭 Handle user click on calendar with smart logic
   const handleSelect = (clickedDate: Date | undefined) => {
@@ -76,13 +74,20 @@ const RentalDates = () => {
     }
   }, [rent, eventDay, setStartDate, setEndDate])
 
+  // 🧹 Sync selectedRange when startDate/endDate hydrated from store
+  useEffect(() => {
+    if (startDate && endDate) {
+      setSelectedRange({ from: startDate, to: endDate })
+    }
+  }, [startDate, endDate])
+
   // 🧹 Cleanup if startDate reset elsewhere
   useEffect(() => {
     if (!startDate) {
       setSelectedRange(undefined)
       setEventDay(null)
     }
-  }, [startDate])
+  }, [startDate, setEventDay])
 
   // 🖥️ Display text in button
   const displayDate =

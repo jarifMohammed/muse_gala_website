@@ -11,17 +11,15 @@ interface DeliveryOptionProps {
 
 const DeliveryOption = ({ masterDressId }: DeliveryOptionProps) => {
   const { deliveryOption, setDeliveryOption } = useShoppingStore()
-  const { setLocation, setLenders, setLoading } = useLocationStore()
+  const { setLocation, setLenders, setLoading, latitude, longitude } = useLocationStore()
 
   React.useEffect(() => {
-    // Always reset location to null on page load
-    setLocation(null, null)
-    // Always request fresh location access
-    if (deliveryOption === 'pickup') {
+    // Only fetch if pickup is selected and we don't have location yet
+    if (deliveryOption === 'pickup' && (!latitude || !longitude)) {
       handleLocalPickup()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [deliveryOption])
 
   const handleLocalPickup = () => {
     console.log('📍 handleLocalPickup triggered')

@@ -101,7 +101,7 @@ export default function ChatList({
                   }}
                 /> */}
                 <p className="font-normal tracking-wider text-[12px] md:text-sm">
-                  {conversation.orderId}
+                  {conversation.dressName}
                 </p>
 
                 <span className="text-xs text-gray-500">

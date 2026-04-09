@@ -174,7 +174,7 @@ const BecomeLender = () => {
           <div className="w-full">
             <div className="flex flex-col items-center text-center">
               <h2 className="text-xl md:text-3xl font-avenir font-bold text-black max-w-3xl leading-relaxed tracking-[0.1em] px-4 mb-4">
-                Clean mockup of lender dashboard
+                YOUR DASHBOARD
               </h2>
               <p className="text-sm md:text-base font-avenir font-light text-gray-500 max-w-2xl mx-auto mb-16 px-4 leading-relaxed tracking-wide">
                 Manage bookings, availability, and payouts from one streamlined dashboard.

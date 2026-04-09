@@ -47,7 +47,7 @@ import {
 } from '@/types/become-lender-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
-import { CheckCircle, ChevronDown } from 'lucide-react'
+import { ChevronDown } from 'lucide-react'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { useForm, FieldErrors } from 'react-hook-form'
@@ -364,7 +364,7 @@ const BecomeALenderForm = () => {
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel className="text-sm font-normal font-avenir tracking-[15%] leading-[28px] text-black ">
-                              Business Address
+                              Postal Address
                               <sup className="pl-1 text-[#891D33]">*</sup>
                             </FormLabel>
                             <FormControl>
@@ -791,23 +791,13 @@ const BecomeALenderForm = () => {
       </div>
 
       <Dialog open={showSuccessDialog} onOpenChange={setShowSuccessDialog}>
-        <DialogContent className="sm:max-w-md border-none shadow-2xl p-0 overflow-hidden">
+        <DialogContent className="sm:max-w-md border-none shadow-2xl p-0 overflow-hidden rounded-none">
           <div className="bg-white p-8 text-center">
-            <div className="flex justify-center mb-6">
-              <div className="h-20 w-20 bg-green-50 rounded-full flex items-center justify-center">
-                <CheckCircle
-                  className="h-10 w-10 text-green-600 animate-in zoom-in duration-500"
-                  style={{
-                    animation: 'checkBounce 0.6s ease-in-out',
-                  }}
-                />
-              </div>
-            </div>
             <DialogHeader className="p-0 space-y-3">
               <DialogTitle className="text-2xl font-avenir font-medium tracking-tight text-center">
                 Thank you for your submission.
               </DialogTitle>
-              <DialogDescription className="text-lg font-avenir font-normal text-gray-500 text-center leading-relaxed">
+              <DialogDescription className="text-sm font-avenir font-normal text-gray-500 text-center leading-relaxed">
                 Your submission will be reviewed within 48 hours.
               </DialogDescription>
             </DialogHeader>
@@ -822,23 +812,6 @@ const BecomeALenderForm = () => {
           </div>
         </DialogContent>
       </Dialog>
-
-      <style jsx>{`
-        @keyframes checkBounce {
-          0% {
-            transform: scale(0);
-            opacity: 0;
-          }
-          50% {
-            transform: scale(1.2);
-            opacity: 1;
-          }
-          100% {
-            transform: scale(1);
-            opacity: 1;
-          }
-        }
-      `}</style>
     </>
   )
 }

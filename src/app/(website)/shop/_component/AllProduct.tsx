@@ -21,6 +21,7 @@ const AllProduct = () => {
     eightDayRental,
     shipping,
     localPickup,
+    brand,
     page,
     nextPage,
     setPage,
@@ -48,6 +49,7 @@ const AllProduct = () => {
     eightDayRental,
     shipping,
     localPickup,
+    brand,
     setPage,
   ])
 
@@ -56,6 +58,7 @@ const AllProduct = () => {
     const params = new URLSearchParams()
 
     if (search) params.append('search', search)
+    if (brand) params.append('brand', brand)
     if (size) params.append('size', size)
     if (minPrice) params.append('minPrice', minPrice)
     if (maxPrice) params.append('maxPrice', maxPrice)
@@ -78,6 +81,7 @@ const AllProduct = () => {
     eightDayRental,
     shipping,
     localPickup,
+    brand,
   ])
 
   const { data, isLoading, isFetching, isSuccess } = useQuery({
@@ -91,6 +95,7 @@ const AllProduct = () => {
       eightDayRental,
       shipping,
       localPickup,
+      brand,
       page,
     ],
     queryFn: async () => {
@@ -142,6 +147,7 @@ const AllProduct = () => {
         fourDayRental,
         shipping,
         localPickup,
+        brand,
         page + 1,
       ],
       queryFn: async () => {
@@ -163,6 +169,7 @@ const AllProduct = () => {
     fourDayRental,
     shipping,
     localPickup,
+    brand,
     buildQuery,
   ])
 
