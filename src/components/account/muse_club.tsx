@@ -40,7 +40,10 @@ const MuseClub = () => {
       : 'Muse Member'
 
   const progressValue = Math.min((totalSpent / 600) * 100, 100)
-  const remaining = totalSpent < 600 ? 600 - totalSpent : 0
+
+  // Tiered remaining logic
+  const remainingToStar = totalSpent < 300 ? 300 - totalSpent : 0
+  const remainingToGold = totalSpent >= 300 && totalSpent < 600 ? 600 - totalSpent : 0
 
   // ✅ Smooth animation
   useEffect(() => {
@@ -95,13 +98,25 @@ const MuseClub = () => {
           <p className="sm:text-lg md:text-2xl font-light tracking-[.2rem]">
             Your Annual Spend: ${totalSpent}
           </p>
-          {remaining > 0 ? (
+          {remainingToStar > 0 ? (
+            // Below Muse Star
             <p className="text-xl md:text-[24px] font-light tracking-[.2rem]">
-              ${remaining} more to reach Muse Gold
+              ${remainingToStar} more to reach Muse Star
             </p>
+          ) : remainingToGold > 0 ? (
+            // At Muse Star, working toward Gold
+            <div className="flex flex-col gap-1">
+              <p className="text-xl md:text-[24px] font-light tracking-[.2rem] text-[#891D33]">
+                You&apos;re at Muse Star!
+              </p>
+              <p className="text-xl md:text-[24px] font-light tracking-[.2rem]">
+                ${remainingToGold} more to reach Muse Gold
+              </p>
+            </div>
           ) : (
+            // At Muse Gold
             <p className="text-xl md:text-[24px] font-light tracking-[.2rem] text-[#891D33]">
-              You’re at the top tier!
+              You are at Muse Gold
             </p>
           )}
         </div>
