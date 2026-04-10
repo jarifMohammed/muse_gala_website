@@ -93,6 +93,13 @@ const ShopDetails: React.FC<ShopDetailsProps> = ({
             ${displayPrice} RENT
           </p>
 
+          {/* RRP */}
+          {!!data.rrpPrice && (
+            <p className="tracking-wider mt-1 opacity-50 uppercase text-sm">
+              RRP ${data.rrpPrice}
+            </p>
+          )}
+
           {/* Size Selector */}
           {data.sizes && data.sizes.length > 0 && (
             <div className="mt-8">
@@ -168,6 +175,11 @@ const ShopDetails: React.FC<ShopDetailsProps> = ({
               <p className="tracking-wider mt-2 opacity-75 uppercase text-sm lg:text-lg">
                 ${displayPrice} RENT
               </p>
+              {!!data.rrpPrice && (
+                <p className="tracking-wider mt-0.5 opacity-50 uppercase text-xs">
+                  RRP ${data.rrpPrice}
+                </p>
+              )}
               {selectedSize && (
                 <p className="tracking-wider mt-1 opacity-60 uppercase text-sm">
                   Size: {selectedSize}
