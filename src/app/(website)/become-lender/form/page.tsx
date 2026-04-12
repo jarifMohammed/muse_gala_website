@@ -374,6 +374,9 @@ const BecomeALenderForm = () => {
                               />
                             </FormControl>
                             <FormMessage />
+                            <p className="text-xs font-avenir font-normal tracking-[0.05em] leading-[20px] text-[#595959] mt-1">
+                              Used for internal purposes only and never shown to customers.
+                            </p>
                           </FormItem>
                         )}
                       />
@@ -633,6 +636,9 @@ const BecomeALenderForm = () => {
                                 placeholder="Search for your business location..."
                                 mapHeight="300px"
                               />
+                              <p className="text-xs font-avenir font-normal tracking-[0.05em] leading-[20px] text-[#595959] pt-1">
+                                Shown to customers use a nearby landmark or approximate location for privacy.
+                              </p>
                             </div>
                           </CardContent>
                         </Card>

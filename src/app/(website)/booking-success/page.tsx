@@ -28,7 +28,7 @@ export default function SuccessPage() {
         <h1 className="text-3xl md:text-5xl font-avenir tracking-[10px] uppercase">
           Thank you for your booking
         </h1>
-        <p className="font-avenir tracking-[4px] uppercase mt-5 opacity-75 text-sm md:text-base">
+        <p className="font-avenir tracking-[4px] mt-5 opacity-75 text-sm md:text-base">
           Your rental has been confirmed. You&apos;ll receive an email shortly
           with full details.
         </p>
