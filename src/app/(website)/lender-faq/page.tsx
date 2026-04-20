@@ -73,7 +73,7 @@ export default function LenderFAQ() {
               Who pays for shipping?
             </span>
             <ul className="list-disc ml-6 mt-2 text-gray-600 space-y-2">
-              <li>Outbound shipping → paid by customer</li>
+              <li>Express shipping → paid by customer</li>
               <li>
                 Return shipping → covered by lender or Muse Gala depending on
                 subscription

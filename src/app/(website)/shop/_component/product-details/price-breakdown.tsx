@@ -124,7 +124,7 @@ const PriceBreakDown = ({ singleProduct }: ShopDetailsProps) => {
   const localPickup = data?.shippingDetails?.isLocalPickup
 
   const shippingCost =
-    deliveryOption === 'shipping' && shippingAvailable ? 30 : 0
+    deliveryOption === 'shipping' && shippingAvailable ? 14.95 : 0
 
   // Calculate subtotal first
   const subtotal = displayPrice + insurance + shippingCost

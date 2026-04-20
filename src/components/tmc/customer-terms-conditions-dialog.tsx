@@ -60,7 +60,7 @@ const CustomerTermsConditionsDialog: React.FC<CustomerTermsConditionsProps> = ({
             <section className="space-y-[15px]">
               <h2 className="text-2xl  font-normal">2. Shipping & Delivery</h2>
               <ul className="list-disc pl-6 space-y-1 text-sm">
-                <li>Outbound shipping is $10, paid at checkout.</li>
+                <li>Express shipping is $14.95, paid at checkout.</li>
                 <li>
                   Return shipping is included — we provide a prepaid return
                   label, which you must print and attach for return.
@@ -100,7 +100,7 @@ const CustomerTermsConditionsDialog: React.FC<CustomerTermsConditionsProps> = ({
                 <ul className="list-disc pl-6 space-y-1 text-sm">
                   <li>$10 platform fee</li>
                   <li>$5 insurance</li>
-                  <li>$10 outbound shipping</li>
+                  <li>$14.95 express shipping</li>
                   <li>$15 for 5-day rentals (optional)</li>
                 </ul>
                 <li>

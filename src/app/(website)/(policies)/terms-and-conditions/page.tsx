@@ -39,7 +39,7 @@ export default function CustomerTermsConditions() {
             2. Shipping & Delivery
           </h2>
           <ul className="list-disc ml-6 space-y-2 text-gray-600">
-            <li>Outbound shipping is $10, paid at checkout.</li>
+            <li>Express shipping is $14.95, paid at checkout.</li>
             <li>
               Return shipping is included — we provide a prepaid return label,
               which you must print and attach for return.
@@ -85,7 +85,7 @@ export default function CustomerTermsConditions() {
           <ul className="list-disc ml-6 space-y-2 text-gray-600">
             <li>$10 platform fee</li>
             <li>$5 insurance</li>
-            <li>$10 outbound shipping</li>
+            <li>$14.95 express shipping</li>
             <li>$15 for 5-day rentals (optional)</li>
           </ul>
           <p className="text-gray-600 mt-3">

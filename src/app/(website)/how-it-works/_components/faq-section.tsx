@@ -46,12 +46,12 @@ export default function FAQSection() {
         {
           question: "How much is shipping?",
           answer:
-            "Outbound shipping is $10, paid by you at checkout. Return shipping is covered by us and comes with a prepaid label which you must print and attach to the parcel.",
+            "Express shipping is $14.95, paid by you at checkout. Return shipping is covered by us and comes with a prepaid label which you must print and attach to the parcel.",
         },
         {
           question: "Do I have to return the item myself?",
           answer:
-            "Yes – if you selected shipping you'll return it using the prepaid label. If you chose local pickup, you'll be asked whether you plan to drop the item back off or pay for return shipping ($10).",
+            "Yes – if you selected shipping you'll return it using the prepaid label. If you chose local pickup, you'll be asked whether you plan to drop the item back off or pay for return shipping ($14.95).",
         },
         {
           question: "What if my item doesn't arrive in time?",
