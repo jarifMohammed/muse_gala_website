@@ -6,138 +6,134 @@ export default function PrivacyPolicyPage() {
   return (
     <PolicyLayout
       title="Privacy Policy"
-      description="Muse Gala respects your privacy and is committed to protecting your personal information. This Privacy Policy explains how we collect, use, disclose, and safeguard your data, in compliance with the Australian Privacy Principles under the Privacy Act 1988 (Cth)."
+      description="Muse Gala respects your privacy and is committed to protecting your personal information. This policy outlines how we collect, use, and manage your data when you use our platform."
     >
-      <ol className="list-decimal ml-6 space-y-6">
-        <li>
-          <span className="font-light text-lg tracking-[.1em]">
-            Information We Collect
-          </span>
-          <p className="ml-6 mt-2 text-gray-600">
-            We collect personal details such as name, email, phone, billing and
-            shipping address, account credentials, and payment information.
-            Lenders may also provide business details, ABNs, and payout
-            information. Technical data such as IP address, device, browser, and
-            usage patterns are also collected via cookies and analytics.
-          </p>
-        </li>
+      <section className="space-y-4">
+        <h2 className="font-light text-lg tracking-[.1em] text-gray-900">
+          Information We Collect
+        </h2>
+        <p className="text-gray-600">We may collect the following information when you use Muse Gala:</p>
+        <ul className="list-disc ml-6 space-y-2 text-gray-600">
+          <li>name and contact details (email, phone number)</li>
+          <li>account and login information</li>
+          <li>payment details (processed securely via third-party providers)</li>
+          <li>booking and transaction history</li>
+          <li>communication records through the platform</li>
+        </ul>
+      </section>
 
-        <li>
-          <span className="font-light text-lg tracking-[.1em]">
-            Use of Information
-          </span>
-          <p className="ml-6 mt-2 text-gray-600">
-            Your data is used to provide services, process payments, fulfill
-            bookings, improve platform performance, manage accounts, and ensure
-            security. With your consent, it may also be used for marketing
-            updates and promotional offers.
-          </p>
-        </li>
+      <section className="space-y-4">
+        <h2 className="font-light text-lg tracking-[.1em] text-gray-900">
+          How We Use Your Information
+        </h2>
+        <p className="text-gray-600">Your information is used to:</p>
+        <ul className="list-disc ml-6 space-y-2 text-gray-600">
+          <li>create and manage your User Account</li>
+          <li>process bookings and payments</li>
+          <li>facilitate communication between users where required</li>
+          <li>provide customer support</li>
+          <li>improve platform performance and user experience</li>
+        </ul>
+      </section>
 
-        <li>
-          <span className="font-light text-lg tracking-[.1em]">
-            Disclosure of Information
-          </span>
-          <p className="ml-6 mt-2 text-gray-600">
-            Information may be shared with trusted third-party providers (e.g.
-            payment processors, couriers, technical support) only as required.
-            If mandated by law, data may be shared with government authorities.
-            We do not sell or rent personal information to third parties.
-          </p>
-        </li>
+      <section className="space-y-4">
+        <h2 className="font-light text-lg tracking-[.1em] text-gray-900">
+          Sharing of Information
+        </h2>
+        <p className="text-gray-600">
+          Muse Gala may share limited information where necessary to complete a booking:
+        </p>
+        <ul className="list-disc ml-6 space-y-2 text-gray-600">
+          <li>
+            Lenders may receive limited customer details required to fulfil an
+            order (e.g. first name and delivery information)
+          </li>
+          <li>
+            Service providers (e.g. payment processors, couriers) may receive
+            relevant data to perform their services
+          </li>
+        </ul>
+        <p className="text-gray-600">We do not sell or rent your personal information.</p>
+      </section>
 
-        <li>
-          <span className="font-light text-lg tracking-[.1em]">
-            Data Security
-          </span>
-          <p className="ml-6 mt-2 text-gray-600">
-            We apply reasonable measures to protect data against unauthorized
-            access, misuse, or loss. Payments are processed via secure,
-            PCI-compliant gateways and not stored on our servers. Only
-            authorised staff may access personal information.
-          </p>
-        </li>
+      <section className="space-y-4">
+        <h2 className="font-light text-lg tracking-[.1em] text-gray-900">
+          Data Security
+        </h2>
+        <p className="text-gray-600">We take reasonable steps to protect your information, including:</p>
+        <ul className="list-disc ml-6 space-y-2 text-gray-600">
+          <li>secure payment processing</li>
+          <li>restricted access to sensitive data</li>
+          <li>use of trusted third-party providers</li>
+        </ul>
+        <p className="text-gray-600">
+          However, no system is completely secure, and users share information
+          at their own risk.
+        </p>
+      </section>
 
-        <li>
-          <span className="font-light text-lg tracking-[.1em]">
-            Data Retention
-          </span>
-          <p className="ml-6 mt-2 text-gray-600">
-            Data is retained only as long as required for service or legal
-            obligations. Once no longer necessary, it is securely deleted or
-            anonymised.
-          </p>
-        </li>
+      <section className="space-y-4">
+        <h2 className="font-light text-lg tracking-[.1em] text-gray-900">
+          User Responsibilities
+        </h2>
+        <p className="text-gray-600">Users are responsible for:</p>
+        <ul className="list-disc ml-6 space-y-2 text-gray-600">
+          <li>keeping login details secure</li>
+          <li>ensuring their information is accurate and up to date</li>
+        </ul>
+      </section>
 
-        <li>
-          <span className="font-light text-lg tracking-[.1em]">
-            Marketing Communications
-          </span>
-          <p className="ml-6 mt-2 text-gray-600">
-            You may opt in to receive updates and offers from Muse Gala and
-            unsubscribe at any time. Transactional communications (e.g.
-            confirmations, delivery updates) will always be sent.
-          </p>
-        </li>
+      <section className="space-y-4">
+        <h2 className="font-light text-lg tracking-[.1em] text-gray-900">
+          Access & Updates
+        </h2>
+        <p className="text-gray-600">You may request to:</p>
+        <ul className="list-disc ml-6 space-y-2 text-gray-600">
+          <li>access your personal information</li>
+          <li>update or correct your details by contacting Muse Gala</li>
+        </ul>
+      </section>
 
-        <li>
-          <span className="font-light text-lg tracking-[.1em]">
-            Cookies and Website Analytics
-          </span>
-          <p className="ml-6 mt-2 text-gray-600">
-            Cookies are used to enhance experience, track performance, and
-            deliver personalised content. Blocking cookies may limit
-            functionality.
-          </p>
-        </li>
+      <section className="space-y-4">
+        <h2 className="font-light text-lg tracking-[.1em] text-gray-900">
+          Cookies & Tracking
+        </h2>
+        <p className="text-gray-600">Muse Gala may use cookies and similar technologies to:</p>
+        <ul className="list-disc ml-6 space-y-2 text-gray-600">
+          <li>improve website functionality</li>
+          <li>analyse usage and performance</li>
+          <li>personalise user experience</li>
+        </ul>
+      </section>
 
-        <li>
-          <span className="font-light text-lg tracking-[.1em]">
-            Access and Correction
-          </span>
-          <p className="ml-6 mt-2 text-gray-600">
-            You may access or update your information anytime via your account.
-            For corrections, contact us and we will respond within a reasonable
-            timeframe.
-          </p>
-        </li>
+      <section className="space-y-4">
+        <h2 className="font-light text-lg tracking-[.1em] text-gray-900">
+          Third-Party Services
+        </h2>
+        <p className="text-gray-600">
+          Muse Gala uses third-party services (such as payment providers and
+          hosting platforms). These services may collect and process data in
+          accordance with their own privacy policies.
+        </p>
+      </section>
 
-        <li>
-          <span className="font-light text-lg tracking-[.1em]">
-            Third-Party Links
-          </span>
-          <p className="ml-6 mt-2 text-gray-600">
-            Our platform may link to third-party sites. Muse Gala is not
-            responsible for their privacy practices and encourages you to review
-            their policies.
-          </p>
-        </li>
+      <section className="space-y-4">
+        <h2 className="font-light text-lg tracking-[.1em] text-gray-900">
+          Policy Updates
+        </h2>
+        <p className="text-gray-600">
+          Muse Gala may update this Privacy Policy from time to time. Continued
+          use of the platform constitutes acceptance of any changes.
+        </p>
+      </section>
 
-        <li>
-          <span className="font-light text-lg tracking-[.1em]">
-            Policy Updates
-          </span>
-          <p className="ml-6 mt-2 text-gray-600">
-            We may update this Privacy Policy from time to time. Changes will be
-            posted here with an updated effective date. Continued use of the
-            platform constitutes acceptance of revised terms.
-          </p>
-        </li>
-
-        <li>
-          <span className="font-light text-lg tracking-[.1em]">Contact</span>
-          <p className="ml-6 mt-2 text-gray-600">
-            For privacy-related questions or requests, contact us at:
-            <br />
-            <span className="font-medium">Email:</span> support@musegala.com.au
-          </p>
-        </li>
-      </ol>
-
-      <p className="font-light font-avenir text-sm tracking-[0.1em] text-gray-800 border-t pt-4">
-        Summary — Muse Gala is committed to protecting your privacy by ensuring
-        transparency, security, and compliance with applicable privacy laws.
-      </p>
+      <section className="space-y-4 border-t pt-4">
+        <h2 className="font-light text-lg tracking-[.1em] text-gray-900">Contact</h2>
+        <p className="text-gray-600">
+          For any privacy-related questions, please contact Muse Gala through
+          our official channels.
+        </p>
+      </section>
     </PolicyLayout>
   )
 }

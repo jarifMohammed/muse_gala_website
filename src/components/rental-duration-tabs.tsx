@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { calculate8DayRentalPrice } from "@/utils/rentalPrice"
 type RentalDuration = "4" | "8";
 
 interface RentalDurationTabsProps {
@@ -33,7 +34,7 @@ export function RentalDurationTabs({ baseRentalFee, onDurationChange }: RentalDu
     }`}
     onClick={() => handleDurationChange("8")}
   >
-    8 DAY RENT (${baseRentalFee * 2})
+    8 DAY RENT (${calculate8DayRentalPrice(baseRentalFee)})
   </button>
 </div>
   )

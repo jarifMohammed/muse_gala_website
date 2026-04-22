@@ -73,7 +73,7 @@ export default function SuccessPage() {
               onClick={() => clearBookingSummary()}
               className="font-avenir opacity-75 border-b border-black pb-1 uppercase tracking-widest hover:opacity-100 transition-opacity"
             >
-              Go To Shop
+              BROWSE
             </button>
           </Link>
         </div>

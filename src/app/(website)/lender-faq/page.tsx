@@ -9,9 +9,9 @@ export default function LenderFAQ() {
           Lender FAQ
         </h1>
         <p className="mt-3 text-gray-600 text-sm md:text-base max-w-2xl mx-auto font-light font-avenir tracking-[.1em]">
-          Muse Gala is a curated fashion rental platform that connects boutique
-          lenders with style-conscious renters across Australia. Below are
-          frequently asked questions from current and prospective lenders.
+          Muse Gala connects your pieces with customers looking to rent for
+          upcoming events. We handle the platform, bookings, and customer
+          experience while you fulfil the order.
         </p>
       </div>
 
@@ -20,172 +20,146 @@ export default function LenderFAQ() {
         <ul className="list-decimal ml-6 space-y-8">
           <li>
             <span className="font-light text-lg tracking-[.1em] font-avenir">
-              How do I become a lender?
+              How does Muse Gala work for lenders?
             </span>
             <p className="ml-6 mt-2 text-gray-600">
-              Apply via the{' '}
-              <span className="underline">Lender Onboarding Page</span>. Once
-              approved, you’ll access your lender dashboard to upload listings,
-              manage availability, and begin receiving bookings.
+              Muse Gala connects your pieces with customers looking to rent for
+              upcoming events. We handle the platform, bookings, and customer
+              experience - you simply fulfil the order.
             </p>
           </li>
 
           <li>
             <span className="font-light text-lg tracking-[.1em]">
-              What are the requirements to list with Muse Gala?
+              How do I get paid?
             </span>
-            <ul className="list-disc ml-6 mt-2 text-gray-600 space-y-2">
-              <li>Operate a verified fashion rental business or boutique</li>
-              <li>
-                List a minimum of five garments meeting Muse Gala standards
-              </li>
-              <li>Ensure garments are in excellent, ready-to-rent condition</li>
-              <li>Respond to bookings and messages promptly</li>
-            </ul>
             <p className="ml-6 mt-2 text-gray-600">
-              All listings are reviewed for quality and consistency before
-              publication.
+              Once a booking is completed, your payout will be processed
+              through the platform. Payouts may be adjusted in the case of
+              disputes or unresolved issues.
             </p>
           </li>
 
           <li>
             <span className="font-light text-lg tracking-[.1em] font-avenir">
-              What is the commission structure?
+              What happens if I can&apos;t fulfil a booking?
             </span>
             <p className="ml-6 mt-2 text-gray-600">
-              Muse Gala operates on a tiered subscription model:
+              If you&apos;re unable to fulfil a booking, you must select
+              &quot;Can&apos;t Fulfil&quot; and provide a reason. Frequent inability
+              to fulfil bookings may impact your account.
+            </p>
+          </li>
+
+          <li>
+            <span className="font-light text-lg tracking-[.1em]">
+              What if the item is damaged?
+            </span>
+            <p className="ml-6 mt-2 text-gray-600">If an item is returned damaged:</p>
+            <ul className="list-disc ml-6 mt-2 text-gray-600 space-y-2">
+              <li>Submit photo evidence through the platform</li>
+              <li>Muse Gala will assess the damage</li>
+              <li>If applicable, the customer may be charged for:</li>
+            </ul>
+            <ul className="list-disc ml-10 text-gray-600 space-y-2">
+              <li>repair costs, or</li>
+              <li>replacement value</li>
+            </ul>
+          </li>
+
+          <li>
+            <span className="font-light text-lg tracking-[.1em]">
+              What if my item is lost or not returned?
+            </span>
+            <p className="ml-6 mt-2 text-gray-600">
+              If an item is not returned, lost, or suspected to be stolen,
+              Muse Gala will conduct a full investigation, including reviewing:
             </p>
             <ul className="list-disc ml-6 text-gray-600 space-y-2">
-              <li>Entry-level plans: ~10% commission per booking</li>
-              <li>
-                Premium plans: lower or zero commission depending on inclusions
-              </li>
+              <li>tracking information</li>
+              <li>communication records</li>
+              <li>booking details</li>
             </ul>
             <p className="ml-6 mt-2 text-gray-600">
-              Customers also pay a 10% platform fee on top of rental prices (not
-              deducted from your earnings). See the subscription plans for full
-              details.
+              The customer may be charged the full replacement value of the
+              item. Where necessary, further action may be taken, including
+              escalation of the matter and involvement of relevant authorities.
+              Muse Gala takes non-return and theft seriously to protect all
+              lenders on the platform.
             </p>
           </li>
 
           <li>
             <span className="font-light text-lg tracking-[.1em]">
-              Who pays for shipping?
+              Do I need to handle customer communication?
             </span>
-            <ul className="list-disc ml-6 mt-2 text-gray-600 space-y-2">
-              <li>Express shipping → paid by customer</li>
-              <li>
-                Return shipping → covered by lender or Muse Gala depending on
-                subscription
-              </li>
-            </ul>
             <p className="ml-6 mt-2 text-gray-600">
-              Local pickup is also available and coordinated directly through
-              platform messaging.
+              Muse Gala manages the customer experience. All disputes and
+              issues are handled by the platform.
             </p>
           </li>
 
           <li>
             <span className="font-light text-lg tracking-[.1em]">
-              What if my item is damaged?
+              How do I ship items?
             </span>
-            <p className="ml-6 mt-2 text-gray-600">
-              If the customer purchased insurance:
-            </p>
+            <p className="ml-6 mt-2 text-gray-600">If the booking is for delivery:</p>
             <ul className="list-disc ml-6 text-gray-600 space-y-2">
-              <li>
-                Flat payout or tiered reimbursement depending on minor vs. major
-                damage
-              </li>
-              <li>
-                Claims must be submitted within 48 hours of return with photo
-                evidence
-              </li>
+              <li>You will be required to dispatch the item on time</li>
+              <li>Provide courier and tracking details</li>
             </ul>
-            <p className="ml-6 mt-2 text-gray-600">
-              Without insurance, customers are liable for damage or replacement
-              per your set damage fees. See the{' '}
-              <span className="underline">Insurance Policy</span> for details.
-            </p>
           </li>
 
           <li>
             <span className="font-light text-lg tracking-[.1em]">
-              What if a garment is lost or stolen?
+              Can I choose my rental prices?
             </span>
             <p className="ml-6 mt-2 text-gray-600">
-              Muse Gala investigates and may charge the customer the full
-              replacement value you provided. Accurate replacement values are
-              essential.
+              Yes, you can choose your rental prices. Pricing displayed on the
+              platform is set in line with Muse Gala guidelines to ensure
+              consistency and a seamless customer experience across all
+              listings.
             </p>
           </li>
 
           <li>
             <span className="font-light text-lg tracking-[.1em]">
-              When do I get paid?
+              How do I list a dress?
             </span>
             <p className="ml-6 mt-2 text-gray-600">
-              Payouts are processed via direct deposit within 5 business days of
-              satisfactory return, provided no disputes or claims are pending.
+              You can submit your item through the platform for approval. All
+              listings are reviewed before going live.
             </p>
           </li>
 
           <li>
             <span className="font-light text-lg tracking-[.1em]">
-              Can I decline a booking?
+              What happens if I don&apos;t meet expectations?
             </span>
             <p className="ml-6 mt-2 text-gray-600">
-              Yes, if the item is unavailable or unsuitable. High acceptance
-              rates improve visibility and customer trust.
+              Muse Gala maintains a curated platform. Accounts that
+              consistently fail to fulfil bookings, provide poor item quality,
+              or do not meet standards may be restricted or removed from the
+              platform.
             </p>
           </li>
 
           <li>
             <span className="font-light text-lg tracking-[.1em]">
-              How do I manage availability?
+              Final Note
             </span>
             <ul className="list-disc ml-6 mt-2 text-gray-600 space-y-2">
-              <li>Block dates when items are unavailable</li>
-              <li>Mark garments out-of-service (e.g. cleaning, repair)</li>
-              <li>Update stock levels and listings anytime</li>
-            </ul>
-            <p className="ml-6 mt-2 text-gray-600">
-              Regular updates prevent double bookings and declines.
-            </p>
-          </li>
-
-          <li>
-            <span className="font-light text-lg tracking-[.1em]">
-              Can multiple lenders list the same garment?
-            </span>
-            <p className="ml-6 mt-2 text-gray-600">
-              Yes. Our system auto-assigns bookings based on:
-            </p>
-            <ul className="list-disc ml-6 text-gray-600 space-y-2">
-              <li>Customer proximity</li>
-              <li>Availability</li>
-              <li>Fair rotation</li>
-              <li>Past performance metrics</li>
-            </ul>
-          </li>
-
-          <li>
-            <span className="font-light text-lg tracking-[.1em]">
-              What support does Muse Gala provide?
-            </span>
-            <ul className="list-disc ml-6 mt-2 text-gray-600 space-y-2">
-              <li>Personalised dashboard for listings and bookings</li>
-              <li>Insurance and dispute resolution coverage</li>
-              <li>Support team assistance and claims management</li>
-              <li>National visibility to customers seeking curated rentals</li>
+              <li>
+                By listing with Muse Gala, you agree to maintain item quality,
+                fulfil bookings reliably, and comply with platform policies.
+              </li>
+              <li>
+                Muse Gala reserves the right to review account performance and
+                apply restrictions where necessary.
+              </li>
             </ul>
           </li>
         </ul>
-
-        <p className="font-light font-avenir text-sm tracking-[0.1em] text-gray-800 border-t pt-4">
-          Summary — Muse Gala supports lenders with tools, protection, and
-          national reach to grow their rental business confidently.
-        </p>
       </div>
     </div>
   )

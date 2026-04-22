@@ -4,6 +4,7 @@ import { useShoppingStore } from '@/zustand/shopingStore'
 import ShoppingRent from './shopping-rent'
 import DeliveryOption from './delivery-option'
 import PriceBreakDown from './price-breakdown'
+import { calculate8DayRentalPrice } from '@/utils/rentalPrice'
 import { usePathname } from 'next/navigation'
 import Image from 'next/image'
 import ShopDetailsSkeleton from '@/skeleton/ShopDetailsSkeleton'
@@ -62,10 +63,10 @@ const ShopDetails: React.FC<ShopDetailsProps> = ({
 
   if (isLoading) return <ShopDetailsSkeleton />
 
-  if (!data) return <p>No product data found.</p>
+  if (!data) return <p>No dress found.</p>
 
-  // For display only: add $15 to 8-day rent
-  const displayPrice = rent === '8' ? data.basePrice + 15 : data.basePrice
+  // For display only: apply tiered multiplier for 8-day rent
+  const displayPrice = rent === '8' ? calculate8DayRentalPrice(data.basePrice) : data.basePrice
 
   return (
     <div className="lg:min-h-[660px] font-avenir">
@@ -215,7 +216,7 @@ const ShopDetails: React.FC<ShopDetailsProps> = ({
             : 'border-b-2 border-transparent'
             }`}
         >
-          8 day rent (+$15)
+          8 day rent
         </button>
       </div>
 

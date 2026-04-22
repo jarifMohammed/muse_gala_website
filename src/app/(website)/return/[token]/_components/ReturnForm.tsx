@@ -18,7 +18,6 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { UploadCloud, CheckCircle2, Info } from 'lucide-react';
-import Image from 'next/image';
 
 const returnFormSchema = z.object({
     returnMethod: z.string().min(1, 'Please select a return method'),
@@ -36,13 +35,15 @@ const returnFormSchema = z.object({
 
 type ReturnFormValues = z.infer<typeof returnFormSchema>;
 
+interface ReturnFormProps {
+    readonly token: string;
+    readonly onSuccess: () => void;
+}
+
 export default function ReturnForm({
     token,
     onSuccess
-}: {
-    token: string;
-    onSuccess: () => void;
-}) {
+}: ReturnFormProps) {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -92,7 +93,7 @@ export default function ReturnForm({
 
             toast.success('Return confirmed successfully');
             onSuccess();
-        } catch (error: Error | unknown) {
+        } catch (error: unknown) {
             if (error instanceof Error) {
                 toast.error(error.message || 'An error occurred. Please try again.');
             } else {
@@ -111,15 +112,7 @@ export default function ReturnForm({
 
     return (
         <div className="max-w-xl mx-auto animate-in fade-in slide-in-from-bottom-4 duration-1000 ease-out">
-            <div className="flex justify-center mb-10">
-                <Image
-                    src="/logo-black.svg"
-                    height={70}
-                    width={70}
-                    alt="Logo"
-                    className="opacity-90 hover:opacity-100 transition-opacity"
-                />
-            </div>
+
 
             <Card className="border-none shadow-[0_8px_30px_rgb(0,0,0,0.04)] bg-white rounded-2xl overflow-hidden">
                 <CardHeader className="pt-10 pb-6 px-8 text-center border-b border-gray-50">
@@ -198,36 +191,24 @@ export default function ReturnForm({
                         {/* File Upload */}
                         <div className="space-y-3">
                             <Label className="text-[11px] uppercase tracking-[0.2em] font-semibold text-muted-foreground">Upload Receipt (Optional)</Label>
-                            <div
+                            <input
+                                type="file"
+                                ref={fileInputRef}
+                                className="hidden"
+                                accept="image/*,.pdf"
+                                onChange={handleFileChange}
+                            />
+                            <button
+                                type="button"
                                 className={`border-2 border-dashed rounded-2xl p-8 flex flex-col items-center justify-center transition-all duration-300 text-center ${selectedFile ? 'border-green-100 bg-green-50/30' : 'border-gray-100 bg-gray-50/30 hover:bg-gray-50/50 hover:border-gray-200'}`}
                                 onClick={() => fileInputRef.current?.click()}
                             >
-                                <input
-                                    type="file"
-                                    ref={fileInputRef}
-                                    className="hidden"
-                                    accept="image/*,.pdf"
-                                    onChange={handleFileChange}
-                                />
                                 {selectedFile ? (
                                     <div className="flex flex-col items-center">
                                         <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-3 text-green-600">
                                             <CheckCircle2 className="w-6 h-6" />
                                         </div>
                                         <span className="font-medium text-xs text-gray-700 truncate max-w-[200px]">{selectedFile.name}</span>
-                                        <Button
-                                            type="button"
-                                            variant="ghost"
-                                            size="sm"
-                                            className="mt-2 text-[10px] uppercase tracking-widest text-destructive hover:bg-destructive/5"
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                setSelectedFile(null);
-                                                if (fileInputRef.current) fileInputRef.current.value = '';
-                                            }}
-                                        >
-                                            Remove
-                                        </Button>
                                     </div>
                                 ) : (
                                     <div className="flex flex-col items-center">
@@ -236,7 +217,23 @@ export default function ReturnForm({
                                         <p className="text-[10px] text-gray-400 mt-1 uppercase tracking-tighter">PNG, JPG or PDF up to 5MB</p>
                                     </div>
                                 )}
-                            </div>
+                            </button>
+                            {selectedFile && (
+                                <div className="flex justify-center">
+                                    <Button
+                                        type="button"
+                                        variant="ghost"
+                                        size="sm"
+                                        className="text-[10px] uppercase tracking-widest text-destructive hover:bg-destructive/5"
+                                        onClick={() => {
+                                            setSelectedFile(null);
+                                            if (fileInputRef.current) fileInputRef.current.value = '';
+                                        }}
+                                    >
+                                        Remove
+                                    </Button>
+                                </div>
+                            )}
                         </div>
                     </CardContent>
 

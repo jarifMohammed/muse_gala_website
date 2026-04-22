@@ -12,161 +12,162 @@ export default function Page() {
 
       {/* Content */}
       <div className="space-y-10 text-gray-800 font-avenir leading-[30px] tracking-[.08em] font-light">
-        {/* Introduction */}
-        <div className="space-y-4">
+        {/* Overview */}
+        <section className="space-y-4">
+          <h2 className="text-lg font-light tracking-[.1em]">Overview</h2>
           <p className="text-gray-600">
-            Muse Gala operates under a strict no-refund policy for
-            change-of-mind bookings, incorrect sizing, or dissatisfaction with
-            style. Each garment is reserved exclusively for your selected rental
-            period, which means lenders may forgo other bookings once your order
-            is confirmed.
+            At Muse Gala, we are committed to providing a seamless and reliable
+            rental experience. We understand that plans can change, and this
+            policy outlines how cancellations, refunds, and booking issues are
+            handled across the platform.
           </p>
           <p className="text-gray-600">
-            However, in limited circumstances, a refund or credit may be
-            considered. These are outlined below.
+            All bookings are subject to availability, and in some cases, may
+            involve third-party lenders. Muse Gala manages all transactions and
+            support to ensure a consistent and fair experience for both
+            customers and lenders.
           </p>
-        </div>
+        </section>
 
-        {/* 1. Eligible Refund Scenarios */}
-        <section>
-          <h2 className="text-lg font-light tracking-[.1em] mb-4">
-            1. Eligible Refund Scenarios
+        {/* Customer Cancellations */}
+        <section className="space-y-4">
+          <h2 className="text-lg font-light tracking-[.1em]">
+            Customer Cancellations
           </h2>
-          <div className="space-y-6 ml-6">
-            <div>
-              <h3 className="font-normal mb-2">Item Did Not Arrive</h3>
-              <ul className="list-disc ml-6 text-gray-600 space-y-2">
-                <li>
-                  If your rental does not arrive by the scheduled rental start
-                  date and no suitable replacement can be provided, a full
-                  refund will be issued.
-                </li>
-                <li>Shipping and insurance fees are non-refundable.</li>
-              </ul>
-            </div>
 
-            <div>
-              <h3 className="font-normal mb-2">
-                Item Arrived Damaged or Incorrect
-              </h3>
-              <p className="ml-6 text-gray-600 mb-2">
-                If the item arrives heavily stained, damaged, unwearable, or is
-                not the item or size you ordered, and no suitable alternative is
-                available:
-              </p>
-              <ul className="list-disc ml-12 text-gray-600 space-y-2">
-                <li>You must notify Muse Gala within 24 hours of delivery</li>
-                <li>Supporting photographic evidence is required</li>
-              </ul>
-              <p className="ml-6 text-gray-600 mt-3">Possible outcomes:</p>
-              <ul className="list-disc ml-12 text-gray-600 space-y-2">
-                <li>A full or partial refund</li>
-                <li>A Muse Gala credit</li>
-                <li>A rescheduled rental</li>
-              </ul>
-              <p className="ml-6 text-gray-600 mt-3">
-                Items must be unworn to be eligible. Refunds will not be granted
-                for worn items.
-              </p>
-            </div>
+          <div>
+            <h3 className="font-normal mb-2">More than 14 days before your rental start date</h3>
+            <p className="text-gray-600 ml-6">
+              You may cancel your booking. A partial refund will be issued,
+              excluding any platform, payment processing, or service-related
+              fees.
+            </p>
+          </div>
 
-            <div>
-              <h3 className="font-normal mb-2">
-                Booking Canceled by Muse Gala or Lender
-              </h3>
-              <p className="ml-6 text-gray-600">
-                If your order is canceled due to availability or unforeseen
-                issues on the part of Muse Gala or the lender, a full refund
-                will be processed automatically.
-              </p>
-            </div>
+          <div>
+            <h3 className="font-normal mb-2">Within 14 days of your rental start date</h3>
+            <p className="text-gray-600 ml-6">
+              Cancellations are not guaranteed. Requests must be submitted to
+              our team and will be reviewed on a case-by-case basis.
+            </p>
+            <p className="text-gray-600 ml-6 mt-2">
+              We encourage customers to review booking details carefully before
+              confirming their order.
+            </p>
           </div>
         </section>
 
-        {/* 2. Non-Refundable Scenarios */}
-        <section>
-          <h2 className="text-lg font-light tracking-[.1em] mb-4">
-            2. Non-Refundable Scenarios
+        {/* If booking cannot be fulfilled */}
+        <section className="space-y-4">
+          <h2 className="text-lg font-light tracking-[.1em]">
+            If your booking cannot be fulfilled
           </h2>
-          <p className="ml-6 text-gray-600 mb-2">
-            Refunds will not be issued in the following cases:
+          <p className="text-gray-600 ml-6">
+            In the rare event that a lender is unable to fulfil your booking
+            (for example, due to damage or availability issues):
           </p>
           <ul className="list-disc ml-12 text-gray-600 space-y-2">
-            <li>Change of mind after booking</li>
-            <li>Incorrect fit or style preference</li>
-            <li>Failure to try on garment before booking (if available)</li>
-            <li>The garment was not worn during the rental period</li>
-            <li>Late return or misuse of the item</li>
-            <li>Failure to collect the item within the pickup window</li>
+            <li>
+              Muse Gala will first attempt to source the same or a similar item
+              from another lender.
+            </li>
+            <li>If a suitable replacement is not available, you will receive:</li>
+          </ul>
+          <ul className="list-disc ml-16 text-gray-600 space-y-2">
+            <li>a full refund, or</li>
+            <li>an alternative solution offered by our team.</li>
           </ul>
         </section>
 
-        {/* 3. Refund Processing */}
-        <section>
-          <h2 className="text-lg font-light tracking-[.1em] mb-4">
-            3. Refund Processing
+        {/* Delivery and timing issues */}
+        <section className="space-y-4">
+          <h2 className="text-lg font-light tracking-[.1em]">
+            Delivery & Timing issues
           </h2>
-          <p className="ml-6 text-gray-600 mb-2">If a refund is approved:</p>
+          <p className="text-gray-600 ml-6">If your item:</p>
           <ul className="list-disc ml-12 text-gray-600 space-y-2">
-            <li>It will be processed within 5–7 business days</li>
-            <li>Funds returned to the original payment method</li>
-            <li>Email confirmation once refund is issued</li>
+            <li>does not arrive within the expected timeframe, or</li>
+            <li>is significantly delayed.</li>
           </ul>
-        </section>
-
-        {/* 4. Store Credit */}
-        <section>
-          <h2 className="text-lg font-light tracking-[.1em] mb-4">
-            4. Store Credit
-          </h2>
-          <p className="ml-6 text-gray-600 mb-2">
-            Customers may opt for store credit instead of a refund. Store
-            credits:
+          <p className="text-gray-600 ml-6">
+            Eligibility for a refund will be based on courier tracking and
+            delivery confirmation.
           </p>
+          <p className="text-gray-600 ml-6">You may be eligible for:</p>
           <ul className="list-disc ml-12 text-gray-600 space-y-2">
-            <li>Valid for 12 months from issue date</li>
-            <li>Applicable to any Muse Gala rental</li>
-            <li>Non-transferable & non-refundable once issued</li>
+            <li>a full refund, or</li>
+            <li>another resolution determined by Muse Gala.</li>
           </ul>
+          <p className="text-gray-600 ml-6">
+            Customers must notify Muse Gala as soon as possible. All claims are
+            subject to verification using courier tracking data and delivery
+            records.
+          </p>
         </section>
 
-        {/* 5. Submitting a Refund Request */}
-        <section>
-          <h2 className="text-lg font-light tracking-[.1em] mb-4">
-            5. Submitting a Refund Request
+        {/* Refund Processing */}
+        <section className="space-y-4">
+          <h2 className="text-lg font-light tracking-[.1em]">
+            Refund Processing
           </h2>
-          <p className="ml-6 text-gray-600 mb-2">To request a refund:</p>
           <ul className="list-disc ml-12 text-gray-600 space-y-2">
+            <li>Refunds will be issued to your original payment method.</li>
             <li>
-              Log in to your account and submit a support ticket within 48 hours
+              Processing times may vary depending on your payment provider.
             </li>
-            <li>Include order number, explanation, and photos if relevant</li>
-            <li>Muse Gala responds within 2 business days</li>
           </ul>
         </section>
 
-        {/* 6. Important Notes */}
-        <section>
-          <h2 className="text-lg font-light tracking-[.1em] mb-4">
-            6. Important Notes
+        {/* Non-Refundable Fees */}
+        <section className="space-y-4">
+          <h2 className="text-lg font-light tracking-[.1em]">
+            Non-Refundable Fees
           </h2>
-          <ul className="list-disc ml-6 text-gray-600 space-y-2">
-            <li>
-              Refunds are case-by-case, aligned with Muse Gala policies &
-              Australian Consumer Law.
-            </li>
-            <li>
-              Abuse of the refund process or excessive requests may result in
-              account restrictions.
-            </li>
+          <p className="text-gray-600 ml-6">The following are generally non-refundable:</p>
+          <ul className="list-disc ml-12 text-gray-600 space-y-2">
+            <li>Platform/service fees</li>
+            <li>Payment processing fees</li>
+            <li>Shipping costs (once fulfilled)</li>
           </ul>
         </section>
 
-        {/* Summary */}
-        <p className="font-light font-avenir text-sm tracking-[0.1em] text-gray-800 border-t pt-4">
-          Summary — Muse Gala maintains a fair refund process that balances
-          customer protection with lender commitments.
-        </p>
+        {/* Disputes and support */}
+        <section className="space-y-4">
+          <h2 className="text-lg font-light tracking-[.1em]">
+            Disputes & Support
+          </h2>
+          <p className="text-gray-600 ml-6">
+            If there are any issues with your order, customers must contact
+            Muse Gala directly.
+          </p>
+          <p className="text-gray-600 ml-6">
+            We do not facilitate direct dispute handling between customers and
+            lenders. All cases are reviewed and resolved by the Muse Gala team
+            to ensure fairness, consistency, and quality control.
+          </p>
+        </section>
+
+        {/* Policy enforcement */}
+        <section className="space-y-4">
+          <h2 className="text-lg font-light tracking-[.1em]">
+            Policy Enforcement
+          </h2>
+          <p className="text-gray-600 ml-6">Muse Gala reserves the right to:</p>
+          <ul className="list-disc ml-12 text-gray-600 space-y-2">
+            <li>Review all cancellation and refund requests</li>
+            <li>Determine appropriate outcomes based on the situation</li>
+            <li>Update this policy where required</li>
+          </ul>
+        </section>
+
+        {/* Final note */}
+        <section className="space-y-4 border-t pt-4">
+          <h2 className="text-lg font-light tracking-[.1em]">Final Note</h2>
+          <p className="text-gray-600">
+            By placing a booking through Muse Gala, you agree to the terms
+            outlined in this Refund Policy.
+          </p>
+        </section>
       </div>
     </div>
   )

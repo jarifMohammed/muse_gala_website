@@ -146,8 +146,16 @@ const Navbar = ({ isLoggedin, session }: Props) => {
       pathname.startsWith('/become-lender/form') ||
       pathname === '/about' ||
       pathname === '/how-it-works' ||
+      pathname === '/lender-faq' ||
       pathname.startsWith('/find-near-you') ||
       pathname === '/contact-us' ||
+      pathname === '/privacy-policy' ||
+      pathname === '/terms-and-conditions' ||
+      pathname === '/refund-policy' ||
+      pathname === '/insurance-policy' ||
+      pathname === '/dispute-resolution' ||
+      pathname === '/dispute-resolution-policy' ||
+      pathname === '/lender-terms-and-conditions' ||
       pathname === '/login' ||
       pathname === '/sign-up' ||
       pathname === '/forgot-password' ||
@@ -167,8 +175,16 @@ const Navbar = ({ isLoggedin, session }: Props) => {
       pathname.startsWith('/become-lender/form') ||
       pathname === '/about' ||
       pathname === '/how-it-works' ||
+      pathname === '/lender-faq' ||
       pathname.startsWith('/find-near-you') ||
       pathname === '/contact-us' ||
+      pathname === '/privacy-policy' ||
+      pathname === '/terms-and-conditions' ||
+      pathname === '/refund-policy' ||
+      pathname === '/insurance-policy' ||
+      pathname === '/dispute-resolution' ||
+      pathname === '/dispute-resolution-policy' ||
+      pathname === '/lender-terms-and-conditions' ||
       pathname === '/login' ||
       pathname === '/sign-up' ||
       pathname === '/forgot-password' ||
@@ -264,7 +280,15 @@ const Navbar = ({ isLoggedin, session }: Props) => {
                   pathname === '/shop' ||
                   pathname === '/about' ||
                   pathname === '/how-it-works' ||
+                  pathname === '/lender-faq' ||
                   pathname === '/contact-us' ||
+                  pathname === '/privacy-policy' ||
+                  pathname === '/terms-and-conditions' ||
+                  pathname === '/refund-policy' ||
+                  pathname === '/insurance-policy' ||
+                  pathname === '/dispute-resolution' ||
+                  pathname === '/dispute-resolution-policy' ||
+                  pathname === '/lender-terms-and-conditions' ||
                   pathname.startsWith('/find-near-you') ? (
                   <Image
                     src="/logo-black.svg"

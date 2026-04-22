@@ -37,7 +37,7 @@ export default function ReturnPageClient({ token }: { token: string }) {
         return (
             <div className="flex flex-col items-center justify-center min-h-[50vh] text-primary">
                 <Loader2 className="w-10 h-10 animate-spin mb-4" />
-                <p className="text-lg font-medium">Loading return details...</p>
+                <p className="text-lg font-medium">Loading return details</p>
             </div>
         );
     }

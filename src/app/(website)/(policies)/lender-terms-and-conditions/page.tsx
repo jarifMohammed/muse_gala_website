@@ -12,148 +12,129 @@ export default function LenderTermsConditions() {
 
       {/* Content */}
       <div className="space-y-10 text-gray-800 font-avenir leading-[30px] tracking-[.08em] font-light">
-        {/* 1. Eligibility */}
+        {/* Lender responsibilities */}
         <section>
           <h2 className="font-light text-lg tracking-[.1em] text-gray-900 mb-3">
-            1. Eligibility
+            Lender Responsibilities
           </h2>
+          <p className="text-gray-600 mb-2">Lenders agree to:</p>
           <ul className="list-disc ml-6 space-y-2 text-gray-600">
-            <li>
-              To list on MUSE GALA, you must be a registered business with a
-              minimum of 10 different items available for rent.
-            </li>
-            <li>
-              You must agree to keep your availability calendar updated and
-              respond to bookings promptly.
-            </li>
+            <li>Provide accurate descriptions, sizing, and images of all items</li>
+            <li>Ensure items are clean, wearable, and in good condition</li>
+            <li>Fulfil bookings within the required timeframe</li>
+            <li>Package items securely for delivery or prepare for pickup</li>
+            <li>Maintain up-to-date availability and inventory</li>
           </ul>
         </section>
 
-        {/* 2. Listings & Approval */}
+        {/* Fulfilment requirements */}
         <section>
           <h2 className="font-light text-lg tracking-[.1em] text-gray-900 mb-3">
-            2. Listings & Approval
+            Fulfilment Requirements
           </h2>
+          <p className="text-gray-600 mb-2">
+            Lenders must fulfil all confirmed bookings unless using the
+            &quot;Can&apos;t Fulfil&quot; option.
+          </p>
+          <p className="text-gray-600 mb-2">If a lender is unable to fulfil:</p>
           <ul className="list-disc ml-6 space-y-2 text-gray-600">
-            <li>
-              All listings must be submitted for admin approval before going
-              live.
-            </li>
-            <li>
-              Dress descriptions, pricing, and availability must be accurate.
-            </li>
-            <li>
-              Photos must be high quality and reflect the true state of the
-              item.
-            </li>
+            <li>A reason must be provided</li>
+            <li>The booking will be sent to admin for reassignment</li>
+          </ul>
+          <p className="text-gray-600 mt-4 mb-2">
+            Frequent failure to fulfil bookings may result in:
+          </p>
+          <ul className="list-disc ml-6 space-y-2 text-gray-600">
+            <li>reduced visibility</li>
+            <li>account restrictions</li>
+            <li>removal from the platform</li>
           </ul>
         </section>
 
-        {/* 3. Availability & Declines */}
+        {/* Shipping and handling */}
         <section>
           <h2 className="font-light text-lg tracking-[.1em] text-gray-900 mb-3">
-            3. Availability & Declines
+            Shipping & Handling
           </h2>
+          <p className="text-gray-600 mb-2">Lenders are responsible for:</p>
           <ul className="list-disc ml-6 space-y-2 text-gray-600">
-            <li>
-              If a dress is booked outside of the platform, you must immediately
-              update its availability on your dashboard.
-            </li>
-            <li>
-              If you are selected for an order, you must accept or decline
-              within 6 hours. If declined, the booking is automatically
-              reassigned to another lender.
-            </li>
+            <li>dispatching items on time</li>
+            <li>providing accurate courier and tracking details</li>
+          </ul>
+          <p className="text-gray-600 mt-4 mb-2">Failure to ship on time may impact:</p>
+          <ul className="list-disc ml-6 space-y-2 text-gray-600">
+            <li>customer experience</li>
+            <li>lender performance status</li>
           </ul>
         </section>
 
-        {/* 4. Communication */}
+        {/* Item condition */}
         <section>
           <h2 className="font-light text-lg tracking-[.1em] text-gray-900 mb-3">
-            4. Communication
+            Item Condition
           </h2>
+          <p className="text-gray-600 mb-2">Items must be provided in ready-to-wear condition.</p>
+          <p className="text-gray-600 mb-2">Items must match:</p>
           <ul className="list-disc ml-6 space-y-2 text-gray-600">
-            <li>
-              You may only see the customer&apos;s first name and surname
-              initial.
-            </li>
-            <li>
-              You may contact them via the platform messaging system (e.g., for
-              pickup coordination).
-            </li>
+            <li>listing photos</li>
+            <li>description provided</li>
+          </ul>
+          <p className="text-gray-600 mt-4 mb-2">
+            Repeated issues with item condition may result in:
+          </p>
+          <ul className="list-disc ml-6 space-y-2 text-gray-600">
+            <li>removal of listings</li>
+            <li>account review</li>
           </ul>
         </section>
 
-        {/* 5. Fulfillment Responsibilities */}
+        {/* Damage and claims */}
         <section>
           <h2 className="font-light text-lg tracking-[.1em] text-gray-900 mb-3">
-            5. Fulfillment Responsibilities
+            Damage & Claims
           </h2>
+          <p className="text-gray-600 mb-2">
+            Lenders must provide clear evidence when reporting damage.
+          </p>
+          <p className="text-gray-600 mb-2">Claims must be submitted promptly.</p>
+          <p className="text-gray-600 mb-2">Muse Gala will:</p>
           <ul className="list-disc ml-6 space-y-2 text-gray-600">
-            <li>
-              For shipped orders, you are responsible for packaging and
-              dispatching the item promptly.
-            </li>
-            <li>
-              For local pickups, you must provide clear pickup instructions and
-              confirm return in the system once received back.
-            </li>
+            <li>assess all claims</li>
+            <li>determine responsibility</li>
+            <li>decide on repair, reimbursement, or replacement</li>
           </ul>
         </section>
 
-        {/* 6. Payouts */}
+        {/* Payments */}
         <section>
           <h2 className="font-light text-lg tracking-[.1em] text-gray-900 mb-3">
-            6. Payouts
+            Payments to Lenders
           </h2>
+          <p className="text-gray-600 mb-2">
+            Payouts will be processed after booking completion.
+          </p>
+          <p className="text-gray-600 mb-2">Muse Gala may hold or adjust payouts in cases of:</p>
           <ul className="list-disc ml-6 space-y-2 text-gray-600">
-            <li>
-              Payouts are processed fortnightly to your registered payment
-              method.
-            </li>
-            <li>
-              During the 0% commission launch period, no deductions will be made
-              (only for the rental of the item).
-            </li>
-            <li>
-              MUSE GALA may deduct insurance-related or dispute-based costs if
-              applicable.
-            </li>
+            <li>disputes</li>
+            <li>damage claims</li>
+            <li>incomplete bookings</li>
           </ul>
         </section>
 
-        {/* 7. Disputes & Risk */}
+        {/* Platform standards */}
         <section>
           <h2 className="font-light text-lg tracking-[.1em] text-gray-900 mb-3">
-            7. Disputes & Risk
+            Platform Standards
           </h2>
+          <p className="text-gray-600 mb-2">
+            Muse Gala maintains a curated platform. Lenders must meet quality
+            and service expectations.
+          </p>
+          <p className="text-gray-600 mb-2">Muse Gala reserves the right to:</p>
           <ul className="list-disc ml-6 space-y-2 text-gray-600">
-            <li>
-              If an item is returned damaged, or not returned at all, report the
-              issue via your dashboard.
-            </li>
-            <li>
-              MUSE GALA will mediate disputes and may charge the
-              customer&lsquo;s payment method on your behalf.
-            </li>
-            <li>
-              You must not request payment directly from the customer outside of
-              the platform.
-            </li>
-          </ul>
-        </section>
-
-        {/* 8. Platform Usage */}
-        <section>
-          <h2 className="font-light text-lg tracking-[.1em] text-gray-900 mb-3">
-            8. Platform Usage
-          </h2>
-          <ul className="list-disc ml-6 space-y-2 text-gray-600">
-            <li>
-              You may not redirect customers away from MUSE GALA or encourage
-              off-platform bookings.
-            </li>
-            <li>Abuse of the platform may result in removal.</li>
+            <li>remove listings</li>
+            <li>limit visibility</li>
+            <li>suspend or remove lender accounts</li>
           </ul>
         </section>
       </div>

@@ -6,15 +6,15 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
 import { usePathname, useRouter } from 'next/navigation'
 import { toast } from 'sonner'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Input } from '@/components/ui/input'
 import { useUserStore } from '@/zustand/useUserStore'
 import { useLocationStore } from '@/zustand/useLocationStore'
 import { bookingApi } from '@/lib/bookingApiService'
 import { paymentApi } from '@/lib/paymentApi'
-import { useEffect, useRef } from 'react'
 import { Loader2, ShieldCheck, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { calculate8DayRentalPrice } from '@/utils/rentalPrice'
 
 interface KycApiRes {
   status: boolean
@@ -117,7 +117,7 @@ const PriceBreakDown = ({ singleProduct }: ShopDetailsProps) => {
 
   // PRICE CALCULATION
   const basePrice = Number(data?.basePrice ?? 0)
-  const displayPrice = rent === '8' ? basePrice + 15 : basePrice
+  const displayPrice = rent === '8' ? calculate8DayRentalPrice(basePrice) : basePrice
 
   const insurance = Number(data?.insuranceFee ?? 0)
   const shippingAvailable = data?.shippingDetails?.isShippingAvailable
@@ -437,10 +437,9 @@ const PriceBreakDown = ({ singleProduct }: ShopDetailsProps) => {
         <div className="space-y-3 text-sm border-b border-black pb-2">
           <div className="flex items-center justify-between opacity-75 tracking-widest">
             <span>
-              Rental Fee{' '}
-              {rent === '8' && <span className="text-xs">(8 days +$15)</span>}
+              Rental Fee {rent === '8' ? '(8 days)' : '(4 days)'}
             </span>
-            <span>${displayPrice}</span>
+            <span>${displayPrice.toFixed(2)}</span>
           </div>
 
           <div className="flex items-center justify-between opacity-75 tracking-widest">
