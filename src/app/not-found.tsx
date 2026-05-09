@@ -3,13 +3,10 @@
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { ArrowLeft } from 'lucide-react'
-import { useRouter } from 'next/navigation'
 
 export default function NotFound() {
   const [isLoaded, setIsLoaded] = useState(false)
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
-  const router = useRouter()
 
   // 🧠 Track mouse movement for subtle parallax effect
   useEffect(() => {
@@ -62,9 +59,8 @@ export default function NotFound() {
 
       {/* 🌟 Main Content */}
       <div
-        className={`z-10 flex flex-col items-center text-center transition-all duration-1000 ease-out ${
-          isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
-        }`}
+        className={`z-10 flex flex-col items-center text-center transition-all duration-1000 ease-out ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
+          }`}
       >
         {/* 404 Title */}
         <div
@@ -119,22 +115,6 @@ export default function NotFound() {
             </Link>
           </Button>
 
-          {/* Go Back Button */}
-          <Button
-            variant="outline"
-            onClick={() => router.back()}
-            className="group relative overflow-hidden border-slate-300 px-6 py-2 text-slate-700 transition-all hover:border-slate-400 hover:text-slate-900 flex items-center justify-center"
-            style={{
-              transform: `
-                translate(${mousePosition.x * -5}px, ${mousePosition.y * -5}px)
-              `,
-              transition:
-                'transform 0.3s ease-out, border-color 0.3s ease, color 0.3s ease',
-            }}
-          >
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            <span>Go back</span>
-          </Button>
         </div>
       </div>
 

@@ -48,8 +48,8 @@ export const metadata: Metadata = {
     url: "https://musegala.com.au",
     siteName: "Muse Gala",
     images: [
-      {
-        url: "https://musegala.com.au/og-image.jpg",
+        {
+          url: "https://musegala.com.au/logos/logo.png",
         width: 1200,
         height: 630,
         alt: "Muse Gala Designer Dress Hire",
@@ -63,8 +63,8 @@ export const metadata: Metadata = {
     title: "Muse Gala | Discover Dress Hire Near You",
     description:
       "Discover dress hire near you with Muse Gala. Browse dresses available nearby, check real-time availability, and book for your next event with local pick up and delivery.",
-    images: ["https://musegala.com.au/og-image.jpg"], // same as OG image
-    creator: "@monirhrabby", // update if you have a Twitter/X handle
+      images: ["https://musegala.com.au/logos/logo.png"], 
+    creator: "@MuseGala",
   },
 };
 
