@@ -27,7 +27,7 @@ const FindNearDressSection = () => {
             Discover rentals ready for pick up. Real time availability.
           </p>
           <Link
-            href="/find-near-you"
+            href="/find-near-you/map"
             className="inline-block text-[14px] uppercase hover:bg-black hover:text-white transition-all duration-300"
           >
             <button className="opacity-80 font-avenir tracking-[0.3rem] py-2">

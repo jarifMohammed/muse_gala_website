@@ -1,3 +1,5 @@
+import { redirect } from 'next/navigation'
+
 export default function FindNearYouPage() {
-  return null
+  redirect('/find-near-you/map')
 }

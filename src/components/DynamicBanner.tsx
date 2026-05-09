@@ -70,7 +70,7 @@ export default function DynamicBanner() {
       {/* Content */}
       <div className="absolute inset-0 flex flex-col items-center justify-end pb-20">
         <Link
-          href="/find-near-you"
+          href="/find-near-you/map"
           className="text-white text-sm md:text-base lg:text-lg font-avenir font-light !tracking-[0.5em] hover:opacity-70 transition-opacity uppercase"
         >
           FIND NEAR YOU
