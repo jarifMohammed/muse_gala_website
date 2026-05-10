@@ -20,8 +20,19 @@ export const inter = Inter({
   subsets: ["latin"],
 });
 
+export const viewport = {
+  themeColor: "#000000",
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+};
+
 export const metadata: Metadata = {
-  title: "Muse Gala | Discover Dress Hire Near You",
+  metadataBase: new URL("https://musegala.com.au"),
+  title: {
+    default: "Muse Gala | Discover Dress Hire Near You",
+    template: "%s | Muse Gala"
+  },
   description:
     "Discover dress hire near you with Muse Gala. Browse dresses available nearby, check real-time availability, and book for your next event with local pick up and delivery.",
   keywords: [
@@ -38,8 +49,26 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "Muse Gala" }],
   icons: {
-    icon: "/logo.svg",
+    icon: [
+      { url: "/logo.svg", type: "image/svg+xml" },
+      { url: "/logos/logo.png", sizes: "32x32", type: "image/png" },
+    ],
+    shortcut: "/logo.svg",
     apple: "/logo.svg",
+  },
+  alternates: {
+    canonical: "/",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
   },
   openGraph: {
     title: "Muse Gala | Discover Dress Hire Near You",
@@ -48,8 +77,8 @@ export const metadata: Metadata = {
     url: "https://musegala.com.au",
     siteName: "Muse Gala",
     images: [
-        {
-          url: "https://musegala.com.au/logos/logo.png",
+      {
+        url: "/logos/logo.png",
         width: 1200,
         height: 630,
         alt: "Muse Gala Designer Dress Hire",
@@ -63,7 +92,7 @@ export const metadata: Metadata = {
     title: "Muse Gala | Discover Dress Hire Near You",
     description:
       "Discover dress hire near you with Muse Gala. Browse dresses available nearby, check real-time availability, and book for your next event with local pick up and delivery.",
-      images: ["https://musegala.com.au/logos/logo.png"], 
+    images: ["/logos/logo.png"],
     creator: "@MuseGala",
   },
 };
