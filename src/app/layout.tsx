@@ -50,11 +50,11 @@ export const metadata: Metadata = {
   authors: [{ name: "Muse Gala" }],
   icons: {
     icon: [
-      { url: "/logos/M.svg", type: "image/svg+xml" },
-      { url: "/logos/Logo_black.png", sizes: "32x32", type: "image/png" },
+      { url: "/M.ico", sizes: "any" },
+      { url: "/logo.svg", type: "image/svg+xml" },
     ],
-    shortcut: "/logos/M.svg",
-    apple: "/logos/M.svg",
+    shortcut: "/M.ico",
+    apple: "/logo.svg",
   },
   alternates: {
     canonical: "/",
@@ -78,7 +78,7 @@ export const metadata: Metadata = {
     siteName: "Muse Gala",
     images: [
       {
-        url: "/logos/Logo_black.png",
+        url: "/logo.svg",
         width: 1200,
         height: 630,
         alt: "Muse Gala Designer Dress Hire",
@@ -92,7 +92,7 @@ export const metadata: Metadata = {
     title: "Muse Gala | Discover Dress Hire Near You",
     description:
       "Discover dress hire near you with Muse Gala. Browse dresses available nearby, check real-time availability, and book for your next event with local pick up and delivery.",
-    images: ["/logos/Logo_black.png"],
+    images: ["/logo.svg"],
     creator: "@MuseGala",
   },
   appleWebApp: {
