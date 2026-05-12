@@ -120,7 +120,7 @@ const ShoppinghMap = () => {
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
       style: 'mapbox://styles/mapbox/light-v10',
-      center: [longitude || 90.4036, latitude || 23.7797],
+      center: [longitude || 144.9631, latitude || -37.8136],
       zoom: 14,
       maxZoom: 15,
     })

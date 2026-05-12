@@ -14,53 +14,62 @@ const DeliveryOption = ({ masterDressId }: DeliveryOptionProps) => {
   const { setLocation, setLenders, setLoading, latitude, longitude } = useLocationStore()
 
   React.useEffect(() => {
-    // Only fetch if pickup is selected and we don't have location yet
-    if (deliveryOption === 'pickup' && (!latitude || !longitude)) {
+    // Trigger location/lender fetch whenever pickup is selected
+    if (deliveryOption === 'pickup') {
       handleLocalPickup()
+    } else {
+      // Clear lenders when switching back to shipping
+      setLenders([])
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [deliveryOption])
 
+  const fetchNearbyLenders = async (lat: number, lng: number) => {
+    setLoading(true)
+    try {
+      const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/admin/lenders/nearby/${masterDressId}?latitude=${lat}&longitude=${lng}`
+      console.log('📍 Fetching Nearby Lenders:', url)
+
+      const res = await fetch(url)
+      const result = await res.json()
+
+      if (result.success) {
+        console.log('📍 Lenders Data Fetched:', result.data)
+        setLenders(result.data)
+      } else {
+        setLenders([])
+      }
+    } catch (error) {
+      console.error('Nearby API Error:', error)
+      setLenders([])
+    } finally {
+      setLoading(false)
+    }
+  }
+
   const handleLocalPickup = () => {
-    console.log('📍 handleLocalPickup triggered')
+    // If we already have coordinates, just refresh the lenders list
+    if (latitude && longitude) {
+      fetchNearbyLenders(latitude, longitude)
+      return
+    }
+
+    console.log('📍 Requesting Geolocation...')
     navigator.geolocation.getCurrentPosition(
       async (pos) => {
-        console.log('📍 geolocation accessed successfully', pos.coords)
-        setLoading(true)
-
+        console.log('📍 Geolocation success:', pos.coords)
         const lat = pos.coords.latitude
         const lng = pos.coords.longitude
 
         setLocation(lat, lng)
-
-        try {
-          const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/admin/lenders/nearby/${masterDressId}?latitude=${lat}&longitude=${lng}`
-          console.log('📍 Fetching URL:', url)
-
-          const res = await fetch(url)
-          const result = await res.json()
-          console.log('📍 Fetch Result:', result)
-
-          if (result.success) {
-            setLenders(result.data)
-          } else {
-            setLenders([])
-          }
-        } catch (error) {
-          console.error('Nearby API Error:', error)
-          setLenders([])
-        }
-
-        setLoading(false)
+        fetchNearbyLenders(lat, lng)
       },
       (error) => {
-        console.error('📍 geolocation error:', error)
-
-        // Always fallback to shipping if location fails
-
-        // alert('Please allow location access for Local Pickup.')
-        setDeliveryOption('shipping')
-      }
+        console.error('📍 Geolocation error:', error)
+        // No longer forcing fallback to shipping. 
+        // This allows the user to see the error or re-try without the UI jumping.
+      },
+      { timeout: 10000 }
     )
   }
 
@@ -85,10 +94,7 @@ const DeliveryOption = ({ masterDressId }: DeliveryOptionProps) => {
 
         {/* LOCAL PICKUP BTN */}
         <button
-          onClick={() => {
-            setDeliveryOption('pickup')
-            handleLocalPickup()
-          }}
+          onClick={() => setDeliveryOption('pickup')}
           className={`w-1/2 pb-2 uppercase tracking-widest ${deliveryOption === 'pickup'
             ? 'border-b-2 border-black'
             : 'border-b-2 border-white'
