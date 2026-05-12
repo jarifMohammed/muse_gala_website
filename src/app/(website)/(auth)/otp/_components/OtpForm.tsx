@@ -144,13 +144,15 @@ const OtpForm = () => {
     <div className="mt-20">
       <div className="grid grid-cols-1 md:grid-cols-5 gap-[20px] md:gap-[40px] lg:gap-[60px] px-5 md:px-0">
         {/* left side image part */}
-        <div className="md:col-span-3">
+        <div className="md:col-span-3 h-[500px] md:h-[794px] w-full md:-mt-5 lg:-mt-10">
           <Image
-            src="/images/auth.jpg"
+            src="/pages/alreadyPartofMuse.webp"
             alt="otp-verification"
-            width={500}
-            height={500}
-            className="w-full h-[400px] md:h-[496px] object-cover"
+            width={1000}
+            height={1000}
+            quality={100}
+            priority
+            className="object-cover h-full w-full"
           />
         </div>
         {/* form part */}

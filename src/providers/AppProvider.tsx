@@ -13,13 +13,19 @@ const AppProvider = ({ children }: { children: ReactNode }) => {
       <Toaster
         position="top-right"
         toastOptions={{
-          className: 'text-lg font-avenir md:text-xl py-4 px-6 min-h-[80px]',
+          style: {
+            borderRadius: '0px',
+            padding: '20px 24px',
+            fontFamily: 'var(--font-avenir)',
+          },
+          className: 'shadow-[0_20px_50px_rgba(0,0,0,0.15)] border-none',
           classNames: {
-            success: 'bg-green-50/90 border border-green-500 text-green-700',
-            error: 'bg-red-50/90 border border-red-500 text-red-700',
-            info: 'bg-blue-50/90 border border-blue-500 text-blue-700',
-            title: 'text-[16px] md:text-lg font-bold tracking-wider',
-            description: 'text-sm text-gray-500',
+            toast: 'group bg-white !rounded-none border-l-4 flex items-start gap-4',
+            success: 'border-l-black text-black',
+            error: 'border-l-[#891D33] text-black',
+            info: 'border-l-blue-500 text-black',
+            title: 'text-[13px] font-bold tracking-[3px] uppercase leading-tight',
+            description: 'text-[11px] text-gray-500 tracking-wider mt-1 leading-relaxed',
           },
         }}
       />
