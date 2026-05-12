@@ -96,7 +96,7 @@ const ProductDetails = () => {
           />
         </div>
 
-        <div className="lg:w-1/2">
+        <div className="lg:w-1/2 sticky top-28 h-fit">
           <ShopDetails
             singleProduct={{ data: singleProduct }}
             isLoading={isLoading}

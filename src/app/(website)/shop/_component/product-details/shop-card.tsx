@@ -100,19 +100,21 @@ const ShopCard = ({ thumbnailImage, allImages, isLoading, productdata }: ShopCar
   return (
     <div className="flex flex-col lg:flex-row gap-3 lg:gap-5">
       {/* Sidebar Thumbnails — desktop only */}
-      <div className="hidden lg:flex flex-row lg:flex-col gap-5 lg:w-[22%] w-full overflow-x-auto lg:overflow-visible">
+      <div className="hidden lg:flex flex-col gap-4 lg:w-[22%] h-fit max-h-[700px] overflow-y-auto scrollbar-hide sticky top-28">
         {images.map((src, index) => (
           <div
             key={index}
             onClick={() => setCurrentImageIndex(index)}
-            className={`min-w-[100px] aspect-[4/5] cursor-pointer overflow-hidden border-[2px] ${currentImageIndex === index ? 'border-gray-500' : 'border-transparent'
+            className={`w-full aspect-[4/5] cursor-pointer overflow-hidden border-[1px] transition-all duration-300 ${currentImageIndex === index
+              ? 'border-black'
+              : 'border-transparent hover:border-black/30'
               }`}
           >
             <Image
               src={src || '/placeholder.jpg'}
-              alt={`image-${index}`}
-              width={500}
-              height={500}
+              alt={`thumbnail-${index}`}
+              width={200}
+              height={250}
               className="w-full h-full object-cover object-top"
             />
           </div>
@@ -120,7 +122,7 @@ const ShopCard = ({ thumbnailImage, allImages, isLoading, productdata }: ShopCar
       </div>
 
       {/* Main Image + swipe on mobile */}
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col sticky top-28 h-fit">
         <div
           className="flex-1 aspect-[3/4] lg:aspect-[4/5] lg:max-h-[800px] overflow-hidden relative"
           onTouchStart={handleTouchStart}
