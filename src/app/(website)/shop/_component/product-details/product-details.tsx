@@ -87,7 +87,7 @@ const ProductDetails = () => {
   return (
     <div>
       <div className="flex flex-col lg:flex-row gap-6 lg:gap-12 lg:items-start">
-        <div className="lg:w-1/2">
+        <div className="lg:w-[35%]">
           <ShopCard
             thumbnailImage={thumbnailImage}
             allImages={allImages}
@@ -96,7 +96,7 @@ const ProductDetails = () => {
           />
         </div>
 
-        <div className="lg:w-1/2 sticky top-28 h-fit">
+        <div className="lg:w-[65%] sticky top-28 h-fit">
           <ShopDetails
             singleProduct={{ data: singleProduct }}
             isLoading={isLoading}

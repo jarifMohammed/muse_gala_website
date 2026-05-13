@@ -1,7 +1,7 @@
 /* eslint-disable */
 'use client'
 
-import { Heart } from 'lucide-react'
+import { Heart, ChevronLeft, ChevronRight } from 'lucide-react'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
@@ -17,6 +17,9 @@ interface ShopCardProps {
 const ShopCard = ({ thumbnailImage, allImages, isLoading, productdata }: ShopCardProps) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [isWishlisted, setIsWishlisted] = useState(false)
+  const [isHovered, setIsHovered] = useState(false)
+  const [thumbStart, setThumbStart] = useState(0)
+  const THUMBS_VISIBLE = 4
   const { data: session } = useSession()
   const router = useRouter()
   const touchStartX = useRef<number | null>(null)
@@ -96,37 +99,25 @@ const ShopCard = ({ thumbnailImage, allImages, isLoading, productdata }: ShopCar
     )
   }
 
+  // -------------- DESKTOP NAV HANDLERS ---------------------------
+  const handlePrev = () => {
+    setCurrentImageIndex((prev) => (prev - 1 + images.length) % images.length)
+  }
+  const handleNext = () => {
+    setCurrentImageIndex((prev) => (prev + 1) % images.length)
+  }
+
   // ------------------------------------------------------ MAIN UI -----------------------------------------------------
   return (
-    <div className="flex flex-col lg:flex-row gap-3 lg:gap-5">
-      {/* Sidebar Thumbnails — desktop only */}
-      <div className="hidden lg:flex flex-col gap-4 lg:w-[22%] h-fit max-h-[700px] overflow-y-auto scrollbar-hide sticky top-28">
-        {images.map((src, index) => (
-          <div
-            key={index}
-            onClick={() => setCurrentImageIndex(index)}
-            className={`w-full aspect-[4/5] cursor-pointer overflow-hidden border-[1px] transition-all duration-300 ${currentImageIndex === index
-              ? 'border-black'
-              : 'border-transparent hover:border-black/30'
-              }`}
-          >
-            <Image
-              src={src || '/placeholder.jpg'}
-              alt={`thumbnail-${index}`}
-              width={200}
-              height={250}
-              className="w-full h-full object-cover object-top"
-            />
-          </div>
-        ))}
-      </div>
-
+    <div className="flex flex-col gap-3 lg:gap-4">
       {/* Main Image + swipe on mobile */}
       <div className="flex-1 flex flex-col sticky top-28 h-fit">
         <div
-          className="flex-1 aspect-[3/4] lg:aspect-[4/5] lg:max-h-[800px] overflow-hidden relative"
+          className="flex-1 aspect-[3/4] lg:aspect-[3/4] overflow-hidden relative"
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
         >
           <Image
             src={images[currentImageIndex] || '/placeholder.jpg'}
@@ -144,6 +135,24 @@ const ShopCard = ({ thumbnailImage, allImages, isLoading, productdata }: ShopCar
                 }`}
             />
           </div>
+
+          {/* Desktop navigation arrows — show on hover */}
+          {images.length > 1 && (
+            <>
+              <button
+                onClick={handlePrev}
+                className={`hidden lg:flex absolute left-3 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white rounded-full w-10 h-10 items-center justify-center shadow-md transition-all duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`}
+              >
+                <ChevronLeft className="w-5 h-5 text-black" />
+              </button>
+              <button
+                onClick={handleNext}
+                className={`hidden lg:flex absolute right-3 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white rounded-full w-10 h-10 items-center justify-center shadow-md transition-all duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`}
+              >
+                <ChevronRight className="w-5 h-5 text-black" />
+              </button>
+            </>
+          )}
         </div>
 
         {/* Dot indicators — mobile only, only when > 1 image */}
@@ -158,6 +167,30 @@ const ShopCard = ({ thumbnailImage, allImages, isLoading, productdata }: ShopCar
                     : 'w-1.5 h-1.5 bg-black/25'
                   }`}
               />
+            ))}
+          </div>
+        )}
+
+        {/* Thumbnail row — desktop only, scroll/swipe for more */}
+        {images.length > 1 && (
+          <div className="hidden lg:flex flex-row gap-2 mt-3 overflow-x-auto scrollbar-hide" style={{ maxWidth: `${5 * 60 + 4 * 8}px` }}>
+            {images.map((src, index) => (
+              <div
+                key={index}
+                onClick={() => setCurrentImageIndex(index)}
+                className={`flex-shrink-0 w-[60px] h-[75px] cursor-pointer overflow-hidden border-[1px] transition-all duration-300 ${currentImageIndex === index
+                  ? 'border-black'
+                  : 'border-transparent hover:border-black/30'
+                  }`}
+              >
+                <Image
+                  src={src || '/placeholder.jpg'}
+                  alt={`thumbnail-${index}`}
+                  width={60}
+                  height={75}
+                  className="w-full h-full object-cover object-top"
+                />
+              </div>
             ))}
           </div>
         )}
