@@ -160,7 +160,8 @@ const Navbar = ({ isLoggedin, session }: Props) => {
       pathname === '/sign-up' ||
       pathname === '/forgot-password' ||
       pathname === '/reset-password' ||
-      pathname === '/otp'
+      pathname === '/otp' ||
+      pathname === '/booking-success'
       ? 'text-black'
       : 'text-white'
   }
@@ -189,7 +190,8 @@ const Navbar = ({ isLoggedin, session }: Props) => {
       pathname === '/sign-up' ||
       pathname === '/forgot-password' ||
       pathname === '/reset-password' ||
-      pathname === '/otp'
+      pathname === '/otp' ||
+      pathname === '/booking-success'
       ? 'border-black'
       : 'border-white'
   }
@@ -289,6 +291,7 @@ const Navbar = ({ isLoggedin, session }: Props) => {
                   pathname === '/dispute-resolution' ||
                   pathname === '/dispute-resolution-policy' ||
                   pathname === '/lender-terms-and-conditions' ||
+                  pathname === '/booking-success' ||
                   pathname.startsWith('/find-near-you') ? (
                   <Image
                     src="/logo-black.svg"

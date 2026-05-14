@@ -23,8 +23,8 @@ export default function SuccessPage() {
   console.log('summary of mine', bookingSummary)
 
   return (
-    <div className="max-h-[60vh] flex items-center justify-center mt-12 md:mt-32 lg:mt-40 font-avenir">
-      <div className="text-center mt-8 px-4">
+    <div className="flex flex-col items-center justify-center pt-24 md:pt-32 lg:pt-40 font-avenir">
+      <div className="text-center mt-4 px-4">
         <h1 className="text-3xl md:text-5xl font-avenir tracking-[10px] uppercase">
           Thank you for your booking
         </h1>
