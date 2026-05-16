@@ -4,6 +4,7 @@ import React from 'react'
 import ShoppinghMap from '../shopping-map'
 import { useLocationStore } from '@/zustand/useLocationStore'
 import { useShoppingStore } from '@/zustand/shopingStore'
+import { usePathname } from 'next/navigation'
 
 interface DeliveryOptionProps {
   masterDressId: string
@@ -12,6 +13,9 @@ interface DeliveryOptionProps {
 const DeliveryOption = ({ masterDressId }: DeliveryOptionProps) => {
   const { deliveryOption, setDeliveryOption } = useShoppingStore()
   const { setLocation, setLenders, setLoading, latitude, longitude } = useLocationStore()
+  const pathName = usePathname()
+  const isCheckoutPage =
+    pathName?.startsWith('/shop/checkout') && !pathName.includes('/confirmation')
 
   React.useEffect(() => {
     // Trigger location/lender fetch whenever pickup is selected
@@ -79,6 +83,12 @@ const DeliveryOption = ({ masterDressId }: DeliveryOptionProps) => {
         Delivery Option
       </h1>
 
+      {isCheckoutPage ? (
+        <div className="pt-5 tracking-widest opacity-75 text-sm">
+          {deliveryOption === 'shipping' ? 'Shipping' : 'Local Pickup'}
+        </div>
+      ) : (
+        <>
       {/* Option Buttons */}
       <div className="mt-8 opacity-75 flex items-center gap-5">
         {/* SHIPPING BTN */}
@@ -114,6 +124,8 @@ const DeliveryOption = ({ masterDressId }: DeliveryOptionProps) => {
           </div>
         )}
       </div>
+        </>
+      )}
     </div>
   )
 }

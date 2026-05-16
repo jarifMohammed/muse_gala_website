@@ -58,6 +58,8 @@ const ShopDetails: React.FC<ShopDetailsProps> = ({
   const { rent, setRent, selectedSize, setSelectedSize, selectedColor, setSelectedColor } = useShoppingStore()
   const pathName = usePathname()
   const data = singleProduct?.data
+  const isCheckoutPage =
+    pathName?.startsWith('/shop/checkout') && !pathName.includes('/confirmation')
 
   // console.log('shopping details page', data)
 
@@ -70,8 +72,7 @@ const ShopDetails: React.FC<ShopDetailsProps> = ({
 
   return (
     <div className="lg:min-h-[660px] font-avenir">
-      {pathName?.startsWith('/shop/checkout') &&
-        !pathName.includes('/confirmation') ? (
+      {isCheckoutPage ? (
         <h1 className="font-light opacity-75 text-[18px] tracking-[0.5rem] uppercase mb-8">
           Order Summary
         </h1>
@@ -155,8 +156,7 @@ const ShopDetails: React.FC<ShopDetailsProps> = ({
         </div>
       )}
 
-      {pathName?.startsWith('/shop/checkout') &&
-        !pathName.includes('/confirmation') && (
+      {isCheckoutPage && (
           <div className="flex items-start gap-2 border-b border-black">
             <div>
               <Image
@@ -198,27 +198,38 @@ const ShopDetails: React.FC<ShopDetailsProps> = ({
         )}
 
       {/* Rent Option */}
-      <div className="mt-12 opacity-75 flex items-center gap-5">
-        <button
-          onClick={() => setRent('4')}
-          className={`w-1/2 pb-2 uppercase ${rent === '4'
-            ? 'border-b-2 border-black'
-            : 'border-b-2 border-transparent'
-            }`}
-        >
-          4 day rent
-        </button>
+      {isCheckoutPage ? (
+        <div className="mt-12 opacity-75">
+          <h1 className="tracking-widest border-b border-black pb-1 uppercase">
+            Rental Duration
+          </h1>
+          <p className="pt-4 tracking-widest uppercase text-sm">
+            {rent === '8' ? '8 day rent' : '4 day rent'}
+          </p>
+        </div>
+      ) : (
+        <div className="mt-12 opacity-75 flex items-center gap-5">
+          <button
+            onClick={() => setRent('4')}
+            className={`w-1/2 pb-2 uppercase ${rent === '4'
+              ? 'border-b-2 border-black'
+              : 'border-b-2 border-transparent'
+              }`}
+          >
+            4 day rent
+          </button>
 
-        <button
-          onClick={() => setRent('8')}
-          className={`w-1/2 pb-2 uppercase ${rent === '8'
-            ? 'border-b-2 border-black'
-            : 'border-b-2 border-transparent'
-            }`}
-        >
-          8 day rent
-        </button>
-      </div>
+          <button
+            onClick={() => setRent('8')}
+            className={`w-1/2 pb-2 uppercase ${rent === '8'
+              ? 'border-b-2 border-black'
+              : 'border-b-2 border-transparent'
+              }`}
+          >
+            8 day rent
+          </button>
+        </div>
+      )}
 
       {/* Other Components */}
       <ShoppingRent />

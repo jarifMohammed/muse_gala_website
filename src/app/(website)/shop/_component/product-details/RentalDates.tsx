@@ -12,10 +12,14 @@ import { format, addDays, isAfter, isBefore, isSameDay } from 'date-fns'
 import type { DateRange } from 'react-day-picker'
 import { useShoppingStore } from '@/zustand/shopingStore'
 import { cn } from '@/lib/utils'
+import { usePathname } from 'next/navigation'
 
 const RentalDates = () => {
   const { rent, startDate, setStartDate, endDate, setEndDate, eventDay, setEventDay } = useShoppingStore()
   const [selectedRange, setSelectedRange] = useState<DateRange | undefined>()
+  const pathName = usePathname()
+  const isCheckoutPage =
+    pathName?.startsWith('/shop/checkout') && !pathName.includes('/confirmation')
 
   // 🧭 Handle user click on calendar with smart logic
   const handleSelect = (clickedDate: Date | undefined) => {
@@ -101,6 +105,25 @@ const RentalDates = () => {
         </div>
       )
       : null
+
+  if (isCheckoutPage) {
+    return (
+      <div className="mt-3 w-full max-w-full overflow-hidden border-b border-black/20 pb-3">
+        {eventDay && selectedRange?.from && selectedRange?.to ? (
+          <div className="tracking-widest text-gray-600 font-light uppercase text-sm leading-relaxed">
+            <p>Event Day: {format(eventDay, 'MMM dd, yyyy')}</p>
+            <p className="text-xs opacity-70">
+              Rental: {format(selectedRange.from, 'MMM dd')} - {format(selectedRange.to, 'MMM dd')}
+            </p>
+          </div>
+        ) : (
+          <p className="tracking-widest text-gray-600 font-light uppercase text-sm">
+            Event date not selected
+          </p>
+        )}
+      </div>
+    )
+  }
 
   return (
     <div className="mt-3 w-full max-w-full overflow-hidden">

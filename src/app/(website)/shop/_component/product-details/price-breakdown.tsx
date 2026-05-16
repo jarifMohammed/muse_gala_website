@@ -2,11 +2,11 @@
 'use client'
 
 import { useShoppingStore } from '@/zustand/shopingStore'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
 import { usePathname, useRouter } from 'next/navigation'
 import { toast } from 'sonner'
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { Input } from '@/components/ui/input'
 import { useUserStore } from '@/zustand/useUserStore'
 import { useLocationStore } from '@/zustand/useLocationStore'
@@ -21,6 +21,22 @@ interface KycApiRes {
   message: {
     url: string
     message: string
+  }
+}
+
+interface KycStatusApiRes {
+  success?: boolean
+  statusCode?: number
+  status?: boolean
+  message?:
+    | string
+    | {
+        status: 'verified' | 'pending' | 'requires_input' | 'failed' | 'not_started'
+        verified: boolean
+      }
+  data?: {
+    status: 'verified' | 'pending' | 'requires_input' | 'failed' | 'not_started'
+    verified: boolean
   }
 }
 
@@ -74,23 +90,34 @@ const PriceBreakDown = ({ singleProduct }: ShopDetailsProps) => {
   const token = session?.user?.accessToken
   const router = useRouter()
   const pathName = usePathname()
+  const queryClient = useQueryClient()
 
   const data = singleProduct?.data
 
-  const { user } = useUserStore()
-  const isKycVerified =
-    user?.kycVerified === true &&
-    user?.kycStatus?.toLowerCase() === 'verified'
+  const { user, setUser } = useUserStore()
 
   const { lenders } = useLocationStore()
 
   const [isApplyingPromo, setIsApplyingPromo] = useState(false)
   const [showKycSection, setShowKycSection] = useState(false)
+  const [kycCountdown, setKycCountdown] = useState(0)
+  const [isKycPolling, setIsKycPolling] = useState(false)
+  const [kycProgress, setKycProgress] = useState('')
+  const [latestKycStatus, setLatestKycStatus] = useState('')
+  const [hasLocalKycApproval, setHasLocalKycApproval] = useState(false)
+  const [isKycContinuing, setIsKycContinuing] = useState(false)
   const hasOpenedKycRef = useRef(false)
+  const hasAutoSubmittedRentRef = useRef(false)
+  const lastHandledKycStatusRef = useRef('')
+  const hasLocalKycApprovalRef = useRef(false)
+  const kycContinueTimerRef = useRef<number | null>(null)
   const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL
+  const isKycVerified =
+    hasLocalKycApproval ||
+    (user?.kycVerified === true &&
+      user?.kycStatus?.toLowerCase() === 'verified')
 
   const {
-    data: kycRes,
     refetch: fetchKyc,
     isFetching: isFetchingKyc,
   } = useQuery<KycApiRes>({
@@ -107,13 +134,88 @@ const PriceBreakDown = ({ singleProduct }: ShopDetailsProps) => {
     enabled: false,
   })
 
+  const {
+    data: kycStatusRes,
+    refetch: refetchKycStatus,
+    error: kycStatusError,
+  } = useQuery<KycStatusApiRes>({
+    queryKey: ['kyc-status-inline', user?.id],
+    queryFn: async () => {
+      const statusUrl = `${baseUrl}/api/v1/user/kyc/status/${user?.id}`
+      console.log('KYC status polling request:', {
+        url: statusUrl,
+        userId: user?.id,
+        hasToken: !!token,
+      })
+
+      const res = await fetch(statusUrl, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+
+      if (!res.ok) {
+        const errorText = await res.text()
+        console.error('KYC status polling failed:', {
+          status: res.status,
+          statusText: res.statusText,
+          body: errorText,
+        })
+        throw new Error('Failed to check ID verification status')
+      }
+
+      const data = await res.json()
+      console.log('KYC status polling backend response:', {
+        checkedAt: new Date().toISOString(),
+        response: data,
+      })
+      return data
+    },
+    enabled: isKycPolling && !!user?.id && !!token,
+    refetchInterval: isKycPolling ? 5000 : false,
+    refetchOnWindowFocus: true,
+    retry: false,
+  })
+
   useEffect(() => {
-    if (kycRes?.status && kycRes.message?.url && !hasOpenedKycRef.current) {
-      hasOpenedKycRef.current = true
-      window.open(kycRes.message.url, '_blank')
-      setShowKycSection(false)
+    if (!isKycPolling || kycCountdown <= 0) return
+
+    const timer = window.setInterval(() => {
+      setKycCountdown(current => Math.max(0, current - 1))
+    }, 1000)
+
+    return () => window.clearInterval(timer)
+  }, [isKycPolling, kycCountdown])
+
+  useEffect(() => {
+    if (!isKycPolling || kycCountdown !== 0) return
+    setKycProgress('Still waiting for approval')
+    setKycCountdown(60)
+  }, [isKycPolling, kycCountdown])
+
+  useEffect(() => {
+    if (!isKycPolling) return
+
+    const handleFocus = () => {
+      refetchKycStatus()
     }
-  }, [kycRes])
+
+    window.addEventListener('focus', handleFocus)
+    return () => window.removeEventListener('focus', handleFocus)
+  }, [isKycPolling, refetchKycStatus])
+
+  useEffect(() => {
+    if (!kycStatusError) return
+    console.error('KYC status polling error:', kycStatusError)
+  }, [kycStatusError])
+
+  useEffect(() => {
+    return () => {
+      if (kycContinueTimerRef.current) {
+        window.clearTimeout(kycContinueTimerRef.current)
+      }
+    }
+  }, [])
 
   // PRICE CALCULATION
   const basePrice = Number(data?.basePrice ?? 0)
@@ -201,6 +303,91 @@ const PriceBreakDown = ({ singleProduct }: ShopDetailsProps) => {
     }
   }
 
+  const resetKycFlow = () => {
+    if (kycContinueTimerRef.current) {
+      window.clearTimeout(kycContinueTimerRef.current)
+      kycContinueTimerRef.current = null
+    }
+
+    setIsKycPolling(false)
+    setIsKycContinuing(false)
+    setKycCountdown(0)
+    setKycProgress('')
+    setLatestKycStatus('')
+    lastHandledKycStatusRef.current = ''
+  }
+
+  const getKycStatusPayload = (response?: KycStatusApiRes) => {
+    if (!response) return null
+
+    if (response.data?.status) {
+      return response.data
+    }
+
+    if (typeof response.message === 'object' && response.message?.status) {
+      return response.message
+    }
+
+    return null
+  }
+
+  const validateRentNowFields = () => {
+    if (!startDate || !endDate) {
+      toast.error('Please select rental dates!')
+      return false
+    }
+
+    if (!selectedSize) {
+      toast.error('Please select a size!')
+      return false
+    }
+
+    if (deliveryOption === 'pickup' && lenders.length === 0) {
+      toast.error('No nearby lenders found. Please choose shipping instead.')
+      return false
+    }
+
+    return true
+  }
+
+  const startKycVerification = async () => {
+    if (!user || !token || isFetchingKyc) return
+
+    if (hasLocalKycApprovalRef.current || isKycVerified) {
+      return
+    }
+
+    hasOpenedKycRef.current = false
+    hasAutoSubmittedRentRef.current = false
+    lastHandledKycStatusRef.current = ''
+    queryClient.removeQueries({ queryKey: ['kyc-check-inline'] })
+    setShowKycSection(false)
+    setKycCountdown(60)
+    setIsKycPolling(true)
+    setKycProgress('Opening verification')
+    setLatestKycStatus('pending')
+
+    try {
+      const verificationResult = await fetchKyc()
+      if (verificationResult.error) throw verificationResult.error
+      const verificationUrl = verificationResult.data?.message?.url
+
+      if (verificationUrl && !hasOpenedKycRef.current) {
+        hasOpenedKycRef.current = true
+        window.open(verificationUrl, '_blank')
+      }
+
+      setKycProgress('Checking status')
+      refetchKycStatus()
+    } catch (error: any) {
+      resetKycFlow()
+      setShowKycSection(true)
+      toast.error(error.message || 'ID verification failed', {
+        position: 'bottom-right',
+      })
+    }
+  }
+
   // CREATE BOOKING (for Rent Now button - shop page)
   const createBookingForRentNow = useMutation({
     mutationFn: async () => {
@@ -252,9 +439,121 @@ const PriceBreakDown = ({ singleProduct }: ShopDetailsProps) => {
       }, 1000)
     },
     onError: (err: any) => {
+      hasAutoSubmittedRentRef.current = false
+      setIsKycContinuing(false)
       toast.error(err.message || 'Booking failed', { position: 'bottom-right' })
     },
   })
+
+  const submitRentNowBooking = useCallback(() => {
+    if (hasAutoSubmittedRentRef.current || createBookingForRentNow.isPending) {
+      return
+    }
+
+    hasAutoSubmittedRentRef.current = true
+    createBookingForRentNow.mutate()
+  }, [createBookingForRentNow])
+
+  useEffect(() => {
+    const kycPayload = getKycStatusPayload(kycStatusRes)
+    const kycStatus = kycPayload?.status
+    const verified = kycPayload?.verified === true
+
+    if (!kycStatus) return
+
+    console.log('KYC status polling normalized result:', {
+      checkedAt: new Date().toISOString(),
+      status: kycStatus,
+      verified,
+      rawResponse: kycStatusRes,
+    })
+
+    setLatestKycStatus(kycStatus.replace('_', ' '))
+
+    if (kycStatus !== 'pending') {
+      const statusKey = `${kycStatus}:${verified}`
+      if (lastHandledKycStatusRef.current === statusKey) return
+      lastHandledKycStatusRef.current = statusKey
+    }
+
+    if (verified && kycStatus === 'verified') {
+      if (hasAutoSubmittedRentRef.current) return
+
+      hasLocalKycApprovalRef.current = true
+      setHasLocalKycApproval(true)
+
+      if (user) {
+        setUser({
+          ...user,
+          kycVerified: true,
+          kycStatus: 'verified',
+        })
+
+        queryClient.setQueryData(['user', user.id], (oldData: any) => {
+          if (!oldData?.data) return oldData
+
+          return {
+            ...oldData,
+            data: {
+              ...oldData.data,
+              kycVerified: true,
+              kycStatus: 'verified',
+            },
+          }
+        })
+      }
+
+      setIsKycPolling(false)
+      setIsKycContinuing(true)
+      setKycCountdown(0)
+      setKycProgress('Verified, syncing status')
+      toast.success('ID verified. Continuing your rental.', {
+        position: 'bottom-right',
+      })
+
+      kycContinueTimerRef.current = window.setTimeout(() => {
+        setKycProgress('Verified, continuing')
+        submitRentNowBooking()
+      }, 2500)
+
+      return
+    }
+
+    if (kycStatus === 'pending') {
+      setKycProgress(
+        kycCountdown > 0 ? 'Waiting for approval' : 'Still waiting for approval',
+      )
+      return
+    }
+
+    setIsKycPolling(false)
+    setKycCountdown(0)
+
+    if (kycStatus === 'requires_input') {
+      setKycProgress('More information required')
+      toast.error('Please complete the remaining verification steps.', {
+        position: 'bottom-right',
+      })
+      return
+    }
+
+    if (kycStatus === 'failed') {
+      setKycProgress('Verification failed')
+      toast.error('ID verification failed. Please try again.', {
+        position: 'bottom-right',
+      })
+      return
+    }
+
+    setKycProgress('Verification not started')
+  }, [
+    kycCountdown,
+    kycStatusRes,
+    queryClient,
+    setUser,
+    submitRentNowBooking,
+    user,
+  ])
 
   // UPDATE BOOKING (for Confirm & Pay button - checkout page)
   const updateBookingForPayment = useMutation({
@@ -401,30 +700,27 @@ const PriceBreakDown = ({ singleProduct }: ShopDetailsProps) => {
       return
     }
 
+    if (!validateRentNowFields()) return
+
     if (user && !isKycVerified) {
       setShowKycSection(true)
+      toast.error('Please complete ID verification before renting.', {
+        position: 'bottom-right',
+      })
       return
     }
 
-    if (!startDate || !endDate) {
-      toast.error('Please select rental dates!')
-      return
-    }
-
-    if (!selectedSize) {
-      toast.error('Please select a size!')
-      return
-    }
-
-    if (deliveryOption === 'pickup' && lenders.length === 0) {
-      toast.error('No nearby lenders found. Please choose shipping instead.')
-      return
-    }
-
-    if (createBookingForRentNow.isPending) return
-
-    createBookingForRentNow.mutate()
+    submitRentNowBooking()
   }
+
+  const isRentNowWaitingForKyc = isKycPolling || isKycContinuing
+  const rentNowButtonLabel = createBookingForRentNow.isPending
+    ? 'Processing'
+    : isRentNowWaitingForKyc
+      ? isKycContinuing
+        ? kycProgress || 'Verified, syncing status'
+        : `${kycProgress || 'Checking status'} ${kycCountdown}s`
+      : 'Rent Now'
 
   // UI
   return (
@@ -542,18 +838,21 @@ const PriceBreakDown = ({ singleProduct }: ShopDetailsProps) => {
         ) : (
           <button
             onClick={handleRentNow}
-            disabled={createBookingForRentNow.isPending}
+            disabled={createBookingForRentNow.isPending || isRentNowWaitingForKyc}
             className="bg-black text-white hover:bg-black/80 uppercase tracking-widest text-sm h-12 w-full transition-colors disabled:opacity-50 font-avenir rounded-none"
           >
-            {createBookingForRentNow.isPending ? 'Processing' : 'Rent Now'}
+            {rentNowButtonLabel}
           </button>
         )}
       </div>
 
-      {showKycSection && user && isKycVerified === false && (
+      {showKycSection && user && isKycVerified === false && !isKycPolling && !isKycContinuing && (
         <div className="mt-8 p-6 border border-black/10 bg-gray-50/50 space-y-4 animate-in fade-in slide-in-from-top-4 duration-500 relative">
           <button
-            onClick={() => setShowKycSection(false)}
+            onClick={() => {
+              setShowKycSection(false)
+              resetKycFlow()
+            }}
             className="absolute right-4 top-4 opacity-40 hover:opacity-100 transition-opacity"
           >
             <X className="w-4 h-4" />
@@ -566,18 +865,24 @@ const PriceBreakDown = ({ singleProduct }: ShopDetailsProps) => {
               <p className="text-xs normal-case opacity-70 leading-relaxed font-light">
                 Almost there. Before you rent, we just need a quick ID verification to ensure a safe community.
               </p>
+              {(kycProgress || latestKycStatus) && (
+                <p className="text-xs normal-case opacity-70 leading-relaxed font-light">
+                  {kycProgress || 'Checking status'}
+                  {latestKycStatus ? ` - ${latestKycStatus}` : ''}
+                </p>
+              )}
             </div>
           </div>
 
           <Button
-            onClick={() => fetchKyc()}
+            onClick={startKycVerification}
             disabled={isFetchingKyc}
             className="w-full bg-black text-white hover:bg-black/90 uppercase tracking-widest text-xs h-12 rounded-none transition-all"
           >
             {isFetchingKyc ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Processing
+                Opening verification
               </>
             ) : (
               'Verify Now'

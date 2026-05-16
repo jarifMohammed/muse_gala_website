@@ -8,6 +8,24 @@ const CheckoutForm = () => {
     useShoppingStore()
   const { user } = useUserStore()
 
+  const formatAustralianPhone = (value?: string) => {
+    const digits = (value || '').replace(/\D/g, '')
+
+    if (!digits) return '+61 '
+
+    const localDigits = digits.startsWith('61')
+      ? digits.slice(2)
+      : digits.startsWith('0')
+        ? digits.slice(1)
+        : digits
+
+    return `+61 ${localDigits}`.trimEnd()
+  }
+
+  const handlePhoneChange = (value: string) => {
+    setField('phone', formatAustralianPhone(value))
+  }
+
   // fill form fields from user data
   useEffect(() => {
     if (user) {
@@ -18,7 +36,7 @@ const CheckoutForm = () => {
 
       setField('fullName', name)
       setField('email', user.email || '')
-      setField('phone', user.phoneNumber?.trim() || '')
+      setField('phone', formatAustralianPhone(user.phoneNumber))
     }
   }, [user, setField])
 
@@ -94,7 +112,10 @@ const CheckoutForm = () => {
                   <input
                     type="tel"
                     value={phone}
-                    onChange={(e) => setField('phone', e.target.value)}
+                    onChange={(e) => handlePhoneChange(e.target.value)}
+                    onFocus={() => {
+                      if (!phone) setField('phone', '+61 ')
+                    }}
                     className="w-full bg-transparent border-0 border-b border-black pb-2 text-black opacity-75 placeholder-gray-400 focus:outline-none focus:border-black uppercase font-avenir"
                   />
                 </div>
