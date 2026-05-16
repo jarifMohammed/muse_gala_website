@@ -17,8 +17,8 @@ export default function GiveAndTake() {
 
   const { mutate, isPending } = useMutation({
     mutationKey: ["newsletter-subscription-promo-offer"],
-    mutationFn: async (emailAddress: string) => {
-      const trimmedEmail = emailAddress.trim();
+    mutationFn: async () => {
+      const trimmedEmail = email.trim();
 
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) {
         throw new Error("Please enter a valid email address");
@@ -49,11 +49,6 @@ export default function GiveAndTake() {
     },
   });
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    mutate(email);
-  };
-
   return (
     <div className="max-w-6xl mx-auto px-4 py-16 text-center">
       <h2 className="headerClass uppercase">GET $10, GIVE $10</h2>
@@ -62,8 +57,7 @@ export default function GiveAndTake() {
         friends $10 too.
       </p>
 
-      <form
-        onSubmit={handleSubmit}
+      <div
         className="flex relative flex-col sm:flex-row justify-center items-center max-w-md mx-auto"
       >
         <input
@@ -74,10 +68,10 @@ export default function GiveAndTake() {
           className="border border-t-0 border-l-0 border-r-0 border-[#000000] px-2 py-[10px] mb-4 sm:mb-0 sm:flex-1 outline-none font-avenir font-light"
         />
         <Button
-          type="submit"
           variant="ghost"
           size="icon"
           className="ml-0 absolute right-0 sm:ml-2"
+          onClick={() => mutate()}
           disabled={isPending}
         >
           {isPending ? (
@@ -86,7 +80,7 @@ export default function GiveAndTake() {
             <ArrowRight className="h-5 w-6" />
           )}
         </Button>
-      </form>
+      </div>
     </div>
   );
 }
