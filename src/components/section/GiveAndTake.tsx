@@ -1,10 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { useMutation } from "@tanstack/react-query";
 import { ArrowRight, Loader2 } from "lucide-react";
 import { toast } from "sonner";
-import { Button } from "../ui/button";
 
 interface PromoOfferResponse {
   success?: boolean;
@@ -14,18 +12,36 @@ interface PromoOfferResponse {
 
 export default function GiveAndTake() {
   const [email, setEmail] = useState("");
+  const [isPending, setIsPending] = useState(false);
 
-  const { mutate, isPending } = useMutation({
-    mutationKey: ["newsletter-subscription-promo-offer"],
-    mutationFn: async () => {
-      const trimmedEmail = email.trim();
+  const handlePromoOffer = async () => {
+    const trimmedEmail = email.trim();
+    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) {
-        throw new Error("Please enter a valid email address");
-      }
+    console.info("[GiveAndTake] button clicked", {
+      email: trimmedEmail,
+      backendUrl,
+    });
+
+    if (!trimmedEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) {
+      toast.error("Please enter a valid email address");
+      return;
+    }
+
+    if (!backendUrl) {
+      console.error("[GiveAndTake] NEXT_PUBLIC_BACKEND_URL is missing");
+      toast.error("Backend URL is missing");
+      return;
+    }
+
+    setIsPending(true);
+
+    try {
+      const url = `${backendUrl}/api/v1/newsletterSubscription/promo-offer`;
+      console.info("[GiveAndTake] sending request", url);
 
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/newsletterSubscription/promo-offer`,
+        url,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -38,16 +54,15 @@ export default function GiveAndTake() {
         throw new Error(data.message || "Failed to send promo code");
       }
 
-      return data;
-    },
-    onSuccess: (data) => {
       toast.success(data.message || "Promo code sent successfully");
       setEmail("");
-    },
-    onError: (err: Error) => {
-      toast.error(err.message);
-    },
-  });
+    } catch (err) {
+      console.error("[GiveAndTake] request failed", err);
+      toast.error(err instanceof Error ? err.message : "Failed to send promo code");
+    } finally {
+      setIsPending(false);
+    }
+  };
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-16 text-center">
@@ -67,11 +82,11 @@ export default function GiveAndTake() {
           onChange={(event) => setEmail(event.target.value)}
           className="border border-t-0 border-l-0 border-r-0 border-[#000000] px-2 py-[10px] mb-4 sm:mb-0 sm:flex-1 outline-none font-avenir font-light"
         />
-        <Button
-          variant="ghost"
-          size="icon"
-          className="ml-0 absolute right-0 sm:ml-2"
-          onClick={() => mutate()}
+        <button
+          type="button"
+          aria-label="Send promo code"
+          className="ml-0 absolute right-0 sm:ml-2 inline-flex h-10 w-10 items-center justify-center disabled:pointer-events-none disabled:opacity-50"
+          onClick={handlePromoOffer}
           disabled={isPending}
         >
           {isPending ? (
@@ -79,7 +94,7 @@ export default function GiveAndTake() {
           ) : (
             <ArrowRight className="h-5 w-6" />
           )}
-        </Button>
+        </button>
       </div>
     </div>
   );

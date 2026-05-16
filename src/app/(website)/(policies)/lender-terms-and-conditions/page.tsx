@@ -12,6 +12,16 @@ export default function LenderTermsConditions() {
 
       {/* Content */}
       <div className="space-y-10 text-gray-800 font-avenir leading-[30px] tracking-[.08em] font-light">
+        {/* Platform Pricing */}
+        <section>
+          <h2 className="font-light text-lg tracking-[.1em] text-gray-900 mb-3">
+            Platform Pricing
+          </h2>
+          <p className="text-gray-600 mb-2">
+            {`Muse Gala reserves the right to set, display, and adjust customer-facing rental prices independently of lender-submitted pricing. Lender payouts are based solely on the agreed lender price at the time of listing. The difference between the customer-facing price and the lender price constitutes Muse Gala's platform margin and is not subject to negotiation or lender approval. By listing on Muse Gala, lenders acknowledge and accept this pricing structure.`}
+          </p>
+        </section>
+
         {/* Lender responsibilities */}
         <section>
           <h2 className="font-light text-lg tracking-[.1em] text-gray-900 mb-3">
