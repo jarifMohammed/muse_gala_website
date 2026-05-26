@@ -85,12 +85,12 @@
 
 import { useEffect, useRef, useState } from 'react'
 import mapboxgl from 'mapbox-gl'
-import 'mapbox-gl/dist/mapbox-gl.css' // Import Mapbox CSS for proper marker rendering
+import 'mapbox-gl/dist/mapbox-gl.css' // ✅ Required for Mapbox styles, markers, popups, controls
 import ReactDOMServer from 'react-dom/server'
 import { MapPin } from 'lucide-react'
 import { useLocationStore } from '@/zustand/useLocationStore'
 
-const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN!
+const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN
 
 const MarkerBig = () => (
   <div className="flex flex-col items-center">
@@ -111,27 +111,44 @@ const ShoppinghMap = () => {
   const { latitude, longitude, lenders, loading } = useLocationStore()
 
   const [mapReady, setMapReady] = useState(false)
+  const [tokenError, setTokenError] = useState(false)
 
   useEffect(() => {
     if (!mapContainer.current || map.current) return
 
-    mapboxgl.accessToken = MAPBOX_TOKEN
+    // ✅ Validate token exists
+    if (!MAPBOX_TOKEN) {
+      console.error('⚠️ Mapbox token not found. Check NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN in .env')
+      setTokenError(true)
+      return
+    }
 
-    map.current = new mapboxgl.Map({
-      container: mapContainer.current,
-      style: 'mapbox://styles/mapbox/light-v10',
-      center: [longitude || 144.9631, latitude || -37.8136],
-      zoom: 14,
-      maxZoom: 15,
-    })
+    try {
+      mapboxgl.accessToken = MAPBOX_TOKEN
 
-    map.current.on('load', () => {
-      setMapReady(true)
+      map.current = new mapboxgl.Map({
+        container: mapContainer.current,
+        style: 'mapbox://styles/mapbox/light-v10',
+        center: [longitude || 144.9631, latitude || -37.8136],
+        zoom: 14,
+        maxZoom: 15,
+      })
 
-      setTimeout(() => {
-        map.current!.resize()
-      }, 10)
-    })
+      map.current.on('load', () => {
+        setMapReady(true)
+
+        setTimeout(() => {
+          map.current?.resize()
+        }, 10)
+      })
+
+      map.current.on('error', (error) => {
+        console.error('❌ Mapbox error:', error)
+      })
+    } catch (error) {
+      console.error('❌ Failed to initialize Mapbox:', error)
+      setTokenError(true)
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -179,8 +196,16 @@ const ShoppinghMap = () => {
 
   return (
     <div className="relative w-full h-[350px] rounded overflow-hidden shadow bg-gray-200">
+      {/* ✅ Token Error */}
+      {tokenError && (
+        <div className="absolute inset-0 flex items-center justify-center bg-red-50/80 backdrop-blur-sm z-20 flex-col gap-2">
+          <span className="text-red-600 text-sm font-medium">⚠️ Map Error</span>
+          <span className="text-red-500 text-xs">Mapbox token not configured</span>
+        </div>
+      )}
+
       {/* ✅ Loading State */}
-      {loading && (
+      {!tokenError && loading && (
         <div className="absolute inset-0 flex items-center justify-center bg-white/70 backdrop-blur-sm z-20">
           <span className="text-gray-600 animate-pulse text-sm">
             Loading nearby lenders...
@@ -189,7 +214,7 @@ const ShoppinghMap = () => {
       )}
 
       {/* ✅ No Lenders Found */}
-      {!loading && lenders.length === 0 && (
+      {!tokenError && !loading && lenders.length === 0 && (
         <div className="absolute inset-0 flex items-center justify-center bg-white/70 backdrop-blur-sm z-20">
           <span className="text-gray-600 text-sm">
             No nearby lenders found for this dress.
@@ -198,7 +223,7 @@ const ShoppinghMap = () => {
       )}
 
       {/* ✅ Map Container */}
-      <div ref={mapContainer} className="w-full h-full" />
+      {!tokenError && <div ref={mapContainer} className="w-full h-full" />}
     </div>
   )
 }

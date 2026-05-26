@@ -6,7 +6,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
 import { usePathname, useRouter } from 'next/navigation'
 import { toast } from 'sonner'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Input } from '@/components/ui/input'
 import { useUserStore } from '@/zustand/useUserStore'
 import { useLocationStore } from '@/zustand/useLocationStore'
@@ -15,6 +15,7 @@ import { paymentApi } from '@/lib/paymentApi'
 import { Loader2, ShieldCheck, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { calculate8DayRentalPrice } from '@/utils/rentalPrice'
+import { getAvailableMuseReward } from '@/utils/museRewards'
 
 interface KycApiRes {
   status: boolean
@@ -83,6 +84,8 @@ const PriceBreakDown = ({ singleProduct }: ShopDetailsProps) => {
     setPromoCode,
     appliedPromo,
     setAppliedPromo,
+    promoProductId,
+    setPromoProductId,
     clearPromoCode,
   } = useShoppingStore()
 
@@ -95,6 +98,10 @@ const PriceBreakDown = ({ singleProduct }: ShopDetailsProps) => {
   const data = singleProduct?.data
 
   const { user, setUser } = useUserStore()
+  const automaticReward = useMemo(
+    () => getAvailableMuseReward(user),
+    [user],
+  )
 
   const { lenders } = useLocationStore()
 
@@ -232,21 +239,40 @@ const PriceBreakDown = ({ singleProduct }: ShopDetailsProps) => {
   const subtotal = displayPrice + insurance + shippingCost
 
   // Calculate discount based on type
-  let discount = 0
-  if (appliedPromo) {
+  let promoDiscount = 0
+  if (!automaticReward && appliedPromo) {
     if (appliedPromo.discountType.toUpperCase() === 'FLAT') {
       // Flat discount - direct amount
-      discount = Number(appliedPromo.discountValue)
+      promoDiscount = Number(appliedPromo.discountValue)
     } else if (appliedPromo.discountType === 'PERCENTAGE') {
       // Percentage discount - calculate from subtotal
-      discount = (subtotal * Number(appliedPromo.discountValue)) / 100
+      promoDiscount = (subtotal * Number(appliedPromo.discountValue)) / 100
     }
   }
+
+  const automaticDiscount = automaticReward
+    ? Math.min(subtotal, automaticReward.amount)
+    : 0
+  const discount = automaticReward ? automaticDiscount : promoDiscount
 
   console.log('discount and promocode', appliedPromo, discount)
 
   // Final total - ensure it doesn't go below 0
   const total = Math.max(0, subtotal - discount)
+
+  useEffect(() => {
+    if (automaticReward && (appliedPromo || promoCode)) {
+      clearPromoCode()
+    }
+  }, [automaticReward, appliedPromo, promoCode, clearPromoCode])
+
+  useEffect(() => {
+    if (!data?._id) return
+
+    if ((promoCode || appliedPromo) && promoProductId !== data._id) {
+      clearPromoCode()
+    }
+  }, [data?._id, promoCode, appliedPromo, promoProductId, clearPromoCode])
 
   // FORMAT DATES FOR API
   const formatDate = (date: Date | null) => {
@@ -269,6 +295,13 @@ const PriceBreakDown = ({ singleProduct }: ShopDetailsProps) => {
 
   // VALIDATE PROMO CODE
   const handleApplyPromo = async () => {
+    if (automaticReward) {
+      toast.error("Promo codes can't be combined with your automatic reward", {
+        position: 'bottom-right',
+      })
+      return
+    }
+
     if (!token) {
       toast.error('Please login to apply promo code')
       return
@@ -288,6 +321,7 @@ const PriceBreakDown = ({ singleProduct }: ShopDetailsProps) => {
       )
 
       if (response.status && response.data) {
+        setPromoProductId(data?._id ?? null)
         setAppliedPromo(response.data)
         toast.success(response.message || 'Promo code applied successfully!', {
           position: 'bottom-right',
@@ -402,7 +436,7 @@ const PriceBreakDown = ({ singleProduct }: ShopDetailsProps) => {
       }
 
       // Add promo code if applied
-      if (appliedPromo) {
+      if (!automaticReward && appliedPromo) {
         bookingData.promoCode = appliedPromo.code
       }
 
@@ -574,7 +608,7 @@ const PriceBreakDown = ({ singleProduct }: ShopDetailsProps) => {
       }
 
       // Add promo code if applied
-      if (appliedPromo) {
+      if (!automaticReward && appliedPromo) {
         updateData.promoCode = appliedPromo.code
       }
 
@@ -610,6 +644,21 @@ const PriceBreakDown = ({ singleProduct }: ShopDetailsProps) => {
           deliveryOption === 'shipping' ? 'Shipping' : 'Local Pickup',
         totalPaid: total,
         size: selectedSize || 'N/A',
+        rentalDurationDays: rent === '4' ? 4 : 8,
+        rentalFee: displayPrice,
+        careProtectionFee: insurance,
+        shippingCost,
+        subtotal,
+        discountAmount: discount,
+        discountLabel: automaticReward
+          ? `Muse Club Reward ($${automaticReward.amount})`
+          : appliedPromo
+            ? `Promo Code (${appliedPromo.code})`
+            : null,
+        promoCode: !automaticReward ? appliedPromo?.code ?? null : null,
+        isPromoApplied: !automaticReward && !!appliedPromo && discount > 0,
+        loyaltyRewardTitle: automaticReward?.title ?? null,
+        isLoyaltyDiscountApplied: !!automaticReward && discount > 0,
       })
 
       createCheckout.mutate()
@@ -757,10 +806,12 @@ const PriceBreakDown = ({ singleProduct }: ShopDetailsProps) => {
             </div>
           )}
 
-          {appliedPromo && discount > 0 && (
+          {(automaticReward || appliedPromo) && discount > 0 && (
             <div className="flex items-center justify-between tracking-widest text-green-600">
               <span className="uppercase text-xs">
-                Discount ({appliedPromo.code})
+                {automaticReward
+                  ? `Muse Club Reward ($${automaticReward.amount})`
+                  : `Discount (${appliedPromo?.code})`}
               </span>
               <span>-${discount.toFixed(2)}</span>
             </div>
@@ -779,13 +830,26 @@ const PriceBreakDown = ({ singleProduct }: ShopDetailsProps) => {
           <label className="block text-sm tracking-widest opacity-75 mb-2">
             Promo Code
           </label>
+          {automaticReward && (
+            <div className="mb-3 border border-[#891D33]/30 bg-[#891D33]/5 p-3">
+              <p className="text-xs tracking-widest text-[#891D33]">
+                {automaticReward.title}
+              </p>
+              <p className="mt-1 text-[11px] normal-case tracking-wide text-gray-600">
+                {automaticReward.description}
+              </p>
+            </div>
+          )}
           <div className="flex gap-2">
             <Input
               type="text"
               placeholder="Enter promo code"
               value={promoCode}
-              onChange={e => setPromoCode(e.target.value)}
-              disabled={!!appliedPromo || isApplyingPromo}
+              onChange={e => {
+                setPromoProductId(data?._id ?? null)
+                setPromoCode(e.target.value)
+              }}
+              disabled={!!automaticReward || !!appliedPromo || isApplyingPromo}
               className="flex-1 bg-transparent  tracking-widest text-sm focus:ring-1 focus:ring-black h-10 font-avenir"
             />
             {appliedPromo ? (

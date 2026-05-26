@@ -25,6 +25,10 @@ interface UserResponse {
     bio?: string
     kycVerified?: boolean
     kycStatus?: string
+    totalSpent?: number
+    firstBookingDiscountUsed?: boolean
+    spent300DiscountUsed?: boolean
+    spent600DiscountUsed?: boolean
   }
 }
 
@@ -77,6 +81,10 @@ export default function ClientProvider({ session }: Props) {
         bio: u.bio || '',
         kycVerified: u.kycVerified ?? false,
         kycStatus: u.kycStatus || '',
+        totalSpent: u.totalSpent ?? 0,
+        firstBookingDiscountUsed: u.firstBookingDiscountUsed,
+        spent300DiscountUsed: u.spent300DiscountUsed,
+        spent600DiscountUsed: u.spent600DiscountUsed,
         accessToken: accessToken || '',
       })
 

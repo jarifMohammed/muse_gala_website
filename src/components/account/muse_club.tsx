@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useUserStore } from '@/zustand/useUserStore'
+import { getAvailableMuseReward } from '@/utils/museRewards'
 import Paymentcard from '../payment_card'
 
 const MuseClub = () => {
@@ -30,6 +31,7 @@ const MuseClub = () => {
 
   const currentUser = userRes?.data
   const totalSpent = currentUser?.totalSpent || 0
+  const availableReward = getAvailableMuseReward(currentUser)
 
   // ✅ Determine membership tier
   const membershipTier =
@@ -96,12 +98,12 @@ const MuseClub = () => {
         {/* Spend Info */}
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 mb-6">
           <p className="sm:text-lg md:text-2xl font-light tracking-[.2rem]">
-            Your Annual Spend: ${totalSpent}
+            Your Annual Spend: ${totalSpent.toFixed(2)}
           </p>
           {remainingToStar > 0 ? (
             // Below Muse Star
             <p className="text-xl md:text-[24px] font-light tracking-[.2rem]">
-              ${remainingToStar} more to reach Muse Star
+              ${remainingToStar.toFixed(2)} more to reach Muse Star
             </p>
           ) : remainingToGold > 0 ? (
             // At Muse Star, working toward Gold
@@ -110,7 +112,7 @@ const MuseClub = () => {
                 You&apos;re at Muse Star!
               </p>
               <p className="text-xl md:text-[24px] font-light tracking-[.2rem]">
-                ${remainingToGold} more to reach Muse Gold
+                ${remainingToGold.toFixed(2)} more to reach Muse Gold
               </p>
             </div>
           ) : (
@@ -154,6 +156,17 @@ const MuseClub = () => {
             ))}
           </div>
         </div>
+
+        {availableReward && (
+          <div className="mb-10 border border-[#891D33]/40 bg-[#891D33]/5 p-5">
+            <p className="text-sm md:text-base font-light tracking-[.18rem] text-[#891D33]">
+              {availableReward.title}
+            </p>
+            <p className="mt-2 text-xs md:text-sm font-light tracking-widest text-gray-700">
+              {availableReward.description}
+            </p>
+          </div>
+        )}
 
         {/* Membership Cards */}
         <Paymentcard membershipTier={membershipTier} />

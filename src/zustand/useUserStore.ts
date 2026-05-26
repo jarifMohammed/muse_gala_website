@@ -12,6 +12,10 @@ export interface User {
   bio?: string
   kycVerified?: boolean
   kycStatus?: string
+  totalSpent?: number
+  firstBookingDiscountUsed?: boolean
+  spent300DiscountUsed?: boolean
+  spent600DiscountUsed?: boolean
 }
 
 interface UserState {

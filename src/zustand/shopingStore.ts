@@ -11,6 +11,17 @@ interface BookingSummary {
   deliveryMethod: string
   totalPaid: number
   size: string
+  rentalDurationDays: number
+  rentalFee: number
+  careProtectionFee: number
+  shippingCost: number
+  subtotal: number
+  discountAmount: number
+  discountLabel: string | null
+  promoCode: string | null
+  isPromoApplied: boolean
+  loyaltyRewardTitle: string | null
+  isLoyaltyDiscountApplied: boolean
 }
 
 interface PromoCodeData {
@@ -64,6 +75,8 @@ interface IShoppingStore {
   setPromoCode: (value: string) => void
   appliedPromo: PromoCodeData | null
   setAppliedPromo: (promo: PromoCodeData | null) => void
+  promoProductId: string | null
+  setPromoProductId: (value: string | null) => void
   clearPromoCode: () => void
 }
 
@@ -86,6 +99,7 @@ const initialState = {
   currentBookingId: null,
   promoCode: '',
   appliedPromo: null,
+  promoProductId: null,
 }
 
 export const useShoppingStore = create<IShoppingStore>()(
@@ -124,7 +138,9 @@ export const useShoppingStore = create<IShoppingStore>()(
       // Promo code actions
       setPromoCode: value => set({ promoCode: value }),
       setAppliedPromo: promo => set({ appliedPromo: promo }),
-      clearPromoCode: () => set({ promoCode: '', appliedPromo: null }),
+      setPromoProductId: value => set({ promoProductId: value }),
+      clearPromoCode: () =>
+        set({ promoCode: '', appliedPromo: null, promoProductId: null }),
     }),
     {
       name: 'shopping-store',
@@ -137,6 +153,7 @@ export const useShoppingStore = create<IShoppingStore>()(
         currentBookingId: state.currentBookingId,
         promoCode: state.promoCode,
         appliedPromo: state.appliedPromo,
+        promoProductId: state.promoProductId,
         startDate: state.startDate,
         endDate: state.endDate,
         eventDay: state.eventDay,

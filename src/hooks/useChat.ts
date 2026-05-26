@@ -124,27 +124,31 @@ export const useChat = (roomId?: string) => {
   useEffect(() => {
     if (!socket || !isConnected || !roomId) return
 
-    const joinRoom = async () => {
-      if (currentRoomRef.current !== roomId) {
-        // Leave previous room
-        if (currentRoomRef.current) {
-          socket.emit('leaveRoom', currentRoomRef.current)
-          console.log('🚪 Left room:', currentRoomRef.current)
+    if (currentRoomRef.current !== roomId) {
+      // Leave previous room
+      if (currentRoomRef.current) {
+        socket.emit('leaveRoom', currentRoomRef.current)
+        console.log('🚪 Left room:', currentRoomRef.current)
 
-          // Clear previous room messages from cache
-          queryClient.removeQueries({
-            queryKey: ['messages', currentRoomRef.current],
-          })
-        }
-
-        // Join new room
-        socket.emit('joinRoom', roomId)
-        console.log('🚀 Joined room:', roomId)
-        currentRoomRef.current = roomId
+        // Clear previous room messages from cache
+        queryClient.removeQueries({
+          queryKey: ['messages', currentRoomRef.current],
+        })
       }
+
+      // Join new room
+      socket.emit('joinRoom', roomId)
+      console.log('🚀 Joined room:', roomId)
+      currentRoomRef.current = roomId
     }
 
-    joinRoom()
+    return () => {
+      if (currentRoomRef.current) {
+        socket.emit('leaveRoom', currentRoomRef.current)
+        console.log('🚪 Left room on cleanup:', currentRoomRef.current)
+        currentRoomRef.current = null
+      }
+    }
   }, [socket, isConnected, roomId, accessToken, queryClient])
 
   // 📡 Optimized socket listeners with useCallback

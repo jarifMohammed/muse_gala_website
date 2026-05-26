@@ -21,6 +21,7 @@ interface Order {
   paymentStatus: string
   createdAt: string
   chatRoom: string | null
+  deliveryMethod?: string
   shippingMethod?: string
   trackingNumber?: string
 }
@@ -274,6 +275,9 @@ const OrderRow = ({
       : order.deliveryStatus === 'Pending'
         ? 'yellow'
         : 'red'
+  const isPickupMethod = [order.deliveryMethod, order.shippingMethod].some(
+    method => method?.toLowerCase().includes('pickup'),
+  )
 
   return (
     <tr className="border-b">
@@ -290,21 +294,7 @@ const OrderRow = ({
       </td>
 
       <td className="py-6 px-4 sm:px-6 lg:px-10 font-light tracking-wide text-base text-gray-900 border-r border-gray-300">
-        <div className="flex items-center justify-between gap-2">
-          <span>{order.dressName || 'N/A'}</span>
-          <button
-            className="p-1.5 h-auto text-black hover:bg-black/5 rounded-md transition-all flex items-center justify-center shrink-0 disabled:opacity-50"
-            title="Chat with Lender"
-            onClick={() => onChat(order)}
-            disabled={isChatLoading}
-          >
-            {isChatLoading ? (
-              <Loader2 className="w-4 h-4 animate-spin" />
-            ) : (
-              <MessageCircle className="w-4 h-4" />
-            )}
-          </button>
-        </div>
+        {order.dressName || 'N/A'}
       </td>
 
       <td className="py-6 px-4 sm:px-6 lg:px-10 font-light tracking-wide text-base text-gray-900 border-r border-gray-300">
@@ -328,29 +318,45 @@ const OrderRow = ({
       </td>
 
       <td className="py-6 px-4 sm:px-6 lg:px-10 text-base text-gray-900 border-r border-gray-300 font-light tracking-wide">
-        <Popover>
-          <PopoverTrigger asChild>
-            <button
-              className="px-0 h-auto text-black underline hover:opacity-60 transition-all font-light whitespace-nowrap"
-              title="Track Order"
-            >
-              Track Order
-            </button>
-          </PopoverTrigger>
-          <PopoverContent className="w-64">
-            <div className="flex flex-col space-y-2">
-              <h4 className="font-semibold text-sm border-b pb-2 mb-1">Tracking Details</h4>
-              <div className="text-sm flex justify-between">
-                <span className="text-gray-500">Method:</span>
-                <span className="font-medium">{order.shippingMethod || 'N/A'}</span>
+        {isPickupMethod ? (
+          <button
+            className="inline-flex items-center gap-1.5 px-0 h-auto text-black underline hover:opacity-60 transition-all font-light whitespace-nowrap disabled:opacity-50"
+            title="Chat with Lender"
+            onClick={() => onChat(order)}
+            disabled={isChatLoading}
+          >
+            {isChatLoading ? (
+              <Loader2 className="w-4 h-4 animate-spin" />
+            ) : (
+              <MessageCircle className="w-4 h-4" />
+            )}
+            Chat
+          </button>
+        ) : (
+          <Popover>
+            <PopoverTrigger asChild>
+              <button
+                className="px-0 h-auto text-black underline hover:opacity-60 transition-all font-light whitespace-nowrap"
+                title="Track Order"
+              >
+                Track Order
+              </button>
+            </PopoverTrigger>
+            <PopoverContent className="w-64">
+              <div className="flex flex-col space-y-2">
+                <h4 className="font-semibold text-sm border-b pb-2 mb-1">Tracking Details</h4>
+                <div className="text-sm flex justify-between">
+                  <span className="text-gray-500">Method:</span>
+                  <span className="font-medium">{order.shippingMethod || order.deliveryMethod || 'N/A'}</span>
+                </div>
+                <div className="text-sm flex justify-between">
+                  <span className="text-gray-500">Tracking No:</span>
+                  <span className="font-medium">{order.trackingNumber || 'N/A'}</span>
+                </div>
               </div>
-              <div className="text-sm flex justify-between">
-                <span className="text-gray-500">Tracking No:</span>
-                <span className="font-medium">{order.trackingNumber || 'N/A'}</span>
-              </div>
-            </div>
-          </PopoverContent>
-        </Popover>
+            </PopoverContent>
+          </Popover>
+        )}
       </td>
 
       <td className="py-6 px-4 sm:px-6 lg:px-10 text-base text-gray-900 font-light tracking-wide text-center">
