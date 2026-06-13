@@ -484,9 +484,15 @@ const PriceBreakDown = ({ singleProduct }: ShopDetailsProps) => {
       return
     }
 
+    // Prevent double booking if we already generated a booking ID for this session
+    if (currentBookingId) {
+      router.push(`/shop/checkout/${data?._id}`)
+      return
+    }
+
     hasAutoSubmittedRentRef.current = true
     createBookingForRentNow.mutate()
-  }, [createBookingForRentNow])
+  }, [createBookingForRentNow, currentBookingId, router, data?._id])
 
   useEffect(() => {
     const kycPayload = getKycStatusPayload(kycStatusRes)
@@ -673,7 +679,7 @@ const PriceBreakDown = ({ singleProduct }: ShopDetailsProps) => {
   // SAVE PAYMENT INFO (redirect to card info page)
   const createCheckout = useMutation({
     mutationFn: async () => {
-      return await paymentApi.savePaymentInfo(token!)
+      return await paymentApi.savePaymentInfo(token!, currentBookingId || undefined)
     },
     onSuccess: res => {
       const url = res?.data?.url

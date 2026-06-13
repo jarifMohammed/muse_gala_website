@@ -1,7 +1,7 @@
 // lib/api/paymentApi.ts
 
 export const paymentApi = {
-  savePaymentInfo: async (token: string) => {
+  savePaymentInfo: async (token: string, bookingId?: string) => {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/payment/savePaymentInfo`,
       {
@@ -10,6 +10,7 @@ export const paymentApi = {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
+        body: JSON.stringify(bookingId ? { bookingId } : {}),
       },
     )
 
