@@ -484,9 +484,15 @@ const PriceBreakDown = ({ singleProduct }: ShopDetailsProps) => {
       return
     }
 
+    // Prevent double booking if we already generated a booking ID for this active session
+    if (currentBookingId) {
+      router.push(`/shop/checkout/${data?._id}`)
+      return
+    }
+
     hasAutoSubmittedRentRef.current = true
     createBookingForRentNow.mutate()
-  }, [createBookingForRentNow])
+  }, [createBookingForRentNow, currentBookingId, router, data?._id])
 
   useEffect(() => {
     const kycPayload = getKycStatusPayload(kycStatusRes)
@@ -664,9 +670,18 @@ const PriceBreakDown = ({ singleProduct }: ShopDetailsProps) => {
       createCheckout.mutate()
     },
     onError: (err: any) => {
-      toast.error(err.message || 'Failed to update booking', {
-        position: 'bottom-right',
-      })
+      const errorMessage = err.message || 'Failed to update booking'
+      if (errorMessage.toLowerCase().includes('not found')) {
+        setCurrentBookingId(null)
+        toast.error('Session expired. Please click Rent Now again to start fresh.', {
+          position: 'bottom-right',
+        })
+        setTimeout(() => router.push(`/shop/${data?._id}`), 2000)
+      } else {
+        toast.error(errorMessage, {
+          position: 'bottom-right',
+        })
+      }
     },
   })
 

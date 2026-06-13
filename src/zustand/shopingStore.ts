@@ -150,7 +150,6 @@ export const useShoppingStore = create<IShoppingStore>()(
         selectedSize: state.selectedSize,
         selectedColor: state.selectedColor,
         bookingSummary: state.bookingSummary,
-        currentBookingId: state.currentBookingId,
         promoCode: state.promoCode,
         appliedPromo: state.appliedPromo,
         promoProductId: state.promoProductId,
