@@ -484,15 +484,9 @@ const PriceBreakDown = ({ singleProduct }: ShopDetailsProps) => {
       return
     }
 
-    // Prevent double booking if we already generated a booking ID for this session
-    if (currentBookingId) {
-      router.push(`/shop/checkout/${data?._id}`)
-      return
-    }
-
     hasAutoSubmittedRentRef.current = true
     createBookingForRentNow.mutate()
-  }, [createBookingForRentNow, currentBookingId, router, data?._id])
+  }, [createBookingForRentNow])
 
   useEffect(() => {
     const kycPayload = getKycStatusPayload(kycStatusRes)
