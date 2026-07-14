@@ -4,9 +4,10 @@ import { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { Loader2 } from 'lucide-react'
+import { Loader2, CreditCard } from 'lucide-react'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Button } from '@/components/ui/button'
+import { toast } from 'sonner'
 
 
 import {
@@ -104,6 +105,31 @@ const AccountInfo = () => {
   })
 
   const onSubmit = (values: ProfileFormSchemaValues) => mutate(values)
+
+  // ✅ Mutation for updating payment method
+  const { mutate: updatePaymentMethod, isPending: isPaymentPending } = useMutation({
+    mutationFn: async () => {
+      const res = await fetch(`${baseUrl}/api/v1/payment/savePaymentInfo`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${user?.accessToken}`,
+        },
+      })
+      if (!res.ok) throw new Error('Failed to create payment session')
+      return res.json()
+    },
+    onSuccess: (data) => {
+      if (data?.url) {
+        window.location.href = data.url
+      } else {
+        toast.error('Could not redirect to payment page. Please try again.')
+      }
+    },
+    onError: () => {
+      toast.error('Something went wrong. Please try again.')
+    },
+  })
 
   // ✅ Skeleton loader
   if (isLoading) {
@@ -288,6 +314,30 @@ const AccountInfo = () => {
           </div>
         </form>
       </Form>
+
+      {/* ── Update Payment Method ── */}
+      <div className="mt-10 border-t border-black/10 pt-8">
+        <h2 className="text-lg tracking-widest font-light mb-2">
+          Payment Method
+        </h2>
+        <p className="text-sm text-gray-500 font-light tracking-wide mb-5">
+          Add or update the card used for your bookings. You will be securely redirected to Stripe.
+        </p>
+        <Button
+          type="button"
+          id="update-payment-method-btn"
+          onClick={() => updatePaymentMethod()}
+          disabled={isPaymentPending}
+          className="flex items-center gap-2 rounded-none border border-black bg-transparent text-black hover:bg-black hover:text-white text-xs font-light tracking-widest transition-all duration-300 px-6 py-4"
+        >
+          {isPaymentPending ? (
+            <Loader2 className="animate-spin w-4 h-4" />
+          ) : (
+            <CreditCard className="w-4 h-4" />
+          )}
+          Update Payment Method
+        </Button>
+      </div>
     </section>
   )
 }
