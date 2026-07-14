@@ -122,7 +122,7 @@ export const useShoppingStore = create<IShoppingStore>()(
               idPreview: URL.createObjectURL(value),
             }
           }
-          return { ...state, [field]: value }
+          return { ...state, [field]: value } as Partial<IShoppingStore>
         }),
 
       setIsConfirm: value => set({ isConfirm: value }),

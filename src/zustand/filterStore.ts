@@ -48,7 +48,7 @@ const initialState = {
   page: 1,
 }
 
-export const useFilterStore = create<IFilter>((set) => ({
+export const useFilterStore = create<IFilter>()((set) => ({
   ...initialState,
 
   setSearch: (value) => set({ search: value, page: 1 }),
