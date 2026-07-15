@@ -120,8 +120,8 @@ const AccountInfo = () => {
       return res.json()
     },
     onSuccess: (data) => {
-      if (data?.url) {
-        window.location.href = data.url
+      if (data?.data?.url) {
+        window.location.href = data.data.url
       } else {
         toast.error('Could not redirect to payment page. Please try again.')
       }
