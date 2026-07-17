@@ -40,7 +40,8 @@ const IDVerificationModal = ({ isOpen, onClose, user }: IDVerificationModalProps
     } = useQuery<GetApiRes>({
         queryKey: ['kyc-check-modal'],
         queryFn: async () => {
-            const res = await fetch(`${baseUrl}/api/v1/user/kyc/verify`, {
+            const currentPath = window.location.pathname;
+            const res = await fetch(`${baseUrl}/api/v1/user/kyc/verify?returnUrl=${encodeURIComponent(currentPath)}`, {
                 headers: {
                     Authorization: `Bearer ${user?.accessToken}`,
                 },
